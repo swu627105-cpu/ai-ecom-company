@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 电商公司平台 · 功能清单与开发方案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+:root{
+  --paper:#f2f4f7; --surface:#ffffff; --sunk:#e8ecf1; --ink:#152030; --muted:#566275; --faint:#8a95a5; --line:#d6dde6;
+  --accent:#23468c; --accent-soft:#e2e9f6;
+  --seal:#c0352a; --seal-soft:#fae8e5;
+  --ok:#2b774a; --ok-soft:#e0f1e6; --warn:#9c640f; --warn-soft:#f6ecd8;
+  --f-display:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,32,48,.06),0 8px 24px rgba(20,32,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0f141b; --surface:#161d27; --sunk:#1d2632; --ink:#e4e9f0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#2a3542;
+    --accent:#8eaef0; --accent-soft:#1d2a44;
+    --seal:#e85a4d; --seal-soft:#3a1e1c;
+    --ok:#6fcf97; --ok-soft:#173226; --warn:#f0b955; --warn-soft:#352a14;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.72;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;line-height:1.35;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px 72px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1160px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;gap:20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.nav-in::-webkit-scrollbar{display:none}
+.brand{font-family:var(--f-display);font-weight:900;font-size:14.5px;flex:none}
+.nav a{color:var(--muted);text-decoration:none;font-size:13px;flex:none}
+.nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:46px 0 26px;max-width:900px;display:grid;gap:14px}
+.eyebrow{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--accent)}
+.hero h1{font-size:clamp(26px,3.6vw,40px);font-weight:900}
+.lead{font-size:16px;color:var(--muted);max-width:74ch}
+.lead b{color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12.5px;color:var(--faint);font-family:var(--f-mono)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:8px 0 44px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font-family:var(--f-display);font-size:26px;font-weight:900;line-height:1.2}
+.stat span{font-size:12px;color:var(--faint);letter-spacing:.04em}
+.stat em{font-style:normal;font-size:12px;color:var(--muted);display:block;margin-top:2px}
+
+/* section */
+section{margin-bottom:52px;scroll-margin-top:60px}
+.sec-h{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:20px}
+.sec-h .no{font-family:var(--f-mono);font-size:12px;color:var(--seal);font-weight:600;letter-spacing:.08em}
+.sec-h h2{font-size:22px;font-weight:900}
+.sec-h .note{margin-left:auto;font-size:12.5px;color:var(--faint)}
+
+/* arch */
+.arch{display:grid;gap:8px;margin-bottom:16px}
+.layer{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 14px}
+.layer b{font-size:12.5px;letter-spacing:.06em;color:var(--accent)}
+.layer span{font-size:13px;color:var(--muted)}
+.layer span i{font-family:var(--f-mono);font-style:normal;color:var(--ink);font-size:12.5px}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--muted);margin-bottom:14px;align-items:center}
+.legend .k{display:inline-flex;align-items:center;gap:5px}
+
+/* table */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);box-shadow:var(--shadow);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--sunk);font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:700;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--f-mono);font-size:12.5px;color:var(--faint);white-space:nowrap;width:52px}
+td.name{width:196px}
+td.name b{font-size:13.5px;font-weight:700}
+td.name small{display:block;font-size:11.5px;color:var(--faint);line-height:1.5;margin-top:1px}
+td.pri{width:56px;white-space:nowrap}
+td.effect{width:250px;color:var(--muted);font-size:13px}
+td.how{color:var(--ink)}
+td.how code{font-family:var(--f-mono);font-size:11.5px;background:var(--sunk);padding:1px 5px;border-radius:4px;color:var(--ink)}
+.tag{display:inline-block;font-size:10.5px;line-height:1;padding:3px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.tag.p0{background:var(--seal-soft);color:var(--seal)}
+.tag.p1{background:var(--accent-soft);color:var(--accent)}
+.tag.p2{background:var(--sunk);color:var(--muted)}
+.tag.has{background:var(--ok-soft);color:var(--ok)}
+.tag.new{background:var(--warn-soft);color:var(--warn)}
+.tag.part{background:var(--sunk);color:var(--muted)}
+
+/* module block */
+.mod{margin-bottom:34px}
+.mod-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.mod-h h3{font-size:17px;font-weight:900}
+.mod-h .bar{flex:1;height:1px;background:var(--line)}
+.mod-h .cnt{font-family:var(--f-mono);font-size:12px;color:var(--faint)}
+
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:var(--shadow);display:grid;gap:8px;align-content:start}
+.phase .ph{display:flex;align-items:center;gap:8px}
+.phase .ph b{font-family:var(--f-mono);font-size:12px;padding:3px 7px;border-radius:4px;background:var(--ink);color:var(--paper);letter-spacing:.06em}
+.phase h4{font-size:15.5px;font-weight:900}
+.phase p{font-size:13px;color:var(--muted)}
+.phase ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--muted);display:grid;gap:3px}
+.phase .dep{font-size:12px;color:var(--faint);border-top:1px dashed var(--line);padding-top:8px}
+
+/* risks */
+.risks{display:grid;gap:10px}
+.risk{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--seal);border-radius:8px;padding:13px 16px}
+.risk b{font-size:13.5px}
+.risk p{font-size:13px;color:var(--muted)}
+.risk p em{font-style:normal;color:var(--ink);font-weight:500}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:18px 0 0;font-size:12px;color:var(--faint);display:flex;flex-wrap:wrap;gap:8px 20px}
+
+@media (max-width:860px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .phases{grid-template-columns:1fr}
+  .layer{grid-template-columns:1fr;gap:4px}
+  .risk{grid-template-columns:1fr;gap:4px}
+  .hero{padding-top:32px}
+  /* 表格在窄屏改为卡片堆叠，避免横向拖动 */
+  .tw{overflow-x:visible}
+  table{min-width:0}
+  thead{display:none}
+  tbody tr{display:block;padding:12px 14px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child{border-bottom:0}
+  td{display:block;border:0;padding:0;width:auto}
+  #list td.id{width:auto;font-size:11px;letter-spacing:.08em;margin-bottom:1px}
+  #list td.name{width:auto;margin-bottom:4px}
+  #list td.pri,#list td.pri + td{display:inline-block;margin:0 6px 6px 0}
+  #list td:last-child{color:var(--muted);font-size:13px}
+  #plan td.name{width:auto;margin-bottom:6px}
+  #plan td.name b{font-size:14.5px}
+  #plan td.how{margin-bottom:9px}
+  #plan td.how::before,#plan td.effect::before{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--faint);margin-bottom:1px}
+  #plan td.how::before{content:"怎么实现"}
+  #plan td.effect::before{content:"预估效果"}
+  #plan td.effect{color:var(--muted);font-size:13.5px}
+  #metric td.name{margin-bottom:6px}
+  #metric td:nth-child(n+2){margin-bottom:6px;color:var(--muted);font-size:13.5px}
+  #metric td:nth-child(n+2)::before{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--faint)}
+  #metric td:nth-child(2)::before{content:"定义"}
+  #metric td:nth-child(3)::before{content:"看什么"}
+  #metric td:nth-child(4)::before{content:"目标方向"}
+  #tech td.name{width:auto;margin-bottom:6px}
+  #tech td:nth-child(2),#tech td:nth-child(3){margin-bottom:6px;color:var(--muted);font-size:13.5px}
+  #tech td:nth-child(2)::before,#tech td:nth-child(3)::before{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--faint)}
+  #tech .tsel td:nth-child(2)::before{content:"选型"}
+  #tech .tsel td:nth-child(3)::before{content:"为什么"}
+  #tech .tdel td:nth-child(2)::before{content:"职责"}
+  #tech .tdel td:nth-child(3)::before{content:"注意"}
+  #tech .tmig td:nth-child(2)::before{content:"做什么"}
+  #tech .tmig td:nth-child(3)::before{content:"产出"}
+  #tech .tw table{min-width:0}
+  .topo{padding:8px 6px}
+  .tech-note.topo-hint{display:block;margin:0 0 6px}
+}
+/* tech */
+@media (min-width:861px){#tech .tw table{min-width:720px}}
+.topo{margin:8px 0 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px;box-shadow:var(--shadow);overflow-x:auto}
+.topo svg{display:block;width:100%;min-width:920px;height:auto}
+.topo::-webkit-scrollbar{height:8px}
+.topo::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.topo-hint{display:none}
+.topo svg text{font-family:var(--f-body)}
+.topo .t1{font-size:12.5px;font-weight:700;fill:var(--ink)}
+.topo .t2{font-size:10.5px;fill:var(--muted)}
+.topo .t3{font-size:10px;fill:var(--faint)}
+.topo .gl{font-size:11px;font-weight:700;fill:var(--faint);letter-spacing:.08em}
+.topo .lbl{font-size:10.5px;fill:var(--faint)}
+.topo .box{fill:var(--surface);stroke:var(--line);stroke-width:1}
+.topo .self{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+.topo .cloud{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1}
+.topo .third{fill:var(--surface);stroke:var(--faint);stroke-width:1;stroke-dasharray:5 4}
+.topo-legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;color:var(--muted);margin-top:10px}
+.topo-legend .k{display:inline-flex;align-items:center;gap:6px}
+.topo-legend em{font-style:normal;width:16px;height:10px;border-radius:2px;border:1px solid var(--accent);background:var(--accent-soft)}
+.topo-legend em.cloud{border-color:var(--warn);background:var(--warn-soft)}
+.topo-legend em.third{border-color:var(--faint);background:transparent;border-style:dashed}
+.topo-legend em.line{width:22px;height:0;border:0;border-top:2px solid var(--muted);border-radius:0}
+.topo-legend em.line.dash{border-top-style:dashed}
+.tech-note{font-size:12.5px;color:var(--muted);margin-top:10px}
+.tech-note b{color:var(--ink)}
+@media print{
+  .nav{display:none}
+  body{background:#fff}
+  .tw,.stat,.phase,.risk{box-shadow:none}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <span class="brand">AI 电商公司 · 开发方案</span>
+  <a href="#list">功能清单</a>
+  <a href="#plan">开发方案</a>
+  <a href="#tech">技术选型</a>
+  <a href="#phase">阶段</a>
+  <a href="#metric">指标</a>
+  <a href="#risk">取舍</a>
+</div></nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">产品与工程 · 内部文档</span>
+  <h1>AI 电商公司平台 · 功能清单与开发方案</h1>
+  <p class="lead">把「一个主理人 + 一群 AI 员工」做成可交付的系统。清单覆盖 <b>10 个模块、47 项功能</b>，每一项都写明<b>怎么实现</b>（数据、接口、状态机、模型档位）与<b>预估效果</b>（可验收的口径）。原型里已经跑通的部分标注「已有」，其余为待建。</p>
+  <div class="meta">
+    <span>版本 v1.0</span><span>范围：原型 → 可交付系统</span><span>模型底座：书生端砚 / 主力闭源 / 本地小模型 三档路由</span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat"><b>10</b><span>功能模块</span><em>驾驶舱 / 员工 / 审批 / 会议 / 模型 / 知识 / 工具 / 合规 / 协作 / 工程</em></div>
+  <div class="stat"><b>47</b><span>功能项</span><em>14 项原型已实现，4 项部分实现</em></div>
+  <div class="stat"><b>19</b><span>P0 项</span><em>跑通「发现 → 开会 → 拍板 → 执行 → 复盘」闭环</em></div>
+  <div class="stat"><b>4</b><span>北极星指标</span><em>人均可控 GMV / 决策周期 / 单任务成本 / 一次通过率</em></div>
+</div>
+
+<section id="arch" style="margin-bottom:44px">
+  <div class="arch">
+    <div class="layer"><b>接入层</b><span>店铺开放平台（淘宝 / 抖店 / 拼多多 / Shopify）、飞书 / 企微、浏览器与移动端</span></div>
+    <div class="layer"><b>编排层</b><span>任务状态机、会议状态机、审批流、定时与规则触发、<i>trace_id</i> 全链路</span></div>
+    <div class="layer"><b>模型层</b><span>路由（任务类型 × SLA × 成本上限）→ 降级链（书生 → 闭源 → 本地）→ 计量与预算闸门</span></div>
+    <div class="layer"><b>工具层</b><span><i>MCP</i> 工具注册表：改价、发券、上下架、发货、退款、投放、发布，白名单 + 参数校验 + 幂等键</span></div>
+    <div class="layer"><b>数据层</b><span><i>Postgres</i>（业务/审批/会议/审计）、<i>Redis</i>（任务状态/限流）、<i>OSS</i>（素材/截图）、<i>pgvector</i>（知识库）</span></div>
+  </div>
+</section>
+
+<section id="list">
+  <div class="sec-h"><span class="no">01</span><h2>功能清单</h2><span class="note">47 项 · 按模块分组 · 优先级 P0 / P1 / P2</span></div>
+
+  <div class="legend">
+    <span class="k"><span class="tag p0">P0</span>跑通闭环必须有</span>
+    <span class="k"><span class="tag p1">P1</span>可交付客户</span>
+    <span class="k"><span class="tag p2">P2</span>规模化再做</span>
+    <span class="k"><span class="tag has">已有</span>原型已实现</span>
+    <span class="k"><span class="tag new">待建</span>需从零开发</span>
+  </div>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>编号</th><th>功能</th><th>优先级</th><th>现状</th><th>一句话说明</th></tr></thead>
+    <tbody>
+      <tr><td class="id">A1</td><td class="name"><b>实时经营 KPI</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag part">部分</span></td><td>订单、GMV、毛利、退款率、在跑任务、待拍板、算力成本一屏可见</td></tr>
+      <tr><td class="id">A2</td><td class="name"><b>沙盘 / 实时双模</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag has">已有</span></td><td>同一套状态机跑真实事件与模拟时钟，策略先沙盘后上店</td></tr>
+      <tr><td class="id">A3</td><td class="name"><b>事件流</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>每个 AI 动作的时间线，可按岗位与任务筛选</td></tr>
+      <tr><td class="id">A4</td><td class="name"><b>经营简报</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>每日定时汇总昨日变化、异常与待办，推送到群</td></tr>
+
+      <tr><td class="id">B1</td><td class="name"><b>AI 员工库</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>岗位、汇报关系、KPI、权限集、模型档位</td></tr>
+      <tr><td class="id">B2</td><td class="name"><b>任务派发</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>手动指派 / 规则触发 / 目标拆解三个入口</td></tr>
+      <tr><td class="id">B3</td><td class="name"><b>执行与日志</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag part">部分</span></td><td>计划 → 工具调用 → 产出，每一步可见、可计价</td></tr>
+      <tr><td class="id">B4</td><td class="name"><b>任务回放</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>按 trace 只读重演，不重复执行副作用</td></tr>
+      <tr><td class="id">B5</td><td class="name"><b>重试与人工接管</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>超时、限流、低置信度进人工队列</td></tr>
+
+      <tr><td class="id">C1</td><td class="name"><b>审批卡</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>方案摘要、影响面、金额、算力成本</td></tr>
+      <tr><td class="id">C2</td><td class="name"><b>决策依据</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>结论 / 数据 / 理由 / 风险 / 回滚 / 出处 六段强制结构</td></tr>
+      <tr><td class="id">C3</td><td class="name"><b>拍板三态</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>通过执行、驳回留偏好、改条件重跑</td></tr>
+      <tr><td class="id">C4</td><td class="name"><b>阈值与复核</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>金额、折扣、预算超阈值自动升级审批</td></tr>
+      <tr><td class="id">C5</td><td class="name"><b>审计日志</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>全量留痕、哈希链防篡改、可导出举证</td></tr>
+
+      <tr><td class="id">D1</td><td class="name"><b>召集与模板</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>4 套模板 + 自建议题，按受影响岗位自动选人</td></tr>
+      <tr><td class="id">D2</td><td class="name"><b>逐条发言</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>按岗位顺序流式输出立场与依据</td></tr>
+      <tr><td class="id">D3</td><td class="name"><b>分歧识别</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>立场冲突自动标红，不让分歧被平均掉</td></tr>
+      <tr><td class="id">D4</td><td class="name"><b>三选项拍板</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>保守 / 折中 / 激进，各带影响与代价</td></tr>
+      <tr><td class="id">D5</td><td class="name"><b>纪要与行动项</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>拍板即生成行动项并派发为任务卡</td></tr>
+      <tr><td class="id">D6</td><td class="name"><b>书面意见 + 现场意见</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag has">已有</span></td><td>未参会只给书面意见；主理人可随时插话纠偏</td></tr>
+      <tr><td class="id">D7</td><td class="name"><b>会议回放与复用</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag part">部分</span></td><td>纪要全量存档，同类议题调上次结论</td></tr>
+
+      <tr><td class="id">E1</td><td class="name"><b>模型路由</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag new">待建</span></td><td>按任务类型、时延要求、成本上限选档位</td></tr>
+      <tr><td class="id">E2</td><td class="name"><b>降级链与熔断</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag new">待建</span></td><td>书生 → 闭源 → 本地，限流自动切</td></tr>
+      <tr><td class="id">E3</td><td class="name"><b>成本计量</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag part">部分</span></td><td>token / 墨点 / 人民币，按任务与岗位归集</td></tr>
+      <tr><td class="id">E4</td><td class="name"><b>Prompt 版本管理</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>版本号、灰度比例、一键回滚</td></tr>
+      <tr><td class="id">E5</td><td class="name"><b>评测集与回归</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>20 条真实任务，换模型前先跑分</td></tr>
+
+      <tr><td class="id">F1</td><td class="name"><b>商品知识库</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>SKU、卖点、资质结构化 + 图文向量检索</td></tr>
+      <tr><td class="id">F2</td><td class="name"><b>SOP 与话术库</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>按岗位挂片段，按需注入不塞满上下文</td></tr>
+      <tr><td class="id">F3</td><td class="name"><b>工单与评价检索</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>同类问题上次怎么处理，一秒调出来</td></tr>
+      <tr><td class="id">F4</td><td class="name"><b>主理人偏好记忆</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>驳回理由、改条件沉淀为偏好条目</td></tr>
+
+      <tr><td class="id">G1</td><td class="name"><b>店铺连接器</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag new">待建</span></td><td>授权、增量同步、限流重试，一店一实例</td></tr>
+      <tr><td class="id">G2</td><td class="name"><b>商品与价格</b></td><td class="pri"><span class="tag p0">P0</span></td><td><span class="tag new">待建</span></td><td>改价、上下架：差异预览 + 快照回滚</td></tr>
+      <tr><td class="id">G3</td><td class="name"><b>营销与投放</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>券、活动、投放计划：预算校验后提交</td></tr>
+      <tr><td class="id">G4</td><td class="name"><b>履约与售后</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>发货、退款、工单，大额强制审批</td></tr>
+      <tr><td class="id">G5</td><td class="name"><b>内容发布</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>脚本、图文、排期发布、数据回收</td></tr>
+
+      <tr><td class="id">H1</td><td class="name"><b>资质与类目校验</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>上架前校验资质，缺件直接拦</td></tr>
+      <tr><td class="id">H2</td><td class="name"><b>话术与素材合规</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>极限词、功效宣称双保险拦截</td></tr>
+      <tr><td class="id">H3</td><td class="name"><b>数据权限与脱敏</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>字段级权限，手机号地址默认脱敏</td></tr>
+      <tr><td class="id">H4</td><td class="name"><b>高危操作二次确认</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>超阈值动作必须主理人再点一次</td></tr>
+
+      <tr><td class="id">I1</td><td class="name"><b>飞书 / 企微卡片</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>审批与纪要在群里直接通过或驳回</td></tr>
+      <tr><td class="id">I2</td><td class="name"><b>移动端审批与会议</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag has">已有</span></td><td>390px 下会议与审批可用</td></tr>
+      <tr><td class="id">I3</td><td class="name"><b>异常告警</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>退款突增、ROI 跌破、差评词激增</td></tr>
+      <tr><td class="id">I4</td><td class="name"><b>客户端更新与版本校验</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>差分更新、灰度、签名校验、强制最低版本</td></tr>
+
+      <tr><td class="id">J1</td><td class="name"><b>多店多租户</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>租户贯穿全表，一店一套员工与预算</td></tr>
+      <tr><td class="id">J2</td><td class="name"><b>权限与角色</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>主理人 / 运营 / 只读三档</td></tr>
+      <tr><td class="id">J3</td><td class="name"><b>观测与告警</b></td><td class="pri"><span class="tag p1">P1</span></td><td><span class="tag new">待建</span></td><td>trace、任务成功率、会议可用性 SLO</td></tr>
+      <tr><td class="id">J4</td><td class="name"><b>备份与导出</b></td><td class="pri"><span class="tag p2">P2</span></td><td><span class="tag new">待建</span></td><td>每日快照、审计导出、停用数据清除</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="sec-h"><span class="no">02</span><h2>功能开发方案</h2><span class="note">每项：怎么实现 / 预估效果</span></div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>A · 经营驾驶舱</h3><span class="bar"></span><span class="cnt">4 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>A1 实时 KPI</b></td><td class="how">订单、退款、广告三类事件写入 <code>Postgres</code>，按 5 分钟窗口做物化视图；前端用 <code>SSE</code> 增量推送，不轮询。指标口径集中在 <code>metrics</code> 配置表，看板与 AI 读同一份定义，避免「前台价后台价打架」。原型已有静态卡片，需接真实数据源。</td><td class="effect">主理人打开即见当日经营，不必等日报；AI 结论与看板数字同源，减少「数据对不对」的扯皮。</td></tr>
+        <tr><td class="name"><b>A2 沙盘 / 实时双模</b></td><td class="how">时间源抽象成 <code>Clock</code> 接口：实时模式取系统时间，沙盘取模拟时钟（原型里的倍速即沙盘）。同一套任务与会议状态机，切换模式只换时钟与连接器。</td><td class="effect">新策略先在沙盘跑一遍再上真店；演示与生产共用一套代码，不会出现「演示很顺、上线不通」。</td></tr>
+        <tr><td class="name"><b>A3 事件流</b></td><td class="how">所有 AI 动作写 append-only 的 <code>events</code> 表（who / action / target / cost / trace_id），前端按时间线渲染，支持按岗位、任务、时间筛选。原型已有前端，需补落库。</td><td class="effect">任何一个结论都能回答「谁、什么时候、基于什么数据做的」，复盘和追责有据。</td></tr>
+        <tr><td class="name"><b>A4 经营简报</b></td><td class="how">每日定时任务汇总 KPI 环比、异常事件、待办，走模型生成 300 字简报，经飞书卡片推送；生成失败降级为模板化文本。</td><td class="effect">晨会前 3 分钟读完昨日经营，主理人不用自己翻看板。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>B · AI 员工与任务</h3><span class="bar"></span><span class="cnt">5 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>B1 AI 员工库</b></td><td class="how"><code>agents</code> 表存岗位、汇报关系、KPI、权限集、模型档位、SOP 引用；模型档位只是字符串键，由路由层解释。新增岗位＝插一条配置，不改代码。</td><td class="effect">扩编从「改代码」变成「改配置」，一家店 12～15 个 AI 员工可随业务增减。</td></tr>
+        <tr><td class="name"><b>B2 任务派发</b></td><td class="how">三个入口统一进 <code>tasks</code> 表：手动指派、规则触发（如退款率 &gt; 5%、库存 &lt; 7 天）、目标拆解（CEO 幕僚把季度目标拆成子任务）。每条带幂等键，重复触发不重复建单。</td><td class="effect">「该做但没人提」的事由规则兜住；同一件事不会因为重试被干两遍。</td></tr>
+        <tr><td class="name"><b>B3 执行与日志</b></td><td class="how">任务是有状态机（<code>plan → act → check → done</code>），每步落 <code>steps</code> 记录与 token 成本；工具调用统一走 MCP 注册表，白名单 + 参数 Schema 校验，越权直接拒。原型是脚本模拟，需换成真实编排。</td><td class="effect">AI 干活过程可见，出错能定位到具体哪一步、哪次调用，而不是「它就是不太对」。</td></tr>
+        <tr><td class="name"><b>B4 任务回放</b></td><td class="how">按 <code>trace_id</code> 读取 steps 只读重演，工具调用回放为「假执行」，只展示当时入参与返回，不产生副作用。</td><td class="effect">复盘不靠回忆；争议时能当场放一遍「当时是怎么做的」。</td></tr>
+        <tr><td class="name"><b>B5 重试与接管</b></td><td class="how">超时、429、置信度低于阈值 → 进 <code>human_queue</code>；支持一键重跑、换模型重跑、转人工执行。重试用指数退避 + 降级链，重试次数上限写死在配置里。</td><td class="effect">限流或模型抖动不会让任务凭空消失，主理人只需要处理「确实需要人」的那一小撮。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>C · 审批与决策</h3><span class="bar"></span><span class="cnt">5 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>C1 审批卡</b></td><td class="how"><code>approvals</code> 表存方案摘要、影响面（订单/毛利/库存）、涉及金额、算力成本、附件；卡片按风险分级配色，高风险置顶。</td><td class="effect">主理人 10 秒判断「要不要点开」，不被低价值审批淹没。</td></tr>
+        <tr><td class="name"><b>C2 决策依据</b></td><td class="how">强制六段结构：结论 / 指标 / 理由 / 风险 / 回滚 / 出处，用 JSON Schema 校验，缺字段直接打回重生成（最多两次，仍不合格转人工）。</td><td class="effect">杜绝「AI 说可以」式空口建议，每条建议都必须能指出数据来源与回滚路径。</td></tr>
+        <tr><td class="name"><b>C3 拍板三态</b></td><td class="how">通过 → 调工具执行；驳回 → 理由写入偏好记忆并关闭任务；改条件 → 带新约束重跑方案，生成新版本而不是覆盖旧的。</td><td class="effect">一次交互完成「同意 / 不同意 / 改一版」，且每次改动的版本可追溯。</td></tr>
+        <tr><td class="name"><b>C4 阈值与复核</b></td><td class="how">规则引擎判断金额、折扣幅度、预算占比、退款笔数；超阈值自动升级为双人复核或仅主理人可批。阈值按岗位与店铺配置。</td><td class="effect">AI 不会自己把价格打到亏本；越权动作在提交前就被拦住，而不是事后补救。</td></tr>
+        <tr><td class="name"><b>C5 审计日志</b></td><td class="how">审批、执行、模型调用全量写入审计表，记录前一条哈希形成链式校验；支持按时间与主体导出 CSV/PDF。</td><td class="effect">对内可交代、对外可举证；数据被改动能被发现。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>D · 会议</h3><span class="bar"></span><span class="cnt">7 项 · 原型已全部跑通</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>D1 召集与模板</b></td><td class="how">4 套模板（促销、退款政策、上新、自定义）存为议题数组；参会人默认按「谁受影响谁到场」推导，可手动增删，未参会者进书面意见通道。</td><td class="effect">开会前不用想该叫谁，也不会漏掉真正会被影响执行的岗位。</td></tr>
+        <tr><td class="name"><b>D2 逐条发言</b></td><td class="how">会议状态机 <code>setup → run → done</code>，发言按岗位顺序串行输出，每条带 <code>S.now</code> 时间戳与岗位立场；前端流式渲染，可倍速。</td><td class="effect">像真开会一样有先后与语气差异，能听出谁在担心什么。</td></tr>
+        <tr><td class="name"><b>D3 分歧识别</b></td><td class="how">发言结束后跑一次立场比对（规则 + 轻量模型），把「同一议题上结论相反的两方」配对成分歧块，附各自理由。</td><td class="effect">分歧被显式摆到桌面上，而不是被平均成一段四平八稳的废话。</td></tr>
+        <tr><td class="name"><b>D4 三选项拍板</b></td><td class="how">由分歧生成保守 / 折中 / 激进三案，每案写清影响、代价、谁执行；点选后写入决议并锁定，不可再改（要改就再开一次会）。</td><td class="effect">讨论能收敛成选项，决策从「再研究研究」变成「选一个」。</td></tr>
+        <tr><td class="name"><b>D5 纪要与行动项</b></td><td class="how">拍板 → 自动生成行动项（负责人、期限、风险等级）→ 派发为审批中心的真实任务卡，带本次会议的依据快照。</td><td class="effect">会开完就有活，不用再写纪要追人；行动项与决策绑定，不会走样。</td></tr>
+        <tr><td class="name"><b>D6 书面意见 + 现场意见</b></td><td class="how">未参会 AI 只产出书面意见、不参与表决；主理人会议中输入框可随时插话，AI 按关键词匹配相关岗位当场回应，意见写入纪要并进入审批依据。</td><td class="effect">会不因缺人而失真；主理人可随时纠偏，而不是等会后才推翻。</td></tr>
+        <tr><td class="name"><b>D7 会议回放与复用</b></td><td class="how">纪要与全部发言按议题打标签存档，检索时可按议题、商品、时间召回上次结论与当时的依据。</td><td class="effect">同类议题第二次开会直接从上次的结论开始，不重复吵一遍。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>E · 模型底座</h3><span class="bar"></span><span class="cnt">5 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>E1 模型路由</b></td><td class="how">路由键 = 任务类型 × 时延要求 × 成本上限。视觉与长文档、长程推理走书生（端砚 <code>/v1</code>，OpenAI 协议）；高频对话走主力闭源；短分类、话术改写走本地小模型。档位写在员工配置里，可按任务覆盖。</td><td class="effect">同样的活按性价比分配，视觉与长上下文用对模型，高频短调用不为大模型付溢价。</td></tr>
+        <tr><td class="name"><b>E2 降级链与熔断</b></td><td class="how">主 → 备 → 本地三级；429、超时、5xx 自动切换，失败计数触发 60 秒熔断；会议场景降级为「少发言但不断会」，不会卡在等模型返回。</td><td class="effect">单家模型故障不影响开会与跑任务，最坏情况是输出变糙而不是停摆。</td></tr>
+        <tr><td class="name"><b>E3 成本计量</b></td><td class="how">每次调用记 token、模型单价、折人民币与墨点，按任务 / 岗位 / 店铺归集；预算闸门到顶自动降档或暂停，超额提醒主理人。</td><td class="effect">算力成本变成可管理的经营科目，而不是月底才发现的账单。</td></tr>
+        <tr><td class="name"><b>E4 Prompt 版本管理</b></td><td class="how">Prompt 即配置：版本号 + 变更记录 + 灰度比例 + 一键回滚；每个版本绑定评测结果，未过评测不允许全量。</td><td class="effect">改 Prompt 不再是玄学，效果不好能立刻退回上一版。</td></tr>
+        <tr><td class="name"><b>E5 评测集与回归</b></td><td class="how">固定 20 条真实任务（选品分析、差评归因、主图审核、会议发言等），每次换模型或改 Prompt 跑四项指标：JSON 合规率、工具调用成功率、P95 延迟、单任务成本。</td><td class="effect">换模型有据可依；也顺带成为「书生能否升为主力档」的验收依据。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>F · 知识与记忆</h3><span class="bar"></span><span class="cnt">4 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>F1 商品知识库</b></td><td class="how">SKU、卖点、参数、资质结构化入库；图文向量存 <code>pgvector</code>，检索时带店铺与角色权限过滤，避免串店泄密。</td><td class="effect">AI 谈商品不再编参数；主图与详情页审核有可比对的「官方卖点」。</td></tr>
+        <tr><td class="name"><b>F2 SOP 与话术库</b></td><td class="how">SOP 按岗位切成片段（退款话术、差评回复、上新检查单），任务开始时按需注入 2～3 段，而不是整本塞进上下文。</td><td class="effect">输出更贴店内实际做法，同时把上下文成本压住。</td></tr>
+        <tr><td class="name"><b>F3 工单与评价检索</b></td><td class="how">历史工单与评价按店铺、品类、问题类型建索引，支持「同类问题上次怎么处理、结果如何」的相似检索。</td><td class="effect">客服与评价 AI 的回答有先例可依，减少反复试错。</td></tr>
+        <tr><td class="name"><b>F4 主理人偏好记忆</b></td><td class="how">驳回理由、改条件、会议现场意见沉淀为偏好条目（如「不接受低于 30% 毛利」「大促前不压库存」），生成方案时自动带上并在依据中注明。</td><td class="effect">越用越像懂你的下属，重复纠正同一件事的次数明显下降。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>G · 工具与执行</h3><span class="bar"></span><span class="cnt">5 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>G1 店铺连接器</b></td><td class="how">OAuth 授权 + 增量同步（订单、商品、退款、广告），限流按平台配额分配令牌桶，失败进重试队列；每家店一个连接实例，互不影响。</td><td class="effect">多店并行不会互相拖垮；平台限流变成排队而不是报错。</td></tr>
+        <tr><td class="name"><b>G2 商品与价格</b></td><td class="how">改价与上下架走统一工具：先出差异预览（原价 → 新价、影响 SKU 数、预计毛利变化），确认后提交，提交前存快照支持一键回滚；幂等键防重复提交。</td><td class="effect">改价不出错、可回滚；价格事故从「发现了再救」变成「点之前就知道后果」。</td></tr>
+        <tr><td class="name"><b>G3 营销与投放</b></td><td class="how">券、活动、投放计划先生成方案 → 预算校验 → 提交平台 → 定时回收效果数据 → 写回任务复盘。超预算直接走审批流。</td><td class="effect">投放有闭环，不是「投完就忘」；预算超支在提交前被拦住。</td></tr>
+        <tr><td class="name"><b>G4 履约与售后</b></td><td class="how">发货、退款、售后工单接入工具层；大额退款、批量补偿强制走审批，执行结果回写订单状态。</td><td class="effect">售后响应从小时级到分钟级，同时保留人工闸门防误伤。</td></tr>
+        <tr><td class="name"><b>G5 内容发布</b></td><td class="how">脚本 / 图文生成 → 合规检查 → 排期发布 → 数据回收；发布前需通过 H2 的合规校验。</td><td class="effect">内容产能从「人天」压到「分钟」，且不会因极限词被下架。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>H · 合规与风控</h3><span class="bar"></span><span class="cnt">4 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>H1 资质与类目校验</b></td><td class="how">类目—资质规则表（食品、美妆、3C 等），上架前校验证照有效期与经营范围，缺件直接拦截并生成待办。</td><td class="effect">避免上架后被平台下架、扣分，损失前置拦截。</td></tr>
+        <tr><td class="name"><b>H2 话术与素材合规</b></td><td class="how">极限词、功效宣称、医疗暗示词库做第一道规则拦截，模型复核做第二道；命中即改稿并记录命中词。</td><td class="effect">合规问题在发布前解决，而不是等投诉或处罚。</td></tr>
+        <tr><td class="name"><b>H3 数据权限与脱敏</b></td><td class="how">字段级权限控制，手机号、地址、身份证默认脱敏；AI 只读脱敏视图，需要明文时走单独授权并留痕。</td><td class="effect">客户数据不因「给 AI 看一眼」而扩散，满足最小必要原则。</td></tr>
+        <tr><td class="name"><b>H4 高危操作二次确认</b></td><td class="how">金额、影响 SKU 数、预算占比超阈值的动作，必须主理人二次确认（可配置为双人），确认记录进审计链。</td><td class="effect">把「AI 手滑」的后果限制在可承受范围内。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>I · 协作与触达</h3><span class="bar"></span><span class="cnt">4 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>I1 飞书 / 企微卡片</b></td><td class="how">审批卡与纪要渲染成互动卡片推送到群，卡片内直接通过 / 驳回 / 改条件，回调写回审批状态。</td><td class="effect">主理人不用登录后台也能拍板，决策不再卡在「等我回电脑」。</td></tr>
+        <tr><td class="name"><b>I2 移动端审批与会议</b></td><td class="how">响应式布局 + 移动专用视图，会议输入框吸底、消息自动滚动到最新（原型已在 390px 验证）。</td><td class="effect">路上也能开会拍板，会议不必凑时间。</td></tr>
+        <tr><td class="name"><b>I3 异常告警</b></td><td class="how">阈值规则（退款突增、ROI 跌破、差评词激增）+ 简单异常检测，命中即推送并自动开一个「排查任务」给对应岗位。</td><td class="effect">异常从「月底发现」变成「当天发现、当天有人管」。</td></tr>
+        <tr><td class="name"><b>I4 客户端更新与版本校验</b></td><td class="how"><code>electron-updater</code> 定时拉版本清单（签名后的 <code>latest.yml</code> + 差分包），先校验签名与 <code>sha512</code> 再安装；主进程在空闲时提示，会议或任务执行中不打断，支持「稍后提醒 / 跳过此版本」；客户端版本低于强制最低版本时进入只读，可看不可写。</td><td class="effect">改版从重下整包变成几 MB 差量；旧版本不会长期带着已知缺陷在线跑，也不会在开会中途被迫重启。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><h3>J · 平台工程</h3><span class="bar"></span><span class="cnt">4 项</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>功能</th><th>怎么实现</th><th>预估效果</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><b>J1 多店多租户</b></td><td class="how"><code>tenant_id</code> 贯穿全表 + 行级安全策略；员工、预算、知识库按租户隔离，跨店汇总走只读视图。</td><td class="effect">从「一家店一套系统」变成「一套系统管多家店」。</td></tr>
+        <tr><td class="name"><b>J2 权限与角色</b></td><td class="how">主理人 / 运营 / 只读三档，叠加岗位权限集；敏感操作按角色 + 阈值双重判断。</td><td class="effect">团队协作时不越权，外包与实习账号可安全受限。</td></tr>
+        <tr><td class="name"><b>J3 观测与告警</b></td><td class="how">OpenTelemetry 采集调用链与指标；SLO 盯任务成功率、会议可用性、模型 P95 延迟，连续不达标自动降级并告警。</td><td class="effect">问题在用户抱怨之前被发现，故障定位从「猜」变成「看」。</td></tr>
+        <tr><td class="name"><b>J4 备份与导出</b></td><td class="how">每日全量快照 + 增量 WAL；审计与会议纪支持导出；租户停用时按约定清除个人数据。</td><td class="effect">满足交付与合规要求，客户数据可带走、可删净。</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="sec-h"><span class="no">03</span><h2>技术选型</h2><span class="note">一套主语言 + 三个自托管中间件</span></div>
+
+  <p class="tech-note" style="margin:0 0 14px"><b>总原则：</b>不为 47 项功能搭微服务。后端只留一门语言（Python），把不确定性收在三个自托管中间件里——<b>LiteLLM</b> 管模型、<b>Langfuse</b> 管 Prompt 与评测、<b>Temporal</b> 管长任务。剩下的都是业务代码。</p>
+
+  <div class="tw"><table class="tsel">
+    <thead><tr><th>层</th><th>选型</th><th>为什么是它</th></tr></thead>
+    <tbody>
+      <tr><td class="name"><b>前端</b></td><td class="how"><code>React 19</code> + <code>Vite</code> + TypeScript，由 <code>Electron</code> 装载；弹层与焦点管理用 Radix</td><td class="effect">同一套页面既跑在桌面客户端里，也能在浏览器中调试；不引 UI 框架，避免把「纸面 + 印章红」的视觉冲掉</td></tr>
+      <tr><td class="name"><b>桌面客户端</b></td><td class="how"><code>Electron</code>（主进程 + preload + 渲染进程）；<code>electron-builder</code> 打包，<code>electron-updater</code> 差分更新</td><td class="effect">Mac / Windows 各一份安装包，能拿系统通知、托盘常驻、本地文件导入；更新只推差量，不重装</td></tr>
+      <tr><td class="name"><b>状态与实时</b></td><td class="how">TanStack Query + Zustand；会议与任务流用 <code>SSE</code></td><td class="effect">发言是单向流，SSE 断线自动重连、过反代不用改配置，比 WebSocket 省事</td></tr>
+      <tr><td class="name"><b>后端</b></td><td class="how"><code>Python 3.12</code> + <code>FastAPI</code> + Pydantic v2</td><td class="effect">智能体生态最全；Pydantic 直接当 JSON Schema，落 C2 的六段校验与工具参数校验</td></tr>
+      <tr><td class="name"><b>长任务与状态机</b></td><td class="how"><code>Temporal</code>（起步可先用 Celery + Postgres outbox）</td><td class="effect">审批等两天、会议跨多次调用，这是持久化工作流问题，不是队列问题；重试、超时、补偿开箱即用</td></tr>
+      <tr><td class="name"><b>智能体编排</b></td><td class="how"><code>LangGraph</code></td><td class="effect">任务 plan→act→check 与会议发言顺序本质是有环图，比自己写 while 循环可控、可回放</td></tr>
+      <tr><td class="name"><b>模型网关</b></td><td class="how"><code>LiteLLM Proxy</code> 自托管</td><td class="effect">一次覆盖 E1/E2/E3：OpenAI 协议统一、fallback 链、预算上限、按 key 记账；书生端砚本就是 OpenAI 协议，改 base_url 即接入</td></tr>
+      <tr><td class="name"><b>Prompt / 追踪 / 评测</b></td><td class="how"><code>Langfuse</code> 自托管</td><td class="effect">E4/E5 与 B4 回放一起解决：版本、灰度、trace、数据集跑分都是现成的，不用自造</td></tr>
+      <tr><td class="name"><b>结构化输出</b></td><td class="how">Pydantic + <code>instructor</code>，失败按 Schema 错误重试两次</td><td class="effect">审批依据、工具参数、会议决议都强制走结构，杜绝模型自由发挥</td></tr>
+      <tr><td class="name"><b>知识库</b></td><td class="how"><code>pgvector</code> + <code>bge-m3</code>（TEI 部署）</td><td class="effect">一个库同时解决结构化与向量，少一个中间件；中文检索够用</td></tr>
+      <tr><td class="name"><b>主库</b></td><td class="how"><code>Postgres 16</code>：事件表按月分区、行级安全做多租户</td><td class="effect">业务、审批、会议、审计一处存放；J1 多租户不用另建库</td></tr>
+      <tr><td class="name"><b>缓存 / 限流 / 事件</b></td><td class="how"><code>Redis 7</code>（Streams 做事件总线、令牌桶做限流、Pub/Sub 做 SSE 扇出）</td><td class="effect">三件事一个组件解决；店铺平台限流排队而不是报错</td></tr>
+      <tr><td class="name"><b>工具层</b></td><td class="how"><code>MCP</code> Python SDK + 自研注册表（白名单、参数 Schema、幂等键）</td><td class="effect">G2–G5 的改价、发券、发货、发布统一收口，越权在调用前被拒</td></tr>
+      <tr><td class="name"><b>文件</b></td><td class="how">对象存储 <code>OSS / S3</code></td><td class="effect">主图、详情页、直播抽帧、审计快照</td></tr>
+      <tr><td class="name"><b>观测</b></td><td class="how">OpenTelemetry + Grafana（或 Sentry）</td><td class="effect">J3 的 SLO 与告警；问题在客户抱怨前被发现</td></tr>
+      <tr><td class="name"><b>部署</b></td><td class="how">Docker Compose 起步 → 阿里云 ACK</td><td class="effect">先单机跑通，别一上来就 K8s；容器化保证从沙盘到生产同一套镜像</td></tr>
+      <tr><td class="name"><b>测试</b></td><td class="how">Vitest + <code>Playwright</code>（用 <code>_electron</code> 直接拉起客户端调试）</td><td class="effect">会议全链路（召集→发言→拍板→派发）端到端自动化，现在还是手工验的</td></tr>
+      <tr><td class="name"><b>代码组织</b></td><td class="how"><code>uv</code> workspace（后端）+ pnpm workspace（前端），单仓多包</td><td class="effect">Prompt、工具、Schema 能跨服务共享，不出现两份定义</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="font-size:17px;font-weight:900;margin:28px 0 4px">交付形态：Electron 桌面端</h3>
+  <p class="tech-note" style="margin:0 0 12px">主形态是安装包，Mac 与 Windows 各一份；包里装的就是同一套 React 页面。浏览器只用于调试与临时访问，不做第二套界面。</p>
+  <div class="tw"><table class="tdel">
+    <thead><tr><th>部件</th><th>职责</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td class="name"><b>主进程（Node）</b></td><td class="how">窗口与托盘、系统通知、开机自启、自动更新、深链、本地文件读写（导入评价报表 / 商品表格）</td><td class="effect">不放任何模型调用与 API Key；所有业务请求都走服务端</td></tr>
+      <tr><td class="name"><b>渲染进程</b></td><td class="how">就是现有 React 页面：HTTPS 调 API，SSE 收会议发言与任务进度</td><td class="effect">开 <code>contextIsolation</code>、关 <code>nodeIntegration</code>，CSP 收紧到只允许自家域名</td></tr>
+      <tr><td class="name"><b>preload</b></td><td class="how"><code>contextBridge</code> 暴露白名单能力：通知、选文件、版本号、更新检查</td><td class="effect">只暴露方法，不暴露 <code>ipcRenderer</code> 本体，避免渲染层拿到全量 Node 能力</td></tr>
+      <tr><td class="name"><b>发布链路</b></td><td class="how">electron-builder 打包 → Mac 公证 / Windows 代码签名 → 上传对象存储与版本清单 → 客户端差分更新 + 灰度</td><td class="effect">首装约 100MB，后续差量几 MB；保留手动「检查更新」与强制最低版本</td></tr>
+      <tr><td class="name"><b>后端不变</b></td><td class="how">Python + FastAPI 仍在云上，客户端只是壳；移动端继续走飞书卡片与响应式页面</td><td class="effect">换客户端不影响服务端；密钥只在服务端，客户端只持短时 token</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="font-size:17px;font-weight:900;margin:28px 0 4px">部署拓扑</h3>
+  <p class="tech-note" style="margin:0 0 12px">蓝色为自托管（VPC 内），黄色为云服务，虚线框为第三方系统。实线是同步调用，虚线是异步、回调或旁路采集。</p>
+
+  <p class="tech-note topo-hint">左右滑动查看完整拓扑</p>
+  <div class="topo">
+  <svg viewBox="0 0 1180 452" role="img" aria-label="AI 电商公司平台部署拓扑图">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+      </marker>
+    </defs>
+
+    <!-- 第一排：入口 → 网关 → 应用 → 模型网关 → 模型档位 -->
+    <rect class="box" x="20" y="60" width="180" height="112" rx="9"/>
+    <text class="t1" x="36" y="84">用户与入口</text>
+    <text class="t2" x="36" y="107">Electron · Mac / Windows</text>
+    <text class="t2" x="36" y="127">浏览器 · 调试用</text>
+    <text class="t2" x="36" y="147">飞书 / 企微 · 移动端</text>
+
+    <rect class="self" x="236" y="60" width="170" height="112" rx="9"/>
+    <text class="t1" x="252" y="84">Caddy</text>
+    <text class="t2" x="252" y="107">TLS · 静态资源</text>
+    <text class="t2" x="252" y="127">/api 反代 · SSE</text>
+    <text class="t2" x="252" y="147">JWT 鉴权 · RBAC</text>
+
+    <rect class="self" x="442" y="60" width="230" height="112" rx="9"/>
+    <text class="t1" x="458" y="84">API · FastAPI</text>
+    <text class="t2" x="458" y="107">会议 / 审批 / 任务 / 工具</text>
+    <text class="t2" x="458" y="127">Worker · Temporal 长任务</text>
+    <text class="t2" x="458" y="147">无状态，可水平扩容</text>
+
+    <rect class="self" x="708" y="60" width="180" height="112" rx="9"/>
+    <text class="t1" x="724" y="84">LiteLLM Proxy</text>
+    <text class="t2" x="724" y="107">OpenAI 协议统一</text>
+    <text class="t2" x="724" y="127">路由 · 降级 · 预算</text>
+    <text class="t2" x="724" y="147">按任务 / 岗位记账</text>
+
+    <rect class="box" x="924" y="60" width="236" height="112" rx="9"/>
+    <text class="t1" x="940" y="84">模型档位</text>
+    <text class="t2" x="940" y="107">书生端砚 · S2 / InternVL</text>
+    <text class="t2" x="940" y="127">闭源主力 · 高频对话</text>
+    <text class="t2" x="940" y="147">本地 vLLM · 35B / bge-m3</text>
+
+    <line x1="202" y1="116" x2="232" y2="116" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#ar)"/>
+    <line x1="408" y1="116" x2="438" y2="116" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#ar)"/>
+    <line x1="674" y1="116" x2="704" y2="116" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#ar)"/>
+    <line x1="890" y1="116" x2="920" y2="116" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#ar)"/>
+
+    <!-- 第二排：第三方 / 中间件 / 观测 -->
+    <rect class="third" x="20" y="310" width="300" height="120" rx="9"/>
+    <text class="t1" x="36" y="334">第三方系统</text>
+    <text class="t2" x="36" y="357">店铺开放平台（OAuth 授权）</text>
+    <text class="t3" x="36" y="375">淘宝 · 抖店 · 拼多多 · Shopify</text>
+    <text class="t2" x="36" y="398">飞书开放平台 · 卡片回调</text>
+
+    <text class="gl" x="376" y="304">中间件（自托管）</text>
+
+    <rect class="self" x="376" y="316" width="113" height="104" rx="8"/>
+    <text class="t1" x="387" y="339">Postgres 16</text>
+    <text class="t2" x="387" y="359">+ pgvector</text>
+    <text class="t3" x="387" y="377">业务 · 审批</text>
+    <text class="t3" x="387" y="392">会议 · 审计</text>
+
+    <rect class="self" x="501" y="316" width="113" height="104" rx="8"/>
+    <text class="t1" x="512" y="339">Redis 7</text>
+    <text class="t2" x="512" y="359">Streams · 限流</text>
+    <text class="t3" x="512" y="377">事件总线</text>
+    <text class="t3" x="512" y="392">SSE 扇出</text>
+
+    <rect class="cloud" x="626" y="316" width="113" height="104" rx="8"/>
+    <text class="t1" x="637" y="339">对象存储</text>
+    <text class="t2" x="637" y="359">OSS / S3</text>
+    <text class="t3" x="637" y="377">主图 · 详情</text>
+    <text class="t3" x="637" y="392">快照 · 更新包</text>
+
+    <rect class="self" x="751" y="316" width="113" height="104" rx="8"/>
+    <text class="t1" x="762" y="339">Temporal</text>
+    <text class="t2" x="762" y="359">长任务编排</text>
+    <text class="t3" x="762" y="377">重试 · 补偿</text>
+    <text class="t3" x="762" y="392">审批等待</text>
+
+    <rect class="self" x="900" y="310" width="260" height="120" rx="9"/>
+    <text class="t1" x="916" y="334">Langfuse（自托管）</text>
+    <text class="t2" x="916" y="357">trace · 任务与会议回放</text>
+    <text class="t2" x="916" y="377">Prompt 版本 · 灰度</text>
+    <text class="t2" x="916" y="397">评测集 · 回归跑分</text>
+
+    <!-- 连线 -->
+    <line x1="560" y1="174" x2="560" y2="312" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#ar)"/>
+    <text class="lbl" x="570" y="238">读写 · 事件</text>
+
+    <line x1="470" y1="174" x2="176" y2="306" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+    <text class="lbl" x="238" y="252">OAuth · 拉取 / 推送</text>
+
+    <line x1="798" y1="174" x2="1004" y2="306" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+    <text class="lbl" x="826" y="262">trace / 评分</text>
+  </svg>
+  </div>
+
+  <div class="topo-legend">
+    <span class="k"><em></em>自托管（VPC 内）</span>
+    <span class="k"><em class="cloud"></em>云服务</span>
+    <span class="k"><em class="third"></em>第三方系统</span>
+    <span class="k"><em class="line"></em>同步调用</span>
+    <span class="k"><em class="line dash"></em>异步 / 回调 / 旁路</span>
+  </div>
+
+  <p class="tech-note">扩容口径：API 与 Worker 共用同一镜像，按队列长度水平扩；Postgres 主从 + 每日快照；Redis 单主起步，会话与限流同源。自托管组件全部落在一台 4C8G 即可验证，跑顺后再上 ACK。</p>
+
+  <h3 style="font-size:17px;font-weight:900;margin:28px 0 10px">四个取舍</h3>
+  <div class="risks">
+    <div class="risk"><b>不自研模型路由</b><p>LiteLLM 已经把 failover、预算、成本归集做完了。<em>自研等于重写一遍，还更容易错。</em>我们只维护一张「任务类型 → 档位」的策略表。</p></div>
+    <div class="risk"><b>不引第二门语言</b><p>连接器、定时任务、审批回调都放同一个服务，按模块分目录，不做微服务。<em>等单店 QPS 真撑不住再拆。</em></p></div>
+    <div class="risk"><b>前端不套现成 UI 库</b><p>Ant Design 会把原型的视觉冲掉，且定制成本高于自写。<em>基础交互用 Radix，样式全部自己写。</em></p></div>
+    <div class="risk"><b>接受 Electron 的分发成本</b><p>换来系统通知、托盘常驻与本地文件能力。代价是 <em>Mac 公证、Windows 签名、更新通道</em> 三件需要长期维护的事，不能当成「打完包就完」。</p></div>
+  </div>
+
+  <h3 style="font-size:17px;font-weight:900;margin:28px 0 10px">从原型到产品</h3>
+  <div class="tw"><table class="tmig">
+    <thead><tr><th>步骤</th><th>做什么</th><th>产出</th></tr></thead>
+    <tbody>
+      <tr><td class="name"><b>一 · 抽令牌</b></td><td class="how">把原型 <code>:root</code> 的 CSS 变量与组件样式抽成 <code>packages/ui</code>，页面按路由拆成 React 组件</td><td class="effect">视觉一比一，后续改一处全局生效</td></tr>
+      <tr><td class="name"><b>二 · 换假肢</b></td><td class="how">保留模拟引擎（时钟、队列、倍速）作为 <code>mock adapter</code>，接口签名与真实连接器一致</td><td class="effect">没有真实店铺也能演示与演示测试</td></tr>
+      <tr><td class="name"><b>三 · 接真源</b></td><td class="how">按 G1 接第一个平台的授权与增量同步，先只读；写操作（改价）走 G2 的预览 + 快照</td><td class="effect">只读先跑两周，再放开第一个写动作</td></tr>
+      <tr><td class="name"><b>四 · 打包分发</b></td><td class="how">套 Electron 壳（主进程 + preload 白名单），electron-builder 出 Mac / Windows 包，接 electron-updater 与对象存储上的版本清单</td><td class="effect">双击可用的安装包；后续改版走差分更新，不用重下整包</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="phase">
+  <div class="sec-h"><span class="no">04</span><h2>开发阶段与依赖</h2><span class="note">按依赖排序，不按时间排</span></div>
+  <div class="phases">
+    <div class="phase">
+      <div class="ph"><b>P0</b><h4>跑通闭环</h4></div>
+      <p>目标：从「发现异常」到「拍板执行」全链路可用，能在一家真实店铺跑起来。</p>
+      <ul>
+        <li>A1 实时 KPI、A3 事件流</li>
+        <li>B1 员工库、B2 派发、B3 执行</li>
+        <li>C1 审批卡、C2 依据、C3 三态</li>
+        <li>D1–D6 会议全链路（已完成）</li>
+        <li>E1 路由、E2 降级、E3 计量</li>
+        <li>G1 连接器、G2 改价</li>
+      </ul>
+      <div class="dep">前置：店铺开放平台授权、模型 Key 与预算闸门。验收：一周内至少 10 次真实拍板、0 次越权执行。</div>
+    </div>
+    <div class="phase">
+      <div class="ph"><b>P1</b><h4>可交付客户</h4></div>
+      <p>目标：第二家店能低成本复制，合规与审计能过客户的法务。</p>
+      <ul>
+        <li>A4 简报、B4 回放、B5 接管</li>
+        <li>C4 阈值复核、C5 审计</li>
+        <li>E4 Prompt 管理、E5 评测</li>
+        <li>F1 商品库、F2 SOP</li>
+        <li>G3 营销、G4 履约</li>
+        <li>H1–H4 合规四项</li>
+        <li>I1 飞书卡片、I4 客户端更新、J2 权限、J3 观测</li>
+      </ul>
+      <div class="dep">前置：P0 稳定运行、有真实数据沉淀。验收：新店接入以配置为主，审计可导出并核对。</div>
+    </div>
+    <div class="phase">
+      <div class="ph"><b>P2</b><h4>规模化</h4></div>
+      <p>目标：多店多租户、越用越懂你、异常自发现。</p>
+      <ul>
+        <li>D7 会议复用、F3 工单检索、F4 偏好记忆</li>
+        <li>G5 内容发布</li>
+        <li>I2 移动端、I3 异常告警</li>
+        <li>J1 多租户、J4 备份导出</li>
+      </ul>
+      <div class="dep">前置：P1 的评测集与审计已就位，否则规模化会把错误一起放大。</div>
+    </div>
+  </div>
+</section>
+
+<section id="metric">
+  <div class="sec-h"><span class="no">05</span><h2>验收指标</h2><span class="note">只留能被数字回答的</span></div>
+  <div class="tw"><table>
+    <thead><tr><th>指标</th><th>定义</th><th>看什么</th><th>目标方向</th></tr></thead>
+    <tbody>
+      <tr><td class="name"><b>人均可控 GMV</b></td><td class="how">店铺 GMV ÷ 人类员工数（含主理人）</td><td class="effect">平台是否真的替代了岗位，而不是把活转给另一个人</td><td>随 AI 员工增加而上升</td></tr>
+      <tr><td class="name"><b>决策周期</b></td><td class="how">异常/机会出现 → 主理人拍板的中位时长</td><td class="effect">审批与会议的效率</td><td>持续下降</td></tr>
+      <tr><td class="name"><b>单任务全成本</b></td><td class="how">模型 + 工具 + 人工复核成本 ÷ 完成任务数</td><td class="effect">路由与降级是否真的省了钱</td><td>平稳或下降，且不牺牲通过率</td></tr>
+      <tr><td class="name"><b>一次通过率</b></td><td class="how">AI 方案被直接采纳（不改条件）的比例</td><td class="effect">AI 是否理解业务，偏好记忆是否生效</td><td>持续上升</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="risk">
+  <div class="sec-h"><span class="no">06</span><h2>取舍与风险</h2><span class="note">写在前面，避免后面返工</span></div>
+  <div class="risks">
+    <div class="risk"><b>不追求全自动</b><p>拍板权始终在人手上。<em>用「审批 + 会议」换掉「全自动执行」</em>，代价是多一次点击，收益是错了能停住。</p></div>
+    <div class="risk"><b>模型不押注单家</b><p>书生在视觉与长上下文上合适，但旧入口有迁移期限、默认限流偏低。<em>路由 + 降级 + 评测集</em>三件套先行，避免把地基绑在一家身上。</p></div>
+    <div class="risk"><b>合规宁可误杀</b><p>资质与话术校验先拦后放，误杀由人工放行。<em>被误拦的成本是一分钟，被处罚的成本是一个店。</em></p></div>
+    <div class="risk"><b>规模化前先有观测</b><p>没有 trace 与评测就扩店，等于把不确定放大。<em>P2 的多租户必须排在 P1 的观测之后。</em></p></div>
+    <div class="risk"><b>会议不是万能</b><p>高频、低风险的决策走审批卡即可，不必开会。<em>会议只用于有分歧、有代价、需要多岗位对齐的事。</em></p></div>
+  </div>
+</section>
+
+<footer>
+  <span>AI 电商公司平台 · 功能清单与开发方案 v1.0</span>
+  <span>配套原型：AI电商公司平台原型.html</span>
+  <span>模型底座结论：书生可作第二底座，不作唯一底座</span>
+</footer>
+
+</div>
+</body>
+</html>

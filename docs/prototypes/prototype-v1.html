@@ -1,0 +1,2689 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 公司平台构想</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 布局：上方是「运营台」原型（团队与 AI 员工 / 公司频道 / 审批中心），下方是收窄的报告正文。印章红只用于总管理员、审批与红线。 */
+:root{
+  --paper:#f2f4f7; --surface:#ffffff; --sunk:#e8ecf1; --ink:#152030; --muted:#566275; --faint:#8a95a5; --line:#d6dde6;
+  --accent:#23468c; --accent-soft:#e2e9f6;
+  --seal:#c0352a; --seal-soft:#fae8e5;
+  --ok:#2b774a; --ok-soft:#e0f1e6; --warn:#9c640f; --warn-soft:#f6ecd8;
+  --r-ceo:#1f2f55; --r-bd:#0e776a; --r-sales:#b0501d; --r-mkt:#9d3a6f; --r-cs:#3b7629; --r-legal:#5a489b; --r-fin:#86690f; --r-ops:#2c6790; --r-x:#6a5a7e; --r-ext:#7b8696; --bar-muted:#c2cbd7;
+  --f-display:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,32,48,.06),0 8px 24px rgba(20,32,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f141b; --surface:#161d27; --sunk:#1d2632; --ink:#e4e9f0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#2a3542;
+    --accent:#8eaef0; --accent-soft:#1d2a44;
+    --seal:#e85a4d; --seal-soft:#3a1e1c;
+    --ok:#6fcf97; --ok-soft:#173226; --warn:#f0b955; --warn-soft:#352a14;
+    --r-ceo:#4a62a0; --r-bd:#1a9483; --r-sales:#c8682f; --r-mkt:#b8558a; --r-cs:#4f9237; --r-legal:#7663b8; --r-fin:#a7861f; --r-ops:#3d82b0; --r-x:#8673a0; --r-ext:#5d6878; --bar-muted:#3f4c5d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f141b; --surface:#161d27; --sunk:#1d2632; --ink:#e4e9f0; --muted:#9aa6b6; --faint:#6f7b8b; --line:#2a3542;
+  --accent:#8eaef0; --accent-soft:#1d2a44;
+  --seal:#e85a4d; --seal-soft:#3a1e1c;
+  --ok:#6fcf97; --ok-soft:#173226; --warn:#f0b955; --warn-soft:#352a14;
+  --r-ceo:#4a62a0; --r-bd:#1a9483; --r-sales:#c8682f; --r-mkt:#b8558a; --r-cs:#4f9237; --r-legal:#7663b8; --r-fin:#a7861f; --r-ops:#3d82b0; --r-x:#8673a0; --r-ext:#5d6878; --bar-muted:#3f4c5d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.3;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+select{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px;max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1360px;margin:0 auto;padding-inline:16px;display:flex;gap:20px;align-items:center;overflow-x:auto;scrollbar-width:none;white-space:nowrap;height:48px}
+.nav-in::-webkit-scrollbar{display:none}
+.brand{font-family:var(--f-display);font-weight:900;font-size:15px;letter-spacing:.02em}
+.nav a{color:var(--muted);text-decoration:none;font-size:13.5px}
+.nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;gap:14px;padding-block:40px 28px;max-width:900px}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+.hero h1{font-size:clamp(27px,4vw,42px);font-weight:900}
+.lead{font-size:16.5px;color:var(--muted);max-width:70ch}
+.lead b{color:var(--ink);font-weight:700}
+
+/* console */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.con-bar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.co{display:grid;gap:2px;min-width:0;flex:1 1 240px}
+.co b{font-family:var(--f-display);font-size:16px}
+.co span{font-size:12px;color:var(--faint)}
+.clock{font-family:var(--f-mono);font-size:28px;font-weight:600;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.clock small{font-size:12px;color:var(--faint);font-weight:400;margin-right:8px;font-family:var(--f-body);letter-spacing:0}
+.status{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;min-width:0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.dot.wait{background:var(--seal);animation:blink 1.2s infinite}
+.dot.off{background:var(--faint)}
+@keyframes blink{50%{opacity:.25}}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:6px;font-size:13px;line-height:1.4}
+.btn:hover{border-color:var(--faint)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:500}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:none}
+.seg button{border:0;background:transparent;padding:6px 10px;font-size:13px;border-right:1px solid var(--line);line-height:1.4}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+
+.con-sub{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line)}
+.grp{display:flex;align-items:center;gap:8px;min-width:0}
+.grp .lbl{font-size:12px;color:var(--faint);letter-spacing:.08em;font-weight:700;white-space:nowrap}
+.rules{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:9px 18px;background:var(--sunk);border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.rules .lbl{font-size:12px;color:var(--faint);letter-spacing:.08em;font-weight:700}
+.rule{display:inline-flex;align-items:center;gap:6px}
+.rule .chip{margin:0}
+
+.con-grid{display:grid;grid-template-columns:280px minmax(0,1fr) 320px;grid-template-areas:"team feed ap" "team feed kpi";grid-template-rows:1fr auto}
+.pane{min-width:0;display:flex;flex-direction:column}
+.pane-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:12px 16px 8px;font-size:12px;letter-spacing:.1em;color:var(--faint);font-weight:700}
+.pane-h .count{font-family:var(--f-mono);letter-spacing:0;font-weight:400;white-space:nowrap}
+.teamp{grid-area:team;border-right:1px solid var(--line)}
+.feed{grid-area:feed;border-right:1px solid var(--line)}
+.ap{grid-area:ap}
+.kpi{grid-area:kpi;border-top:1px solid var(--line)}
+.scroll{overflow-y:auto;min-height:0}
+.teamp .scroll{max-height:660px}
+.feed .scroll{height:660px}
+.ap .scroll{max-height:450px;min-height:150px}
+
+/* avatars */
+.av{width:32px;height:32px;border-radius:7px;background:var(--c,var(--r-ext));color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:15px;flex:none}
+.av.sm{width:26px;height:26px;font-size:12.5px;border-radius:6px}
+.av.ext{background:transparent;border:1.5px dashed var(--r-ext);color:var(--muted)}
+.av.human{border-radius:50%;background:var(--sunk);color:var(--ink);border:1px solid var(--line)}
+.av.human.admin{background:var(--seal);color:#fff;border-color:var(--seal)}
+
+/* team */
+.team{list-style:none;margin:0;padding:0 8px 12px;display:grid;gap:12px}
+.person{display:flex;align-items:center;gap:9px;padding:2px 8px}
+.person b{font-size:13.5px;display:block;line-height:1.35}
+.person small{font-size:11.5px;color:var(--faint);display:block;line-height:1.35}
+.agents{margin-left:20px;padding-left:9px;border-left:1.5px solid var(--line);display:grid;gap:2px;margin-top:4px}
+.agent{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:8px;padding:7px}
+.agent:hover{background:var(--sunk)}
+.agent.flash{border-color:var(--accent);background:var(--accent-soft)}
+.who{min-width:0;display:grid;gap:1px}
+.who-top{display:flex;align-items:center;gap:6px;min-width:0}
+.who-top b{font-size:13.5px;font-weight:700;white-space:nowrap}
+.who small{font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small.ml{color:var(--accent);font-size:11.5px}
+.pill{font-size:11px;line-height:1;padding:3px 6px;border-radius:99px;white-space:nowrap;background:var(--sunk);color:var(--muted)}
+.pill.working{background:var(--ok-soft);color:var(--ok)}
+.pill.waiting{background:var(--seal-soft);color:var(--seal)}
+.pill.paused{background:var(--warn-soft);color:var(--warn)}
+.assign{width:100%;border:1.5px dashed var(--line);background:transparent;border-radius:8px;padding:8px;font-size:12.5px;color:var(--muted);text-align:left}
+.assign:hover{border-color:var(--accent);color:var(--accent)}
+.pool{border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:2px}
+.pool-h{font-size:12px;color:var(--faint);letter-spacing:.08em;font-weight:700;padding:0 8px 4px}
+.hire{margin:0 16px 16px;width:calc(100% - 32px);border:1.5px dashed var(--line);background:transparent;border-radius:8px;padding:9px;font-size:13px;color:var(--muted)}
+.hire:hover{border-color:var(--accent);color:var(--accent)}
+
+/* feed */
+.events{list-style:none;margin:0;padding:0 16px 16px;display:grid}
+.ev{display:grid;grid-template-columns:44px 26px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);animation:in .35s ease-out}
+@keyframes in{from{transform:translateY(-6px);opacity:.2}to{transform:none;opacity:1}}
+.ev time{font-family:var(--f-mono);font-size:12px;color:var(--faint);padding-top:4px;font-variant-numeric:tabular-nums}
+.ev-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:13px}
+.ev-head b{font-weight:700}
+.ev-head .to{color:var(--muted)}
+.own{font-size:11px;color:var(--faint);background:var(--sunk);padding:1px 6px;border-radius:4px;line-height:1.6}
+.chip{font-size:11px;line-height:1;padding:3px 6px;border-radius:4px;background:var(--sunk);color:var(--muted);margin-left:2px;white-space:nowrap}
+.chip.k-external,.chip.k-inbound{background:var(--accent-soft);color:var(--accent)}
+.chip.k-approval,.chip.k-decision{background:var(--seal-soft);color:var(--seal)}
+.chip.k-alert{background:var(--warn-soft);color:var(--warn)}
+.chip.k-auto{background:var(--ok-soft);color:var(--ok)}
+.ev p{font-size:13.5px;line-height:1.65;margin-top:3px;overflow-wrap:anywhere}
+.ev.is-alert p{color:var(--warn)}
+
+/* approvals */
+.aps{display:grid;gap:10px;padding:0 16px 16px}
+.empty{font-size:12.5px;color:var(--faint);padding:8px 2px;line-height:1.6}
+.card{position:relative;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--surface);display:grid;gap:6px;animation:in .35s ease-out;overflow:hidden}
+.card.other{background:var(--sunk)}
+.card header{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);min-width:0}
+.card header > span:nth-child(2){min-width:0}
+.card header b{color:var(--ink)}
+.risk{margin-left:auto;font-size:11px;padding:3px 7px;border-radius:99px;line-height:1;white-space:nowrap}
+.risk.low{background:var(--ok-soft);color:var(--ok)}
+.risk.mid{background:var(--accent-soft);color:var(--accent)}
+.risk.high{background:var(--warn-soft);color:var(--warn)}
+.risk.red{background:var(--seal);color:#fff;font-weight:700}
+.card h4{margin:0;font-size:15px;font-family:var(--f-display);font-weight:600}
+.card p{font-size:13px;line-height:1.6}
+.card .route{font-size:12px;color:var(--muted)}
+.card .route b{color:var(--ink)}
+.acts{display:flex;gap:8px;margin-top:4px;align-items:center}
+.acts button{flex:1;border-radius:6px;padding:7px;font-size:13px;border:1px solid var(--line);background:var(--surface)}
+.acts .yes{background:var(--seal);border-color:var(--seal);color:#fff;font-weight:700}
+.acts .mini{flex:none;padding:5px 10px;font-size:12px}
+.acts button:disabled{opacity:.5;cursor:default}
+.waiting{flex:1;font-size:12px;color:var(--faint)}
+.stamp{position:absolute;right:18px;top:34px;width:84px;height:84px;border-radius:50%;border:3px solid var(--seal);color:var(--seal);display:grid;place-items:center;align-content:center;font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.08em;transform:rotate(-14deg);opacity:.92;pointer-events:none;box-shadow:inset 0 0 0 4px var(--surface),inset 0 0 0 5.5px var(--seal);background:color-mix(in srgb,var(--surface) 60%,transparent);animation:stamp .32s cubic-bezier(.2,1.4,.4,1);text-align:center;line-height:1.15}
+.stamp small{display:block;font-size:10px;font-family:var(--f-body);font-weight:700;letter-spacing:0}
+.stamp.no{border-color:var(--faint);color:var(--faint);box-shadow:inset 0 0 0 4px var(--surface),inset 0 0 0 5.5px var(--faint)}
+@keyframes stamp{from{transform:rotate(-14deg) scale(1.9);opacity:0}to{transform:rotate(-14deg) scale(1);opacity:.92}}
+
+/* kpi */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.tile{background:var(--surface);padding:10px 16px;display:grid;gap:2px;min-width:0}
+.tile span{font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile b{font-family:var(--f-mono);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tile b.bump{color:var(--ok)}
+.con-foot{padding:10px 18px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 18px}
+
+/* dialogs */
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:0;width:min(700px,calc(100vw - 32px));max-height:calc(100vh - 48px);box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(10,16,26,.45)}
+.dlg-h{display:flex;gap:12px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dlg-h .av{width:44px;height:44px;font-size:20px;border-radius:9px}
+.dlg-h h3{font-size:19px}
+.dlg-h p{font-size:13px;color:var(--muted)}
+.dlg-h .x{margin-left:auto;flex:none}
+.dlg-b{padding:16px 20px 20px;display:grid;gap:16px}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px 20px}
+.spec h5{margin:0 0 4px;font-size:12px;letter-spacing:.1em;color:var(--faint)}
+.spec ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.7}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12.5px}
+.meta span{background:var(--sunk);padding:4px 8px;border-radius:5px;color:var(--muted)}
+.form{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:16px}
+.form h5{margin:0;font-size:14px;font-family:var(--f-display);font-weight:600}
+.field{display:grid;gap:6px}
+.field > span{font-size:12px;color:var(--faint);letter-spacing:.08em;font-weight:700}
+.radios{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13.5px}
+.radios label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.form-acts{display:flex;gap:8px;justify-content:flex-end}
+.note{font-size:12.5px;color:var(--faint);line-height:1.6}
+.market{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.m-card{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:8px;align-content:start}
+.m-card .top{display:flex;gap:10px;align-items:center}
+.m-card .top div{display:grid}
+.m-card .top b{font-size:15px}
+.m-card .top small{font-size:12px;color:var(--faint)}
+.m-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.m-card .row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--faint)}
+.m-card button{border-radius:6px;padding:6px 14px;font-size:13px;border:1px solid var(--accent);background:var(--accent);color:var(--surface);font-weight:500;flex:none}
+.m-card button:disabled{background:transparent;color:var(--faint);border-color:var(--line);cursor:default}
+
+/* report */
+.doc{max-width:920px;margin:0 auto;display:grid;gap:72px;padding-top:72px}
+.sec{display:grid;gap:20px;scroll-margin-top:64px}
+.sec-h{display:grid;gap:8px}
+.sec-h .eyebrow{color:var(--faint)}
+.sec h2{font-size:clamp(23px,3vw,30px);font-weight:900}
+.sec h3{font-size:18px;font-weight:600;margin-top:8px}
+.prose{max-width:68ch;display:grid;gap:12px}
+.prose p,.prose li{font-size:15.5px}
+.prose ul,.prose ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.muted{color:var(--muted)}
+.verdict{border:1px solid var(--ink);border-radius:8px;padding:18px 20px;display:grid;gap:8px;background:var(--surface)}
+.verdict .eyebrow{color:var(--seal)}
+.verdict p{font-size:17px;line-height:1.75;font-family:var(--f-display);font-weight:600}
+
+.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;counter-reset:s}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:4px;align-content:start}
+.step b{font-family:var(--f-display);font-size:16px}
+.step b::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);font-size:11px;color:var(--faint);margin-right:6px;font-weight:400}
+.step p{font-size:13px;color:var(--muted);line-height:1.6}
+.flows{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.flow{border-top:2px solid var(--ink);padding-top:8px;display:grid;gap:2px}
+.flow b{font-size:14px}
+.flow span{font-size:13px;color:var(--muted);line-height:1.6}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:13.5px;line-height:1.6}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.06em;color:var(--faint);font-weight:700;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+.meter{display:inline-flex;gap:3px;vertical-align:middle;margin-right:6px}
+.meter i{width:12px;height:8px;border-radius:2px;background:var(--line)}
+.meter i.on{background:var(--accent)}
+.lvl{font-size:12.5px;color:var(--muted);white-space:nowrap}
+
+/* org diagram */
+.org{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:12px}
+.org-top{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;border:1.5px solid var(--seal);background:var(--seal-soft);border-radius:8px;padding:12px 14px}
+.org-top .who-b{display:flex;gap:10px;align-items:center;flex:1 1 280px;min-width:0}
+.org-top b{font-size:15px;display:block}
+.org-top small{font-size:12.5px;color:var(--muted);display:block;line-height:1.5}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px 3px 3px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.org-mid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 28px;font-size:12px;color:var(--muted)}
+.org-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.org-pair{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:8px;align-content:start;min-width:0}
+.org-pair .h{display:flex;gap:8px;align-items:center;font-size:13.5px;font-weight:700}
+.org-pair .a{display:flex;gap:8px;align-items:center;font-size:13px;padding-left:12px;border-left:1.5px solid var(--line);margin-left:12px}
+.org-pair small{font-size:11.5px;color:var(--accent);padding-left:26px}
+.org-pool{border:1.5px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--muted)}
+
+.walls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.wall{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:6px;align-content:start}
+.wall h4{margin:0;font-size:16px;font-family:var(--f-display);font-weight:600}
+.wall p{font-size:14px;line-height:1.7;color:var(--muted)}
+.wall p b{color:var(--ink)}
+.principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pr{border-top:2px solid var(--seal);padding-top:10px;display:grid;gap:4px;align-content:start}
+.pr b{font-size:15px}
+.pr span{font-size:13.5px;color:var(--muted);line-height:1.65}
+.rules-list{margin:0;padding-left:22px;display:grid;gap:8px;font-size:15px;max-width:68ch}
+.rules-list li::marker{font-family:var(--f-mono);color:var(--faint)}
+.rules-list b{font-weight:700}
+
+.stack{display:grid;gap:6px}
+.layer{display:grid;grid-template-columns:160px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;align-items:start}
+.layer b{font-family:var(--f-display);font-size:15px}
+.layer b small{display:block;font-family:var(--f-body);font-weight:400;font-size:11.5px;color:var(--faint);letter-spacing:.06em}
+.layer p{font-size:13.5px;color:var(--muted);line-height:1.65}
+.layer.gov{border-color:var(--seal);background:var(--seal-soft)}
+.layer.gov b{color:var(--seal)}
+.layer.truth{background:var(--sunk)}
+
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px 4px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.node{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700}
+.node small{font-weight:400;color:var(--faint);font-size:12px}
+.link{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px;padding:0 4px}
+.link::after{content:"→";color:var(--faint);font-size:14px}
+
+.spec-code{font-family:var(--f-mono);font-size:13px;line-height:1.8;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;overflow-x:auto;white-space:pre;color:var(--ink);margin:0}
+.spec-code .k{color:var(--accent)}
+.spec-code .c{color:var(--faint)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+
+.phases{display:grid;border-left:2px solid var(--line);margin-left:6px}
+.phase{position:relative;padding:0 0 22px 22px;display:grid;gap:4px}
+.phase::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.phase:first-child::before{background:var(--accent)}
+.phase b{font-size:16px;font-family:var(--f-display)}
+.phase .dur{font-family:var(--f-mono);font-size:12px;color:var(--accent);margin-left:8px;font-weight:400}
+.phase p{font-size:14px;color:var(--muted);line-height:1.7;max-width:68ch}
+.refs{font-size:13px;color:var(--muted);display:grid;gap:4px;padding-left:18px;margin:0}
+.refs a{color:var(--accent)}
+
+/* execution trace, skills, work cycle */
+.trace{margin-top:6px;font-size:12.5px}
+.trace summary{cursor:pointer;color:var(--accent);font-size:12px;list-style:none;display:inline-flex;align-items:center;gap:4px}
+.trace summary::-webkit-details-marker{display:none}
+.trace summary::before{content:"▸";font-size:10px;transition:transform .15s}
+.trace[open] summary::before{transform:rotate(90deg)}
+.trace ol{list-style:none;margin:8px 0 2px;padding:10px 12px;background:var(--sunk);border-radius:6px;display:grid;gap:6px}
+.trace li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;line-height:1.6}
+.trace li b{font-size:11.5px;color:var(--faint);font-weight:700;padding-top:1px}
+.trace code,.wf code{font-family:var(--f-mono);font-size:11.5px;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:0 4px;overflow-wrap:anywhere}
+.wf code{background:var(--sunk)}
+h5.sk{margin:0 0 6px;font-size:12px;letter-spacing:.06em;color:var(--faint)}
+.skills{display:grid;gap:6px}
+.skill{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px}
+.skill b{font-weight:700}
+.skill .when{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);white-space:nowrap}
+.skill p{grid-column:1/-1;color:var(--muted);font-size:12.5px;line-height:1.55}
+.cycle{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;counter-reset:c}
+.cyc{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:4px;align-content:start}
+.cyc b{font-family:var(--f-display);font-size:16px}
+.cyc b::before{counter-increment:c;content:counter(c);font-family:var(--f-mono);font-size:11px;color:var(--faint);margin-right:6px;font-weight:400}
+.cyc p{font-size:12.5px;color:var(--muted);line-height:1.6}
+.cyc.gate{border-color:var(--seal)}
+.wf{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.wf li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;line-height:1.7}
+.wf li:last-child{border-bottom:0}
+.wf li b{font-family:var(--f-display);font-size:14.5px}
+.wf li b small{display:block;font-family:var(--f-mono);font-size:11px;color:var(--faint);font-weight:400}
+.parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+/* decision evidence */
+.brief{font-size:13px;line-height:1.6}
+.kchips{display:flex;flex-wrap:wrap;gap:6px}
+.kchip{font-size:12px;background:var(--sunk);border-radius:5px;padding:3px 8px;color:var(--muted)}
+.kchip b{color:var(--ink);font-weight:700;margin-left:4px}
+.card.other .kchip{background:var(--surface)}
+.acts .look{background:var(--surface);border-color:var(--accent);color:var(--accent);font-weight:700}
+.gate-note{font-size:11.5px;color:var(--faint)}
+.evlink{border:0;background:transparent;color:var(--accent);font-size:12px;padding:0;margin-top:6px}
+.evlink:hover{text-decoration:underline}
+#dlgEvidence{width:min(840px,calc(100vw - 32px))}
+.evd{display:grid;gap:18px}
+.evd-sum{font-family:var(--f-display);font-weight:600;font-size:17px;line-height:1.65}
+.evd h5{margin:0 0 8px;font-size:12px;letter-spacing:.08em;color:var(--faint)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stat{background:var(--surface);padding:10px 14px;display:grid;gap:2px;align-content:start}
+.stat span{font-size:12px;color:var(--faint)}
+.stat b{font-size:20px;font-weight:700;line-height:1.3}
+.stat small{font-size:11.5px;color:var(--muted)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.chart{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0;align-content:start}
+.chart-t{font-size:13px;font-weight:700}
+.bars{display:grid;gap:6px}
+.bar-row{display:grid;grid-template-columns:minmax(64px,36%) minmax(0,1fr);gap:8px;align-items:center;font-size:12px}
+.bar-row > span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{position:relative;height:20px}
+.bar{position:absolute;left:0;top:3px;height:14px;background:var(--bar-muted);border-radius:0 4px 4px 0}
+.bar.hi{background:var(--accent)}
+.bar-v{position:absolute;top:1px;font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:6px}
+.bar-ref{position:absolute;top:-3px;bottom:-3px;border-left:1.5px dashed var(--muted)}
+.ref-l{font-size:11.5px;color:var(--muted)}
+.lc-plot{position:relative;height:150px;margin-top:14px}
+.lc-plot svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lc-grid{position:absolute;left:0;right:0;border-top:1px solid var(--line)}
+.lc-grid span{position:absolute;left:0;top:-15px;font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.lc-line{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.lc-area{fill:var(--accent);fill-opacity:.1;stroke:none}
+.lc-ref{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+.lc-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--surface);transform:translate(-50%,-50%);pointer-events:none}
+.lc-lab{position:absolute;font-size:12px;font-weight:700;color:var(--ink);transform:translate(-100%,-160%);white-space:nowrap;pointer-events:none}
+.lc-x{display:flex;justify-content:space-between;font-size:11px;color:var(--faint)}
+.lc-cross{position:absolute;top:0;bottom:0;border-left:1px solid var(--faint);pointer-events:none}
+.lc-tip{position:absolute;top:-8px;transform:translate(-50%,-100%);background:var(--ink);color:var(--surface);font-size:11.5px;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:2}
+.twin summary{font-size:11.5px;color:var(--faint);cursor:pointer}
+.twin table{min-width:0;font-size:12px;margin-top:6px}
+.twin th,.twin td{padding:4px 8px}
+.evd-tbl table{min-width:520px}
+.evd ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.7;display:grid;gap:4px}
+.opts{display:grid;gap:6px}
+.opt{border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:13px;display:grid;gap:2px}
+.opt.rec{border-color:var(--accent);background:var(--accent-soft)}
+.opt b{font-weight:700}
+.opt span{color:var(--muted)}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.srcs{display:grid;font-size:12px}
+.srcs div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:5px 0}
+.srcs code{font-family:var(--f-mono);font-size:11.5px;overflow-wrap:anywhere}
+.srcs time{font-family:var(--f-mono);color:var(--faint);white-space:nowrap}
+.evd-foot{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px}
+.evd-foot .route{font-size:12.5px;color:var(--muted);min-width:0;flex:1 1 260px}
+.evd-foot .acts{margin:0}
+.evd-foot .acts button{flex:none;padding:7px 18px}
+.evid-std{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+/* discussion with the AI employee */
+.disc{border:1px solid var(--accent);border-radius:10px;padding:14px;display:grid;gap:10px;background:var(--surface);scroll-margin-top:12px}
+.disc-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.disc-h h5{margin:0;font-size:13px;letter-spacing:.02em;color:var(--ink);font-weight:700}
+.mode{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.mode.live{background:var(--ok-soft);color:var(--ok)}
+.msgs{display:grid;gap:8px;max-height:360px;overflow-y:auto;padding:2px}
+.msgs:empty{display:none}
+.msg{max-width:88%;font-size:13.5px;line-height:1.65;padding:8px 12px;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{justify-self:end;background:var(--accent);color:var(--surface);border-bottom-right-radius:3px}
+.msg.ai{justify-self:start;background:var(--sunk);border-bottom-left-radius:3px}
+.msg.sys{justify-self:center;font-size:12px;color:var(--faint);background:transparent;padding:0}
+.ccard{justify-self:stretch;border:1px solid var(--accent);border-radius:8px;padding:10px 12px;display:grid;gap:8px;font-size:13px;background:var(--surface)}
+.ccard.blocked{border-color:var(--seal)}
+.ccard .stats{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.ccard .stat b{font-size:16px}
+.ccard .rt{font-size:12.5px;color:var(--muted)}
+.ccard .rt.bad{color:var(--seal);font-weight:700}
+.ccard .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ccard button{border-radius:6px;padding:6px 12px;font-size:13px;border:1px solid var(--accent);background:var(--accent);color:var(--surface);font-weight:500}
+.ccard button:disabled{background:transparent;color:var(--faint);border-color:var(--line);cursor:default}
+.qchips{display:flex;flex-wrap:wrap;gap:6px}
+.qchips button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 10px;font-size:12.5px;color:var(--muted)}
+.qchips button:hover{border-color:var(--accent);color:var(--accent)}
+.ask,.adj,.rep{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ask input,.rep input{flex:1 1 220px;min-width:0;font:inherit;font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.disc-tools{display:grid;gap:10px;border-top:1px dashed var(--line);padding-top:10px}
+.adj label,.rep label{font-size:12px;color:var(--faint);font-weight:700;letter-spacing:.04em;flex:0 0 auto}
+.adj input[type=range]{flex:1 1 160px;accent-color:var(--accent);min-width:0}
+.adj output{font-family:var(--f-mono);font-size:13px;min-width:64px;font-variant-numeric:tabular-nums}
+.change{border:1px solid var(--warn);background:var(--warn-soft);border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;display:grid;gap:2px}
+.change b{color:var(--warn)}
+.ver{font-size:11px;padding:2px 6px;border-radius:4px;background:var(--warn-soft);color:var(--warn);margin-left:6px;font-family:var(--f-body);font-weight:700;vertical-align:2px}
+
+@media (max-width:900px){
+  .evid-std{grid-template-columns:1fr 1fr}
+  .cycle{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media (max-width:1140px){
+  .con-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"kpi kpi" "feed ap" "feed team";grid-template-rows:auto auto 1fr}
+  .kpi{border-top:0;border-bottom:1px solid var(--line)}
+  .kpi .pane-h{display:none}
+  .tiles{grid-template-columns:repeat(6,minmax(0,1fr));border-top:0}
+  .tiles[data-n="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .teamp{border-right:0;border-top:1px solid var(--line)}
+  .feed .scroll{height:760px}
+}
+@media (max-width:720px){
+  .con-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"kpi" "ap" "feed" "team";grid-template-rows:auto}
+  .feed{border-right:0;border-top:1px solid var(--line)}
+  .tiles,.tiles[data-n="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tiles:not([data-n="4"]){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .feed .scroll{height:520px}
+  .ap .scroll,.teamp .scroll{max-height:none}
+  .clock{font-size:24px}
+  .loop{grid-template-columns:1fr 1fr}
+  .loop .step:last-child{grid-column:span 2}
+  .flows,.walls,.principles,.two{grid-template-columns:1fr}
+  .org-row{grid-template-columns:1fr 1fr}
+  .cycle,.parts{grid-template-columns:1fr 1fr}
+  .evid-std{grid-template-columns:1fr}
+  .wf li{grid-template-columns:1fr;gap:2px}
+  .layer{grid-template-columns:1fr;gap:4px}
+  .tile{padding:8px 12px}
+  .tile b{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="页面导航">
+  <div class="nav-in">
+    <span class="brand">AI 公司平台构想</span>
+    <a href="#demo">原型演示</a>
+    <a href="#ops">通用运行结构</a>
+    <a href="#org">组织与权限</a>
+    <a href="#work">AI 员工怎么干活</a>
+    <a href="#industry">行业模板</a>
+    <a href="#feasible">可行性</a>
+    <a href="#design">平台设计</a>
+    <a href="#effect">效果与竞争</a>
+    <a href="#roadmap">路线图</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">可行性分析 · 产品构想 · 交互原型</span>
+    <h1>每位员工配一名 AI 员工，最高权限留在总管理员手里</h1>
+    <p class="lead">这是一套适用于各行业的公司运行结构，有两种用法：<b>一个人当总管理员，所有 AI 员工都归自己，一个人管起整家公司；或者公司已有员工架构，总管理员给每位员工分配一名对应岗位的 AI 员工。</b>AI 员工独立完成岗位上的事务：拿平台数据、分析、到后台操作；需要拍板时按规则交给员工本人或总管理员，每张审批单都附带数据依据。下面的原型可以切换行业、组织模式和视角；公司频道里点「查看执行过程」，能看到 AI 员工每一步具体做了什么。</p>
+  </header>
+
+  <section id="demo" class="console" aria-label="AI 公司运营台原型">
+    <div class="con-bar">
+      <div class="co"><b id="coName">示例公司</b><span>虚构公司与人物，演示用数据</span></div>
+      <div class="clock"><small>第 1 天</small><span id="clock">08:00</span></div>
+      <div class="status" id="status"><span class="dot"></span><span>运行中</span></div>
+      <div class="ctrls">
+        <button class="btn" id="play" type="button">暂停</button>
+        <div class="seg" role="group" aria-label="播放速度" id="speed">
+          <button type="button" data-v="1" aria-pressed="true">1×</button>
+          <button type="button" data-v="2" aria-pressed="false">2×</button>
+          <button type="button" data-v="4" aria-pressed="false">4×</button>
+        </div>
+        <button class="btn" id="restart" type="button">重新开始</button>
+        <button class="btn primary" id="openMarket" type="button">AI 员工库</button>
+      </div>
+    </div>
+    <div class="con-sub">
+      <div class="grp"><span class="lbl">行业模板</span>
+        <div class="seg" role="group" aria-label="行业模板" id="industry">
+          <button type="button" data-v="ecom" aria-pressed="true">电商</button>
+          <button type="button" data-v="saas" aria-pressed="false">互联网</button>
+          <button type="button" data-v="trade" aria-pressed="false">外贸</button>
+        </div>
+      </div>
+      <div class="grp"><span class="lbl">组织模式</span>
+        <div class="seg" role="group" aria-label="组织模式" id="orgMode">
+          <button type="button" data-v="team" aria-pressed="true">团队</button>
+          <button type="button" data-v="solo" aria-pressed="false">一人公司</button>
+        </div>
+      </div>
+      <div class="grp"><label class="lbl" for="view">当前视角</label><select id="view"></select></div>
+    </div>
+    <div class="rules" aria-label="审批规则">
+      <span class="lbl">审批规则</span>
+      <span class="rule"><span class="chip k-auto">自动执行</span>在 AI 的自治等级之内</span>
+      <span class="rule"><span class="chip">员工自批</span>由 AI 所属的员工审批</span>
+      <span class="rule"><span class="chip k-approval">总管理员</span>红线、超出员工权限，或设为管理员审批</span>
+    </div>
+    <div class="con-grid">
+      <div class="pane teamp">
+        <div class="pane-h"><span id="teamTitle">团队与 AI 员工</span><span class="count" id="teamCount"></span></div>
+        <div class="scroll">
+          <ul class="team" id="team"></ul>
+          <button class="hire" id="openMarket2" type="button">+ 去 AI 员工库雇佣</button>
+        </div>
+      </div>
+      <div class="pane feed">
+        <div class="pane-h"><span>公司频道 · 最新在上</span><span class="count" id="evCount"></span></div>
+        <div class="scroll"><ol class="events" id="events"></ol></div>
+      </div>
+      <div class="pane ap">
+        <div class="pane-h"><span id="apTitle">审批中心</span><span class="count" id="apCount">0</span></div>
+        <div class="scroll"><div class="aps" id="aps"></div></div>
+      </div>
+      <div class="pane kpi">
+        <div class="pane-h"><span id="kpiTitle">今日数据</span></div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+    </div>
+    <div class="con-foot">
+      <span>审批前必须先打开「决策依据」，看过数据才能批准；有疑问可以在依据下方和 AI 员工讨论、改方案</span>
+      <span>点「查看执行过程」看 AI 员工怎么取数、分析、操作</span>
+      <span>点 AI 员工查看技能清单，调整分配和权限</span>
+      <span>员工手里的审批，模拟员工会在几步后处理，总管理员可以直接介入</span>
+      <span>AI 成本按模型档位粗略示意</span>
+    </div>
+  </section>
+
+  <dialog id="dlgAgent" aria-label="AI 员工详情"></dialog>
+  <dialog id="dlgEvidence" aria-label="决策依据"></dialog>
+  <dialog id="dlgAssign" aria-label="分配 AI 员工"></dialog>
+  <dialog id="dlgMarket" aria-labelledby="dmTitle">
+    <div class="dlg-h">
+      <div><h3 id="dmTitle">AI 员工库</h3><p>按当前行业模板列出的岗位。雇佣后先进入「待分配」，由总管理员分配给具体员工后开始工作。</p></div>
+      <button class="btn x" type="button" data-close>关闭</button>
+    </div>
+    <div class="dlg-b">
+      <div class="market" id="market"></div>
+      <p class="note">月度算力预算为示意值，实际取决于模型价格和工作量。</p>
+    </div>
+  </dialog>
+
+  <main class="doc">
+    <section class="sec" id="ops">
+      <div class="sec-h"><span class="eyebrow">一 · 结构</span><h2>一套适用于所有公司的运行结构</h2></div>
+      <div class="prose">
+        <p>不管是电商、互联网公司还是工厂，公司都是两个循环叠在一起：业务循环让钱流进来，管理循环让业务循环跑得稳。四条「流」把所有岗位连起来。行业不同，变的只是每个环节里具体做什么。</p>
+      </div>
+      <h3>业务循环：钱从哪里来</h3>
+      <div class="loop">
+        <div class="step"><b>获客</b><p>让潜在客户知道你、对你感兴趣。</p></div>
+        <div class="step"><b>转化</b><p>报价、谈判、下单、签约。</p></div>
+        <div class="step"><b>交付</b><p>生产、发货、上线服务、售后。</p></div>
+        <div class="step"><b>回款</b><p>开票、收款、对账。</p></div>
+        <div class="step"><b>再投入</b><p>把利润投到下一轮获客、产品和人上。</p></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>行业</th><th>获客</th><th>转化</th><th>交付</th><th>回款</th></tr></thead>
+          <tbody>
+            <tr><td>电商</td><td>内容种草、直播、平台推广</td><td>详情页、客服咨询、活动价</td><td>仓储发货、售后退换</td><td>平台结算、对账</td></tr>
+            <tr><td>互联网 / SaaS</td><td>SEO、增长活动、试用注册</td><td>试用转付费、销售跟进</td><td>产品迭代、上线、客户成功</td><td>订阅扣费、续费</td></tr>
+            <tr><td>外贸</td><td>开发信、B2B 询盘、展会</td><td>报价、样品、合同</td><td>排产、跟单、出货</td><td>预付款、尾款、结汇</td></tr>
+            <tr><td>本地服务</td><td>点评平台、团购、私域</td><td>预约、到店转化</td><td>到店服务</td><td>收银、平台结算</td></tr>
+            <tr><td>制造业</td><td>经销商、招投标</td><td>报价、框架合同</td><td>计划排产、质检、物流</td><td>账期回款</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>管理循环与四条流</h3>
+      <div class="prose"><p>定目标 → 拆计划 → 分工 → 执行 → 检查 → 调整（PDCA）。岗位之间靠四条流连接：</p></div>
+      <div class="flows">
+        <div class="flow"><b>任务流</b><span>派活、交接、工单。</span></div>
+        <div class="flow"><b>信息流</b><span>数据、报告、知识。</span></div>
+        <div class="flow"><b>审批流</b><span>谁在什么额度内能拍板。</span></div>
+        <div class="flow"><b>资金流</b><span>收款、付款、预算。</span></div>
+      </div>
+      <div class="prose"><p class="muted">平台要做的就是把这套骨架做成通用内核：组织、岗位、权限、审批、协作、审计。行业差异放进模板里。</p></div>
+    </section>
+
+    <section class="sec" id="org">
+      <div class="sec-h"><span class="eyebrow">二 · 组织</span><h2>人 + AI 员工：组织与权限模型</h2></div>
+      <div class="prose">
+        <p>每家公司有一位总管理员，掌握最高权限。平台支持两种用法：</p>
+        <ul>
+          <li><b>一人公司</b>：你就是总管理员，所有 AI 员工都归你，审批也都到你这里。要让一个人管得过来，就得给 AI 更高的自治等级，由决策者把真正需要拍板的事筛给你。原型里切到「一人公司」，一天只剩几件红线和大额事项要你处理。</li>
+          <li><b>团队模式</b>：公司已有员工架构，总管理员给每位员工分配一名对应岗位的 AI 员工，专属于这位员工。日常审批交给员工本人，红线和超权限的事升级到总管理员。</li>
+        </ul>
+        <p>两种用法可以平滑过渡：公司从一个人发展成一个团队时，把 AI 员工逐个分配给新来的员工就行。下面以团队模式为例说明。</p>
+      </div>
+      <div class="org" aria-label="组织结构示意">
+        <div class="org-top">
+          <div class="who-b"><span class="av human admin">管</span><div><b>总管理员 · 最高权限</b><small>雇佣、分配、收回 AI 员工；设定审批方式和自治等级；处理红线和升级事项；查看全部审计记录</small></div></div>
+          <div class="tags">名下 AI：<span class="tag"><span class="av sm" style="--c:var(--r-ceo)">决</span>决策者</span></div>
+        </div>
+        <div class="org-mid"><span>↓ 分配 AI 员工、设定权限</span><span>↑ 红线和超权限事项升级</span></div>
+        <div class="org-row">
+          <div class="org-pair"><div class="h"><span class="av sm human">李</span>运营 · 李娜</div><div class="a"><span class="av sm" style="--c:var(--r-sales)">运</span>运营 AI</div><small>员工自批 · L2</small></div>
+          <div class="org-pair"><div class="h"><span class="av sm human">周</span>客服主管 · 周婷</div><div class="a"><span class="av sm" style="--c:var(--r-cs)">服</span>客服 AI</div><small>员工自批 · L2</small></div>
+          <div class="org-pair"><div class="h"><span class="av sm human">刘</span>采购 · 刘洋</div><div class="a"><span class="av sm" style="--c:var(--r-ops)">供</span>供应链 AI</div><small>管理员审批 · L2</small></div>
+          <div class="org-pair"><div class="h"><span class="av sm human">孙</span>财务 · 孙悦</div><div class="a"><span class="av sm" style="--c:var(--r-fin)">财</span>财务 AI</div><small>管理员审批 · L2</small></div>
+        </div>
+        <div class="org-pool">待分配：数据 AI、投放 AI。雇佣后先放在这里，总管理员分配给具体员工后才开始工作。</div>
+      </div>
+
+      <h3>三种角色的权限</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>角色</th><th>能做什么</th><th>不能做什么</th></tr></thead>
+          <tbody>
+            <tr><td>总管理员</td><td>雇佣、分配、收回 AI 员工；设定每名 AI 的审批方式和自治等级；审批红线和升级事项；可以直接批准或驳回任何审批；查看全公司记录</td><td>无限制，但所有操作都会写进审计日志</td></tr>
+            <tr><td>员工</td><td>使用分配给自己的 AI 员工；给它布置任务、纠正结果；在自己的权限内审批它提交的事项，审批前可以和它讨论、要求修改</td><td>不能改 AI 的归属和权限；看不到别人的 AI 员工和数据</td></tr>
+            <tr><td>AI 员工</td><td>独立完成所属岗位的日常事务；通过交接单和其他 AI 员工协作</td><td>权限不能超过所属员工；不能给自己加权限；不能执行红线事项</td></tr>
+            <tr><td>部门管理员（可选）</td><td>公司变大后，总管理员可以把某个部门的分配和审批权授权出去</td><td>权限不超过总管理员授予的范围</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>审批路由：一件事交给谁</h3>
+      <div class="prose"><p>AI 员工每次要做一件需要授权的事，系统按下面的顺序判断，第一条命中就停：</p></div>
+      <ol class="rules-list">
+        <li><b>红线事项</b>（签合同、付款、录用或辞退真人）→ 总管理员。</li>
+        <li><b>超出所属员工本人的权限</b>（例如员工只能调价 3%，AI 想调 7%）→ 自动升级到总管理员。</li>
+        <li><b>在这名 AI 的自治等级之内</b> → 自动执行，事后留痕。</li>
+        <li>其余事项看总管理员给这名 AI 设的审批方式：<b>员工自批</b>交给所属员工，<b>管理员审批</b>交给总管理员。</li>
+      </ol>
+      <div class="prose"><p class="muted">无论交给谁，总管理员都能看到全部待审批事项，并且可以直接介入处理。</p></div>
+
+      <h3>每个审批都要有数据支撑</h3>
+      <div class="prose"><p>审批人得先看到数据，才能判断该不该批。所以 AI 员工提交的每张审批单都必须附一份「决策依据」，固定包含六块：</p></div>
+      <div class="evid-std">
+        <div class="pr"><b>结论</b><span>一句话说清建议做什么、为什么。</span></div>
+        <div class="pr"><b>关键数据</b><span>3 到 4 个决定性指标，每个都带对比基准：同类平均、目标或底线。</span></div>
+        <div class="pr"><b>图表与测算</b><span>趋势、对比，以及不同方案算出来的结果。</span></div>
+        <div class="pr"><b>备选方案</b><span>至少包括「不做」，写清每种做法的后果。</span></div>
+        <div class="pr"><b>风险与回滚</b><span>可能出什么问题，出了问题怎么撤回。</span></div>
+        <div class="pr"><b>数据来源</b><span>每个数字来自哪个接口、哪个时间点，可以回放。</span></div>
+      </div>
+      <div class="prose">
+        <p>平台用四条规则保证依据靠得住：</p>
+        <ol>
+          <li><b>没有依据不能提交</b>：每类审批都规定了必备数据项（见下表），缺项的审批单会被治理网关退回，让 AI 补齐。</li>
+          <li><b>数字由计算得出，不由模型编写</b>：依据里的数字直接取自接口返回和代码计算结果，模型只负责写解释；系统会核对解释里的数字和计算结果是否一致。</li>
+          <li><b>先看依据再审批</b>：审批人没打开依据，批准按钮不可用；看过哪些数据会记进审计日志。</li>
+          <li><b>事后复盘</b>：执行后把实际结果和审批时的预测对比。预测一直准的 AI 员工可以逐步提高自治等级，偏差大的会被降级。</li>
+        </ol>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>审批类型</th><th>必备数据</th></tr></thead>
+          <tbody>
+            <tr><td>调价</td><td>竞品价格对比、近 14 天转化率、调价前后毛利、各方案预计销量和日毛利、库存</td></tr>
+            <tr><td>补货 / 采购付款</td><td>库存与断货预测、供应商比价、付款后的现金流</td></tr>
+            <tr><td>推广预算</td><td>近 7 天投产比趋势、预算使用率、预计新增 GMV</td></tr>
+            <tr><td>退款 / 赔付</td><td>订单信息、买家历史、凭证照片、对应的售后条款</td></tr>
+            <tr><td>内容发布</td><td>选题热度、历史同类内容表现、合规检查结果、内容清单</td></tr>
+            <tr><td>报价让价</td><td>不同报价下的毛利测算、客户价值、竞争对手价格区间</td></tr>
+            <tr><td>合同</td><td>与标准模板的条款差异、法务意见、履约能力核查</td></tr>
+            <tr><td>发布上线</td><td>影响范围、测试结果、灰度计划、回滚条件</td></tr>
+            <tr><td>录用 Offer</td><td>面试评分、薪资区间与同级对比、候选人的其他 Offer</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose"><p class="muted">原型里每张审批卡片都带着关键数据；点「查看决策依据」能看到完整的图表、测算、备选方案和数据来源。自动执行的事项，也能在公司频道里查看依据。</p></div>
+
+      <h3>对依据有疑问：直接和 AI 员工讨论</h3>
+      <div class="prose">
+        <p>看完依据，审批人往往还有问题：这个数是怎么来的？换个价格会怎样？有没有考虑库存？依据面板下方就是和提交这张审批单的 AI 员工的对话框，可以追问数据、质疑假设，或者让它换个参数重新测算。讨论完有三种结果：</p>
+        <ul>
+          <li><b>直接决定</b>：讨论后觉得没问题，批准；或者驳回。</li>
+          <li><b>采用修订方案</b>：比如把降价幅度从 7% 改成 4.7%，AI 现场重算毛利、销量和日毛利，审批人确认后生成第 2 版。</li>
+          <li><b>退回重新处理</b>：比如「再拉一次竞品价格，并考虑库存」，AI 重新取数、重新分析后再提交。</li>
+        </ul>
+        <p>几条规则：</p>
+        <ul>
+          <li>AI 的回答只能引用依据里的数据，或者现场调用计算函数得出的结果，不能凭空给数字。</li>
+          <li>任何修改都生成新版本，保留修改记录，并且<b>重新走审批路由</b>：修订后的方案可能落进员工本人的权限，也可能升级到总管理员，低于毛利底线的直接不能提交。</li>
+          <li>新版本要重新看一遍依据才能审批。</li>
+          <li>讨论记录写进审计日志，也会沉淀到这名 AI 员工的记忆里，比如「老板调价时更看重毛利还是销量」，下次提方案时会参考。</li>
+        </ul>
+        <p class="muted">原型在 claude.ai 打开时，对话接入真实的 Claude（消耗查看者自己的 Claude 用量，第一次使用会请求授权）；用本地文件打开时，使用离线演示回答。这只是原型的演示方式，正式产品用哪些模型见第八节「技术选型建议」。调价、补货、推广预算、报价、优惠折扣这 5 类审批可以拖动参数现场重算。</p>
+      </div>
+
+      <h3>三条关键原则</h3>
+      <div class="principles">
+        <div class="pr"><b>权限继承并收窄</b><span>AI 员工的权限是所属员工权限的子集。员工能看到的数据它才能看，员工不能做的事它也做不了。</span></div>
+        <div class="pr"><b>每人一个独立空间</b><span>每名 AI 有自己的记忆和工作区。跨员工协作走公司频道的交接单，不能直接读别人的数据。</span></div>
+        <div class="pr"><b>工作记忆归公司</b><span>员工离职或调岗，总管理员收回 AI 员工，它的工作记录和客户上下文完整保留，分配给接任者就能接着干。</span></div>
+      </div>
+
+      <div class="two">
+        <div class="prose">
+          <h3>一次分配长什么样</h3>
+          <p>右边是总管理员把运营 AI 分配给李娜时的配置。审批方式和自治等级由总管理员设定，权限从李娜继承，再收窄。</p>
+          <p>运营 AI 想把爆款降价 7%，超出了李娜 3% 的调价权限，这时系统会跳过李娜，直接升级到总管理员。原型里的电商模板可以看到这一幕。</p>
+        </div>
+<pre class="spec-code"><span class="k">AI 员工</span>   运营 AI（岗位模板：店铺运营）
+<span class="k">分配给</span>    李娜 · 店铺运营
+<span class="k">审批方式</span>  员工自批
+<span class="k">自治等级</span>  L2  <span class="c"># 低风险自动执行</span>
+<span class="k">权限</span>      继承李娜，再收窄：
+          调价 ≤ 3%
+          推广日预算 ≤ ¥3,000
+          只能访问本店铺数据
+<span class="k">升级</span>      超出李娜权限 → 总管理员
+          红线事项     → 总管理员
+<span class="k">记忆</span>      归公司所有，可移交</pre>
+      </div>
+
+      <h3>自治等级</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>等级</th><th>AI 自动执行</th><th>需要审批</th><th>适合阶段</th></tr></thead>
+          <tbody>
+            <tr><td>L1 助手</td><td>只做内部工作：草稿、整理、分析</td><td>所有对外动作逐条审批</td><td>新 AI 刚上岗</td></tr>
+            <tr><td>L2 半自治</td><td>低风险：限额内退款、常规回复</td><td>中风险以上</td><td>试运行期</td></tr>
+            <tr><td>L3 授权自治</td><td>中低风险：内容发布、权限内报价</td><td>高风险和红线</td><td>流程稳定后</td></tr>
+            <tr><td>L4 全自治</td><td>除红线外全部自动</td><td>红线（永远由总管理员审批）</td><td>长期验证过的岗位</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="work">
+      <div class="sec-h"><span class="eyebrow">三 · 执行</span><h2>AI 员工怎么真正干活</h2></div>
+      <div class="prose">
+        <p>AI 员工干活的方式和真人差不多：到点了或者有人派活就开工，先看数据，再分析判断，然后去后台操作，最后检查结果、汇报。区别有两点：它看数据和操作后台都通过接口，实在没有接口才模拟人去点网页；它判断的依据是写下来的岗位手册，而不是凭经验。</p>
+      </div>
+      <h3>每一件事都走同一个循环</h3>
+      <div class="cycle">
+        <div class="cyc"><b>触发</b><p>定时（每天 9 点）、事件（新订单、库存低、差评）、同事的交接单、员工直接下指令。</p></div>
+        <div class="cyc"><b>取数</b><p>通过连接器调用平台接口，读订单、商品、流量、推广数据；也能读员工上传的表格。</p></div>
+        <div class="cyc"><b>分析</b><p>让模型写 Python 或 SQL 来算，数字不靠模型心算；再结合知识库解读结果。</p></div>
+        <div class="cyc"><b>判断</b><p>按岗位手册里的规则，加上模型的判断，形成具体的操作方案。</p></div>
+        <div class="cyc gate"><b>执行</b><p>调用写接口：改价、改标题、调预算、回复客户、下采购单。每个操作先过治理网关，决定自动执行还是送审批。</p></div>
+        <div class="cyc"><b>复核</b><p>回读确认生效，盯后续指标，效果不好就回滚；写进日报和记忆。</p></div>
+      </div>
+
+      <h3>完整例子：运营 AI 做一次「竞品价格巡检」</h3>
+      <ol class="wf">
+        <li><b>触发<small>09:00</small></b><span>定时任务启动。运营 AI 加载「竞品价格巡检」这项技能的手册：看哪些数据、按什么规则判断、能做哪些操作。</span></li>
+        <li><b>取数<small>约 20 秒</small></b><span>用李娜授权的店铺账号调用接口：<code>shop.items.onsale()</code> 取 32 个在售商品，<code>competitor.prices()</code> 取 5 家竞品同款价格，<code>erp.cost()</code> 取成本。</span></li>
+        <li><b>分析<small>约 10 秒</small></b><span>在沙箱里跑 Python：收纳柜 7 日转化率 2.1%，同类平均 3.0%；我们比竞品均价高 7.5%；当前毛利率 41%。</span></li>
+        <li><b>判断</b><span>手册规则是「价差超过 5%，且调价后毛利不低于 30%，就建议降到竞品均价」。方案：¥429 降到 ¥399，加定金膨胀，毛利 36%。</span></li>
+        <li><b>执行</b><span>调用 <code>shop.item.update_price(399)</code>。治理网关发现降幅 7% 超出李娜 3% 的调价权限，没有放行，自动转成审批单送到总管理员。批准后才真正改价。</span></li>
+        <li><b>复核<small>24 小时后</small></b><span>回读价格确认已生效；第二天对比转化率，写进日报。转化没有改善，就提醒恢复原价。</span></li>
+      </ol>
+      <div class="prose"><p class="muted">原型的公司频道里，带「查看执行过程」的条目都能展开看到这样的步骤。工具名是平台封装后的示意名称，背后对应各平台的开放接口。</p></div>
+
+      <h3>运营 AI 的技能清单</h3>
+      <div class="prose"><p>一个岗位的工作拆成若干项技能。每项技能写清楚触发条件、要用的数据、能做的操作和风险等级。下面是电商运营岗位模板预置的技能：</p></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>技能</th><th>触发</th><th>用到的数据</th><th>会做的操作</th><th>风险</th></tr></thead>
+          <tbody>
+            <tr><td>每日经营日报</td><td>每天 08:30</td><td>订单、流量、转化、推广</td><td>生成日报，标出异常</td><td>只读</td></tr>
+            <tr><td>竞品价格巡检</td><td>每天 09:00</td><td>在售商品、竞品价格、成本</td><td>提调价方案，改价</td><td>中到高</td></tr>
+            <tr><td>推广出价调整</td><td>每 2 小时</td><td>推广报表</td><td>调出价和预算，跌破下限自动回滚</td><td>低到中</td></tr>
+            <tr><td>平台活动报名</td><td>平台发布活动时</td><td>活动规则、商品毛利</td><td>选品，提交报名</td><td>中</td></tr>
+            <tr><td>标题与主图优化</td><td>每周一</td><td>搜索词、点击率</td><td>改标题，提换图建议</td><td>中</td></tr>
+            <tr><td>库存联动</td><td>库存低于安全线</td><td>库存、销量</td><td>给供应链 AI 发交接单</td><td>低</td></tr>
+            <tr><td>临时分析</td><td>员工直接下指令</td><td>按需</td><td>例如「分析上周转化为什么下降」，出报告和方案</td><td>只读</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>让一名 AI 员工能干活的四样东西</h3>
+      <div class="parts">
+        <div class="pr"><b>岗位手册（技能）</b><span>每项技能是一份写清楚的工作流程。平台为每个岗位预置一套，公司和员工可以改。</span></div>
+        <div class="pr"><b>连接器（眼和手）</b><span>把各平台接口封装成 AI 能调用的工具，每个工具标好是读还是写、风险多高。</span></div>
+        <div class="pr"><b>运行时（大脑）</b><span>大模型在循环里调用工具、跑代码、得出结论。写操作一律先过治理网关。</span></div>
+        <div class="pr"><b>记忆</b><span>公司知识库、这名 AI 的工作记录、员工给过的反馈，下次干活时都会用上。</span></div>
+      </div>
+
+      <h3>每位员工的工作不一样，怎么办</h3>
+      <div class="prose">
+        <p>岗位模板只覆盖通用部分，每位员工的实际工作还要再定制。平台提供四种方式：</p>
+        <ol>
+          <li><b>授权账号</b>：员工用自己的账号或子账号给 AI 授权。AI 能看到什么、能做什么，不会超过这个账号的权限。</li>
+          <li><b>勾选技能</b>：从岗位模板里选出这位员工实际负责的技能，关掉不相关的。</li>
+          <li><b>用大白话改手册</b>：比如「调价前先看库存，少于 200 件不降价」，平台把它转成规则，加进对应技能。</li>
+          <li><b>演示一遍、从反馈中学</b>：员工把自己的日常操作讲一遍或录屏，平台生成新技能草稿，员工确认后上线。员工驳回或修改 AI 的操作时，原因会被记下来，下次照做；同样的修改出现多次，会提示员工把它固化成规则。</li>
+        </ol>
+      </div>
+
+      <h3>拿数据和做操作：现实情况</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>方式</th><th>适合</th><th>要注意</th></tr></thead>
+          <tbody>
+            <tr><td>官方开放接口</td><td>订单、商品、库存、推广、客服消息等核心数据和操作</td><td>平台方要以企业主体入驻各开放平台，创建应用、申请接口权限，再由商家授权；部分平台要求应用上架或缴纳保证金，以官方规则为准</td></tr>
+            <tr><td>ERP 和第三方数据服务</td><td>多店铺汇总、竞品价格、行业数据</td><td>按服务付费；核实数据来源是否合规</td></tr>
+            <tr><td>浏览器自动化</td><td>没有接口的后台页面</td><td>慢，页面改版就失效，可能违反平台规则；只在员工授权下低频使用，优先只读</td></tr>
+            <tr><td>员工上传 / 导出</td><td>接口拿不到的报表、一次性分析</td><td>不实时，适合起步阶段</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <p class="muted">有些经营数据（例如部分细分流量数据）不一定有开放接口，需要逐项核实。这也是平台的壁垒：接入的平台越多、接口权限越全，AI 员工能干的活就越多。</p>
+        <p>上线节奏建议分三步：先只读（看数据、出分析和建议），再做带审批的操作，最后在额度内自动执行。这正好对应自治等级 L1 到 L4。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="industry">
+      <div class="sec-h"><span class="eyebrow">四 · 模板</span><h2>通用内核 + 行业模板</h2></div>
+      <div class="prose"><p>组织、权限、审批、协作、审计、计费，这些内核对所有行业都一样。行业差异装进模板：岗位库、流程剧本、外部系统连接器和 KPI。支持一个新行业就是做一个新模板，内核不用改。</p></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>行业</th><th>典型 AI 员工</th><th>要接的外部系统</th><th>典型审批点</th></tr></thead>
+          <tbody>
+            <tr><td>电商</td><td>运营、客服、内容、供应链、财务</td><td>天猫 / 京东 / 抖店 / 拼多多开放平台、ERP、仓储</td><td>调价、退款、推广预算、补货付款</td></tr>
+            <tr><td>互联网 / SaaS</td><td>产品、研发、测试、增长、招聘</td><td>代码仓库、CI/CD、工单、营销自动化、招聘系统</td><td>生产发布、优惠定价、群发、Offer</td></tr>
+            <tr><td>外贸</td><td>业务、销售、跟单、财务、内容</td><td>邮箱、B2B 平台、CRM、ERP</td><td>批量开发信、让价、合同、付款</td></tr>
+            <tr><td>本地服务</td><td>预约客服、点评运营、会员营销</td><td>美团 / 大众点评、企业微信、收银系统</td><td>优惠券、退款、差评回复</td></tr>
+            <tr><td>制造业</td><td>计划排产、采购、质量分析、销售内勤</td><td>ERP / MES、供应商门户</td><td>采购付款、排产变更（质检放行需人到现场）</td></tr>
+            <tr><td>专业服务</td><td>文书、研究、客户沟通</td><td>文档系统、日历、计费系统</td><td>对外意见书、报价、签字</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="feasible">
+      <div class="sec-h"><span class="eyebrow">五 · 判断</span><h2>这个结构可行吗</h2></div>
+      <div class="verdict">
+        <span class="eyebrow">结论</span>
+        <p>比「全部交给 AI」更可行。每名 AI 员工背后都有一位负责的真人，法律责任和审批链条自然成立；它是在现有组织上加 AI，不用推倒重来，企业接受起来阻力小得多。难点变成了权限、数据隔离和协作协议能不能设计好。</p>
+      </div>
+      <h3>每个岗位里，AI 能接走多少</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>职能</th><th>AI 员工能做的</th><th>留给员工本人的</th><th>可自动化程度</th></tr></thead>
+          <tbody>
+            <tr><td>获客 / 市场</td><td>检索公开信息、线索打分、内容生产、多平台排期、复盘</td><td>品牌调性、名单来源合规、投放预算</td><td><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="lvl">高</span></td></tr>
+            <tr><td>客服</td><td>7×24 售前售后、工单分流、限额内退换</td><td>纠纷、舆情</td><td><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="lvl">高</span></td></tr>
+            <tr><td>销售 / 运营</td><td>报价、权限内议价、店铺运营、跟单</td><td>大额让价、关键客户关系</td><td><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="lvl">中高</span></td></tr>
+            <tr><td>研发 / 测试</td><td>缺陷定位、修复 PR、代码评审、回归测试</td><td>架构决策、合并与发布把关</td><td><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="lvl">中高</span></td></tr>
+            <tr><td>财务</td><td>记账、对账、开票申请、报表、预警</td><td>付款确认、纳税申报确认</td><td><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="lvl">中高</span></td></tr>
+            <tr><td>人事 / 法务</td><td>简历盲筛、面试排期、合同起草审查</td><td>录用决定、签字、诉讼</td><td><span class="meter"><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="lvl">中</span></td></tr>
+            <tr><td>供应链 / 生产</td><td>排产计划、比价、下单、物流跟踪</td><td>生产现场、质检、实物收发</td><td><span class="meter"><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="lvl">中</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>仍然要面对的四道墙</h3>
+      <div class="walls">
+        <div class="wall"><h4>法律主体</h4><p>AI 不能签合同、开银行账户、承担责任。这个结构里<b>签字和付款都落在总管理员身上</b>，天然满足这一条。</p></div>
+        <div class="wall"><h4>平台规则</h4><p>微信个人号、小红书、抖音等平台限制自动化操作。<b>优先接官方开放平台</b>（电商开放平台、企业微信、飞书、钉钉、邮件），没有接口的渠道改成「AI 写好，员工一键发」。</p></div>
+        <div class="wall"><h4>可靠性</h4><p>CMU 的 TheAgentCompany 基准模拟一家软件公司的 175 项工作，论文中最好的智能体<b>只能独立完成约 30%</b>。Anthropic 的 Project Vend 里，加了 AI CEO 之后小店转为盈利，但团队发现<b>同一个模型互相监督会共享盲区</b>。所以每名 AI 都需要一位真人盯着，这正是「每人配一名」的价值。</p></div>
+        <div class="wall"><h4>合规与隐私</h4><p>AI 生成内容需要标识（《人工智能生成合成内容标识办法》，2025 年 9 月 1 日起施行）。获客只用公开的企业信息；员工数据和客户数据<b>按人隔离</b>，AI 员工不能越过所属员工的数据权限。</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="design">
+      <div class="sec-h"><span class="eyebrow">六 · 设计</span><h2>平台怎么搭</h2></div>
+      <div class="stack">
+        <div class="layer"><b>管理后台<small>总管理员</small></b><p>雇佣与分配 AI 员工、设定审批方式和自治等级、审批中心、全公司看板（进度、成本、产出）、审计日志与回放。</p></div>
+        <div class="layer"><b>员工工作台<small>每位员工</small></b><p>我的 AI 员工、给它派活和纠正、我的待审批、它的工作记录。手机端可以一键审批。</p></div>
+        <div class="layer"><b>决策者<small>总管理员名下的 AI</small></b><p>把 OKR 拆成每日任务派给各 AI 员工，晨会、午报、日报，发现异常时调配资源、提醒总管理员。只能调度，不能扩权。</p></div>
+        <div class="layer"><b>AI 员工<small>岗位模板实例</small></b><p>每名 = 岗位手册（一组技能）+ 连接器工具 + 权限（继承自所属员工）+ 独立记忆 + KPI + 模型档位。具体怎么干活见第三节。</p></div>
+        <div class="layer"><b>协作层<small>任务与交接</small></b><p>任务看板、公司频道、结构化交接单（例如客服 → 内容、销售 → 法务）、事件触发（新订单、库存预警、差评、告警）。</p></div>
+        <div class="layer gov"><b>治理层<small>平台核心</small></b><p>权限继承、审批路由、自治等级、预算闸门、风控熔断、审计日志、AI 内容标识。由规则引擎执行，不依赖模型自觉遵守。</p></div>
+        <div class="layer"><b>连接层<small>外部系统</small></b><p>通过 MCP 等标准协议接入电商平台、代码仓库、邮箱、企业微信 / 飞书 / 钉钉、CRM、ERP、财税软件。</p></div>
+        <div class="layer truth"><b>数据层<small>唯一真相</small></b><p>多租户隔离（公司之间），再按员工隔离（公司内部）。客户、订单、账目存在结构化数据库里，AI 读写数据库，不靠模型「记住」。</p></div>
+      </div>
+
+      <h3>跨员工协作：一次补货</h3>
+      <div class="chain" aria-label="补货协作链">
+        <span class="node"><span class="av sm" style="--c:var(--r-sales)">运</span>运营 AI<small>李娜</small></span><span class="link">预售数据</span>
+        <span class="node"><span class="av sm" style="--c:var(--r-ops)">供</span>供应链 AI<small>刘洋</small></span><span class="link">现金流确认</span>
+        <span class="node"><span class="av sm" style="--c:var(--r-fin)">财</span>财务 AI<small>孙悦</small></span><span class="link">付款是红线</span>
+        <span class="node"><span class="av sm human admin">管</span>总管理员</span>
+      </div>
+      <div class="prose"><p class="muted">每个 AI 员工只在自己的岗位上干活，需要别人配合时发交接单。交接单带结构化字段，接手方拿到就能干，也只能看到交接单里给它的信息。</p></div>
+
+      <h3>核心数据模型（给开发看）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>实体</th><th>关键字段</th></tr></thead>
+          <tbody>
+            <tr><td>公司 Company</td><td>行业模板、套餐、总管理员</td></tr>
+            <tr><td>用户 User</td><td>角色（总管理员 / 部门管理员 / 员工）、岗位、权限集</td></tr>
+            <tr><td>岗位模板 AgentTemplate</td><td>行业、职责、技能、默认权限、模型档位</td></tr>
+            <tr><td>AI 员工 Agent</td><td>模板、所属员工（可空 = 待分配）、审批方式、自治等级、权限（⊆ 所属员工）、记忆空间</td></tr>
+            <tr><td>任务 / 交接单 Task</td><td>发起方、接收方、结构化字段、附件、状态、截止时间</td></tr>
+            <tr><td>审批单 Approval</td><td>风险等级、决策依据（结论、关键数据、图表、备选方案、风险与回滚、数据来源）、路由结果与原因、审批人、查看记录、决定、事后复盘结果</td></tr>
+            <tr><td>审计日志 AuditLog</td><td>操作者（人或 AI）、动作、依据的授权、前后数据</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec" id="effect">
+      <div class="sec-h"><span class="eyebrow">七 · 效果</span><h2>能做出一个什么样的平台</h2></div>
+      <div class="prose">
+        <p>目标客户是<b>各行业 10 到 500 人的中小企业</b>。做成以后预期的效果如下（这些是产品目标，需要试点验证）：</p>
+        <ul>
+          <li>每位员工有一名专属 AI 员工，接走岗位里重复、标准化的事务；员工把精力放在判断、沟通和审批上。</li>
+          <li>总管理员一屏看到所有 AI 员工在做什么、花了多少、哪些事在等谁审批，并且能随时介入。</li>
+          <li>授权逐步放开：新 AI 从 L1 起步，表现稳定再升级，风险可控。</li>
+          <li>员工离职，工作记忆和客户上下文留在公司，交接从几周缩短到一次分配。</li>
+          <li>换行业只换模板，同一套平台卖给电商、互联网公司、外贸公司。</li>
+        </ul>
+        <h3>竞争格局：要正视的一点</h3>
+        <p>「每人一个 AI 助理」这件事，飞书、钉钉、微软 Copilot 已经在做，而且自带用户和数据入口。这个平台必须在下面几点做出明显差异：</p>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>办公套件 AI 助理</th><th>本平台</th></tr></thead>
+          <tbody>
+            <tr><td>定位</td><td>帮人干活的助手，人发起、人完成</td><td>有岗位、有 KPI 的员工，能独立完成整段工作</td></tr>
+            <tr><td>管理</td><td>每人自己用，管理员管不细</td><td>总管理员雇佣、分配、收回，逐个设定审批方式和自治等级</td></tr>
+            <tr><td>审批</td><td>基本没有针对 AI 动作的审批</td><td>三档路由 + 红线 + 权限继承，全程审计</td></tr>
+            <tr><td>协作</td><td>助手之间不协作</td><td>AI 员工之间通过交接单联动，决策者统筹</td></tr>
+            <tr><td>行业深度</td><td>通用办公场景</td><td>行业模板：岗位、流程、连接器、KPI 开箱即用</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose"><p class="muted">策略上有两条路：深耕两三个行业模板，做到套件做不到的深度；或者把平台做成飞书、钉钉、企业微信里的应用，借它们的账号体系和入口，避免正面竞争。两条路可以同时走。</p></div>
+    </section>
+
+    <section class="sec" id="roadmap">
+      <div class="sec-h"><span class="eyebrow">八 · 落地</span><h2>路线图与风险</h2></div>
+      <div class="phases">
+        <div class="phase"><b>阶段 0 · 沙盘<span class="dur">约 4–6 周</span></b><p>做一个行业模板（建议电商或外贸）、管理后台、员工工作台和 3 到 4 个岗位。重点跑通权限继承、审批路由和跨员工交接。对外动作只生成草稿。</p></div>
+        <div class="phase"><b>阶段 1 · MVP<span class="dur">约 3 个月</span></b><p>多租户、真实连接器、手机端审批、审计日志、成本看板。找 5 到 10 家公司试点，用数据回答「每位员工每天省了多少时间、出了多少错」。</p></div>
+        <div class="phase"><b>阶段 2 · 多行业<span class="dur">约 3–6 个月</span></b><p>补齐互联网和外贸等模板；岗位库；部门管理员；接入企业微信、飞书、钉钉的账号和组织架构同步。</p></div>
+        <div class="phase"><b>阶段 3 · 生态<span class="dur">之后</span></b><p>开放第三方上架岗位模板和技能。按 AI 员工席位订阅，加模型用量和模板分成。</p></div>
+      </div>
+      <div class="prose">
+        <h3>技术选型建议</h3>
+        <p>前端 Next.js 加移动端审批；长任务用持久化工作流引擎（例如 Temporal）编排，中断后能续跑；智能体运行时基于开源框架自研，支持工具调用、长任务和可观测性；工具接入走 MCP；PostgreSQL 加行级权限做数据隔离，向量检索做知识库；规则引擎独立于模型运行；国内客户的数据存在境内。</p>
+        <p>模型怎么选：</p>
+        <ul>
+          <li><b>分级使用</b>：决策者和复杂推理（运营判断、研发、谈判准备）用旗舰模型；日常执行用中档模型；客服分类这类高频任务用轻量模型。</li>
+          <li><b>国内版用已备案的国产模型</b>：AI 员工写的内容会发给消费者和买家，所以要用已完成备案的大模型。平台调用已备案模型的接口时，要到属地网信办办理登记，并在产品显著位置公示模型名称和备案号或上线编号。</li>
+          <li><b>海外模型先看服务条款</b>：Anthropic 自 2025 年 9 月起停止向中国资本控股的企业提供服务，也覆盖这些企业的海外业务。外贸客户的海外业务如果要接海外模型，先确认企业股权结构是否符合对方的服务条款。</li>
+          <li><b>至少接两家供应商</b>：互为备份；换模型前先用历史工单重新考，质量不降再切换。</li>
+        </ul>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>风险</th><th>对策</th></tr></thead>
+          <tbody>
+            <tr><td>AI 编造信息并对外发送</td><td>对外内容只能引用知识库事实；新 AI 从 L1 起步；关键内容由另一名 AI 或员工复核</td></tr>
+            <tr><td>员工借 AI 越权</td><td>AI 权限是员工权限的子集；超权限自动升级到总管理员；全程审计</td></tr>
+            <tr><td>员工抵触，担心被替代</td><td>定位为员工的搭档，AI 的产出计入员工本人的绩效</td></tr>
+            <tr><td>平台封号</td><td>只用官方接口；控制频率；无接口渠道由员工一键发布</td></tr>
+            <tr><td>资金损失</td><td>付款永远是红线；每名 AI 设预算上限</td></tr>
+            <tr><td>数据泄露</td><td>公司之间多租户隔离，公司内按员工隔离；交接单只携带必要字段</td></tr>
+            <tr><td>模型成本失控</td><td>每名 AI 设算力预算；模型分级；看板展示每名 AI 的投入产出</td></tr>
+            <tr><td>模型服务中断、涨价或停止服务</td><td>国内版只用已备案的国产模型；至少接两家供应商互为备份；切换前重新考试</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <h3>参考资料</h3>
+        <ol class="refs">
+          <li><a href="https://www.anthropic.com/research/project-vend-2" target="_blank" rel="noopener">Anthropic · Project Vend: Phase two（2025 年 12 月）</a></li>
+          <li><a href="https://the-decoder.com/anthropics-ai-store-makes-money-while-debating-eternal-transcendence/" target="_blank" rel="noopener">The Decoder · Project Vend 第二阶段报道</a></li>
+          <li><a href="https://www.alphaxiv.org/overview/2412.14161v2" target="_blank" rel="noopener">TheAgentCompany: Benchmarking LLM Agents on Consequential Real World Tasks（CMU）</a></li>
+          <li><a href="https://www.news.cn/politics/20250314/b7a24028f2924b7681e6ed1bfbd8fade/c.html" target="_blank" rel="noopener">新华网 · 《人工智能生成合成内容标识办法》发布</a></li>
+          <li><a href="https://www.thepaper.cn/newsdetail_forward_32368980" target="_blank" rel="noopener">澎湃新闻 · 网信办生成式人工智能服务备案和登记公告（2026 年 1 月）</a></li>
+          <li><a href="https://www.semafor.com/article/09/05/2025/anthropic-blocks-ai-sales-in-china" target="_blank" rel="noopener">Semafor · Anthropic 停止向中国资本控股企业销售（2025 年 9 月）</a></li>
+          <li><a href="https://news.bloombergtax.com/international-trade/anthropic-clamps-down-on-ai-services-for-chinese-owned-firms" target="_blank" rel="noopener">Bloomberg Tax · Anthropic 的限制覆盖这些企业的海外业务（2025 年 9 月）</a></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+const hhmm = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
+
+const TIERS = { flag:{label:'旗舰推理模型', cost:0.9}, gen:{label:'通用模型', cost:0.22}, lite:{label:'轻量模型', cost:0.05} };
+const RISK = { low:{label:'低风险', lvl:1}, mid:{label:'中风险', lvl:2}, high:{label:'高风险', lvl:3}, red:{label:'红线', lvl:4} };
+const LEVELS = { 1:'L1 助手：所有对外动作逐条审批', 2:'L2 半自治：低风险自动执行', 3:'L3 授权自治：中低风险自动执行', 4:'L4 全自治：只有红线需要审批' };
+const MODES = { self:'员工自批', admin:'管理员审批' };
+const KIND = { plan:'计划', task:'派活', handoff:'交接', report:'汇报', external:'对外', inbound:'来信', tool:'工具调用', check:'审核', alert:'风控', approval:'提交审批', auto:'自动执行', system:'系统', decision:'审批决定', admin:'管理操作' };
+
+function pendingText(s){
+  const a = s.pending.filter(p => p.approver === 'admin').length, b = s.pending.length - a;
+  if (a) return `还有 ${a} 项等总管理员审批${b ? `，${b} 项在员工手里` : ''}。`;
+  return b ? `${b} 项审批在员工手里。` : '审批都已处理。';
+}
+
+/* ================= 行业模板 ================= */
+const TPL = {};
+
+TPL.ecom = {
+  label:'电商', company:'示例公司 · 原创家居品牌（天猫 + 抖音小店）', adminTitle:'创始人', prerun:'08:05',
+  people:[
+    {id:'p1', name:'李娜', role:'店铺运营'}, {id:'p2', name:'周婷', role:'客服主管'}, {id:'p3', name:'陈晨', role:'内容与直播'},
+    {id:'p4', name:'刘洋', role:'采购与仓储'}, {id:'p5', name:'孙悦', role:'财务'}, {id:'p6', name:'赵磊', role:'数据专员 · 新入职'}
+  ],
+  kpis:[['gmv','今日 GMV', v => '¥' + fmt(v)], ['orders','订单', fmt], ['service','售后处理', fmt], ['content','内容发布', fmt]],
+  agents:{
+    ceo:{name:'决策者', ch:'决', title:'统筹规划 · 跨岗位调度', tier:'flag', color:'var(--r-ceo)', owner:'admin', mode:'admin', level:2,
+      duty:['把周目标拆成每日任务派给各 AI 员工','晨会、午报、日报','监控 GMV、库存、评分等异常','超出授权的事项提交总管理员'], tools:['经营看板','任务看板','公司频道'], perm:['只能调度，不能直接对外签约或付款','不能修改任何 AI 员工的权限'], kpi:['周目标完成率','毛利率','店铺评分']},
+    op:{name:'运营 AI', ch:'运', title:'店铺运营', tier:'gen', color:'var(--r-sales)', owner:'p1', mode:'self', level:2,
+      duty:['商品上下架，优化标题和主图','监控竞品价格，提出调价建议','报名平台活动，管理推广计划','每日店铺数据复盘'], tools:['天猫 / 抖店开放平台','竞品监控','推广后台'], perm:['继承李娜的权限','调价 ≤ 3%','推广日预算 ≤ ¥3,000'], kpi:['GMV','转化率','推广投产比']},
+    cs:{name:'客服 AI', ch:'服', title:'售前售后', tier:'lite', color:'var(--r-cs)', owner:'p2', mode:'self', level:2,
+      duty:['7×24 回复买家咨询','处理退款、补发、换货','差评和投诉升级给周婷','把买家反馈转给运营和内容'], tools:['平台客服接口','订单系统','知识库'], perm:['继承周婷的权限','¥50 以内退款按规则处理','不能承诺知识库以外的信息'], kpi:['自动解决率','响应时间','店铺评分']},
+    ct:{name:'内容 AI', ch:'内', title:'种草内容与直播脚本', tier:'gen', color:'var(--r-mkt)', owner:'p3', mode:'self', level:2,
+      duty:['追热点、定选题','写种草笔记、短视频和直播脚本','排期发布，复盘播放数据'], tools:['趋势监测','脚本生成','抖音 / 小红书排期'], perm:['继承陈晨的权限','AI 生成内容必须标识','发布前需陈晨确认'], kpi:['播放量','互动率','内容带来的 GMV']},
+    sc:{name:'供应链 AI', ch:'供', title:'库存与补货', tier:'gen', color:'var(--r-ops)', owner:'p4', mode:'admin', level:2,
+      duty:['库存预警','补货计划与采购下单','物流异常跟踪'], tools:['ERP','仓储系统','供应商库'], perm:['继承刘洋的权限','采购需审批','付款必须总管理员确认'], kpi:['缺货率','库存周转','采购成本']},
+    fin:{name:'财务 AI', ch:'财', title:'对账与利润', tier:'gen', color:'var(--r-fin)', owner:'p5', mode:'admin', level:2,
+      duty:['平台结算对账','利润日报','现金流预警'], tools:['财务软件','平台结算单','银行流水（只读）'], perm:['继承孙悦的权限','只能发起付款申请','调账需审批'], kpi:['对账准确率','现金流预警提前天数']},
+    ana:{name:'数据 AI', ch:'析', title:'流量与商品分析', tier:'gen', color:'var(--r-x)', owner:null, mode:'self', level:3,
+      duty:['汇总各渠道数据','做商品和流量分析','给运营和决策者出报告'], tools:['数据仓库','BI 报表'], perm:['只读数据权限'], kpi:['分析建议采纳率'],
+      onAssign:[
+        {dt:5, from:'ana', to:'ceo', kind:'report', text:'已接入店铺数据。收纳柜详情页跳失率 61%，比同类高 15 个点，建议优先优化首屏。'},
+        {dt:30, from:'ana', to:'op', kind:'handoff', text:'预售加购用户里 43% 来自短视频，建议推广预算向内容加热倾斜。'}
+      ]}
+  },
+  market:{
+    ads:{name:'投放 AI', ch:'投', title:'千川 / 直通车投放', tier:'gen', color:'var(--r-x)', budget:'¥200–400', mode:'self', level:2,
+      duty:['管理推广计划和出价','按投产比调整预算','每 2 小时回报数据'], tools:['推广后台接口','数据分析'], perm:['继承所属员工的推广权限','调价超过 20% 需审批'], kpi:['投产比','获客成本'],
+      onAssign:[
+        {dt:5, from:'ads', to:'ceo', kind:'report', text:'接管推广账户。现有计划投产比 2.8，目标提升到 3.5。'},
+        {dt:25, from:'ads', kind:'approval', risk:'mid', title:'暂停 3 个低效计划', detail:'3 个计划近 7 天投产比低于 1.5，暂停后预算转给预售商品，总预算不变。',
+          onApprove:[{dt:3, from:'ads', to:'ceo', kind:'report', text:'已暂停并转移预算，2 小时后回报数据。'}], onReject:[{dt:3, from:'ads', to:'ceo', kind:'report', text:'保持现状，再观察一天。'}]}
+      ]},
+    live:{name:'直播场控 AI', ch:'播', title:'直播间运营', tier:'gen', color:'var(--r-x)', budget:'¥150–300', mode:'self', level:2,
+      duty:['监控弹幕和在线人数','提醒主播节奏和福袋','直播后复盘'], tools:['直播后台','弹幕监控'], perm:['不能自行改价'], kpi:['平均停留时长','直播 GMV'],
+      onAssign:[{dt:5, from:'live', to:'ct', kind:'report', text:'今晚直播的弹幕关键词监控和福袋节奏已配置好。'}]},
+    rev:{name:'评价管理 AI', ch:'评', title:'评价与口碑', tier:'lite', color:'var(--r-x)', budget:'¥80–150', mode:'self', level:2,
+      duty:['分类中差评','起草回复','把共性问题转给相关岗位'], tools:['评价接口','知识库'], perm:['回复差评前需员工确认'], kpi:['差评回复率','评分'],
+      onAssign:[{dt:5, from:'rev', to:'cs', kind:'report', text:'近 7 天 12 条中差评已分类：5 条物流、4 条安装、3 条色差，安装问题建议出视频。'}]}
+  },
+  script:[
+    {t:'08:00', from:'system', kind:'system', text:'新的一天开始。双 11 预热期，本周目标：预售加购 2 万件，店铺评分保持 4.8 以上。'},
+    {t:'08:01', from:'ceo', to:'all', kind:'plan', text:'晨会：昨天 GMV ¥8.6 万，加购 2,310 件。今天三件事：① 运营 AI 定预售价并报名满减；② 内容 AI 出 2 条预热短视频；③ 供应链 AI 核对爆款收纳柜库存够不够预售。'},
+    {t:'08:03', from:'cs', to:'买家', kind:'external', text:'夜间 46 条咨询，自动回复 43 条；2 笔 ¥50 以内的退款已按规则处理，1 笔 ¥189 的退款超出权限。', kpi:{service:2}},
+    {t:'08:05', from:'cs', kind:'approval', risk:'mid', title:'退款 ¥189', detail:'买家反馈柜门有色差，附了照片。按售后规则可以退款，或补发一块门板。',
+      onApprove:[{dt:2, from:'cs', to:'买家', kind:'external', text:'已同意退款 ¥189，另送一张 ¥20 无门槛券。', kpi:{service:1}}],
+      onReject:[{dt:2, from:'cs', to:'买家', kind:'external', text:'改为免费补发门板，已安排顺丰。', kpi:{service:1}}]},
+    {t:'08:20', from:'op', kind:'tool', text:'抓取 5 家竞品店铺价格：同款收纳柜均价 ¥399，我们是 ¥429。'},
+    {t:'08:25', from:'op', to:'p1', kind:'report', text:'建议预售价 ¥399，定金 ¥50 抵 ¥80。毛利率从 41% 降到 36%，仍高于 30% 的底线。'},
+    {t:'08:27', from:'op', kind:'approval', risk:'high', esc:true, escWhy:'调价 ≤ 3%', title:'预售价调到 ¥399', detail:'爆款从 ¥429 降到 ¥399，降幅 7%，毛利率从 41% 降到 36%。',
+      onApprove:[
+        {dt:3, from:'op', to:'天猫 / 抖音小店', kind:'external', text:'预售价已同步两个平台，定金膨胀活动已报名。'},
+        {dt:300, from:'op', to:'ceo', kind:'report', text:'复盘「预售价调到 ¥399」：调价后 5 小时转化率 2.9%（审批时预测 2.8%），加购 1,860 件。', kpi:{gmv:21400, orders:52}}
+      ],
+      onReject:[{dt:3, from:'op', to:'p1', kind:'report', text:'维持 ¥429，改为加送收纳篮，活动页已更新。'}]},
+    {t:'09:00', from:'ct', to:'ceo', kind:'report', text:'「秋冬换季收纳」话题这周热度上升，建议 2 条预热短视频都用这个主题。'},
+    {t:'09:02', from:'ceo', to:'ct', kind:'plan', text:'同意，突出大容量和免安装。'},
+    {t:'09:30', from:'ct', to:'p3', kind:'report', text:'2 条短视频脚本和今晚直播话术已写好，已标注 AI 生成，请你确认。'},
+    {t:'09:32', from:'ct', kind:'approval', risk:'mid', title:'发布 2 条预热短视频', detail:'抖音定时 12:00 和 19:00 发布，直播话术同步给主播。',
+      onApprove:[{dt:2, from:'ct', to:'抖音', kind:'external', text:'2 条短视频已定时，直播话术已发给主播。', kpi:{content:2}}],
+      onReject:[{dt:2, from:'ct', to:'p3', kind:'report', text:'已撤回，按你的意见改稿后再提交。'}]},
+    {t:'10:00', from:'system', kind:'alert', also:'sc', text:'库存预警：爆款收纳柜可售 820 件，按今天的加购速度 5 天后断货。'},
+    {t:'10:03', from:'sc', to:'fin', kind:'task', text:'计划补货 2,000 件，货款 ¥33.6 万，请确认现金流。'},
+    {t:'10:10', from:'fin', to:'sc', kind:'report', text:'账上可用 ¥52 万，平台结算 ¥18 万 3 天后到账。可以先付 30% 定金 ¥10.08 万。'},
+    {t:'10:12', from:'sc', kind:'approval', risk:'red', title:'支付补货定金 ¥100,800', detail:'向长期合作的工厂补货 2,000 件，15 天交货，分两批入仓。资金支出属于红线。',
+      onApprove:[
+        {dt:3, from:'fin', to:'sc', kind:'report', text:'付款单已提交银行，等总管理员用网银 U 盾确认。'},
+        {dt:5, from:'sc', to:'工厂', kind:'external', text:'采购单已发出，工厂确认 15 天交货。'}
+      ],
+      onReject:[{dt:3, from:'sc', to:'ceo', kind:'report', text:'暂不补货，预售限量 800 件，已通知运营 AI。'}]},
+    {t:'11:00', from:'op', to:'ceo', kind:'report', text:'上午成交 81 单，GMV ¥3.2 万。', kpi:{gmv:32000, orders:81}},
+    {t:'12:00', from:'ceo', to:'admin', kind:'report', text:s => `午报：上午 GMV ¥${fmt(s.kpi.gmv)}，订单 ${s.kpi.orders}，售后处理 ${s.kpi.service} 件。${pendingText(s)}`},
+    {t:'13:30', from:'cs', to:'ct', kind:'handoff', text:'今天有 3 位买家说安装说明看不懂，能不能出一条安装视频？'},
+    {t:'13:40', from:'ct', to:'cs', kind:'report', text:'安装视频脚本已写好，排进明天的拍摄计划。视频出来前，先把图文版安装步骤发给你。'},
+    {t:'14:00', from:'op', kind:'approval', risk:'mid', title:'推广加投 ¥2,000', detail:'给预售商品追加推广 ¥2,000，目标投产比 3.5，在李娜的日预算之内。',
+      onApprove:[
+        {dt:3, from:'op', to:'ceo', kind:'report', text:'加投已生效，每 2 小时回报一次数据。'},
+        {dt:150, from:'op', to:'p1', kind:'report', text:'复盘「推广加投」：实际投产比 4.1（审批时预测 3.8），带来 GMV ¥8,200。', kpi:{gmv:8200, orders:21}}
+      ],
+      onReject:[{dt:3, from:'op', to:'p1', kind:'report', text:'不加投，保持原推广计划。'}]},
+    {t:'15:00', from:'fin', kind:'approval', risk:'mid', title:'对账差异调账 ¥1,260', detail:'天猫结算单和订单系统差 ¥1,260，原因是 3 笔跨月退款。建议调账并备注。',
+      onApprove:[{dt:3, from:'fin', to:'p5', kind:'report', text:'已调账，差异原因写入对账备注。'}],
+      onReject:[{dt:3, from:'fin', to:'p5', kind:'report', text:'暂不调账，已向平台发起结算核查。'}]},
+    {t:'16:00', from:'op', to:'ceo', kind:'report', text:'下午成交 64 单，GMV ¥2.6 万。', kpi:{gmv:26000, orders:64}},
+    {t:'17:00', from:'fin', to:'ceo', kind:'report', text:s => `利润日报：今日 GMV ¥${fmt(s.kpi.gmv)}，预计毛利 ¥${fmt(s.kpi.gmv*0.37)}，AI 运营成本 ¥${s.kpi.cost.toFixed(2)}。未来 30 天现金流无缺口。`},
+    {t:'17:30', from:'ceo', to:'all', kind:'plan', text:s => `复盘：短视频带来的加购占比最高，明天继续加热；安装视频明天拍。${s.agents.ana && s.agents.ana.owner ? '数据 AI 已上岗，明天起每天出流量分析。' : (s.solo ? '建议启用待分配的「数据 AI」，每天出流量分析。' : '赵磊还没有 AI 员工，建议总管理员把「数据 AI」分配给赵磊。')}`},
+    {t:'18:00', from:'ceo', to:'admin', kind:'report', text:s => `日报：GMV ¥${fmt(s.kpi.gmv)}，订单 ${s.kpi.orders}，内容发布 ${s.kpi.content} 条。审批：总管理员 ${s.kpi.byAdmin} 项，员工 ${s.kpi.byStaff} 项，AI 自动 ${s.kpi.auto} 项。明天：预售加热、安装视频、补货入仓跟进。`},
+    {t:'18:05', from:'system', kind:'system', text:'白天班结束。客服 AI 夜间继续值守，其他 AI 员工整理明日计划。'}
+  ]
+};
+
+TPL.saas = {
+  label:'互联网', company:'示例公司 · 团队协作 SaaS（企业订阅）', adminTitle:'CEO', prerun:'08:06',
+  people:[
+    {id:'p1', name:'王浩', role:'产品经理'}, {id:'p2', name:'林峰', role:'后端工程师'}, {id:'p3', name:'许静', role:'测试工程师'},
+    {id:'p4', name:'何雨', role:'增长运营'}, {id:'p5', name:'郑欣', role:'HR 招聘'}, {id:'p6', name:'吴凡', role:'客户成功 · 新入职'}
+  ],
+  kpis:[['signups','新注册', fmt], ['mrr','新增 MRR', v => '¥' + fmt(v)], ['bugs','修复缺陷', fmt], ['resumes','简历筛选', fmt]],
+  agents:{
+    ceo:{name:'决策者', ch:'决', title:'统筹规划 · 跨岗位调度', tier:'flag', color:'var(--r-ceo)', owner:'admin', mode:'admin', level:2,
+      duty:['把季度 OKR 拆成每周和每日任务','晨会、午报、日报','监控发布进度、增长和成本','超出授权的事项提交总管理员'], tools:['经营看板','任务看板','公司频道'], perm:['只能调度，不能直接发布或付款','不能修改任何 AI 员工的权限'], kpi:['OKR 完成率','MRR 增长','研发准时率']},
+    pm:{name:'产品 AI', ch:'产', title:'需求与反馈', tier:'gen', color:'var(--r-legal)', owner:'p1', mode:'self', level:2,
+      duty:['聚类用户反馈，判断优先级','写 PRD 初稿和发布说明','跟踪需求进度'], tools:['工单系统','用户反馈库','文档'], perm:['继承王浩的权限','可以创建和分配缺陷单','发布排期需王浩确认'], kpi:['需求交付准时率','反馈响应时间']},
+    dev:{name:'研发 AI', ch:'研', title:'缺陷修复与代码评审', tier:'gen', color:'var(--r-ops)', owner:'p2', mode:'self', level:2,
+      duty:['定位缺陷，提交修复 PR','代码评审','管理云资源成本'], tools:['代码仓库','CI/CD','日志与监控','云控制台'], perm:['继承林峰的权限','只能提 PR，合并需人工评审','生产发布需林峰批准'], kpi:['缺陷修复时长','线上错误率']},
+    qa:{name:'测试 AI', ch:'测', title:'回归与发布检查', tier:'gen', color:'var(--r-cs)', owner:'p3', mode:'self', level:3,
+      duty:['跑自动化回归','补充手工用例','发布前检查'], tools:['测试平台','CI/CD','设备云'], perm:['继承许静的权限','可以阻断发布'], kpi:['回归覆盖率','漏测率']},
+    gr:{name:'增长 AI', ch:'增', title:'增长活动与营销', tier:'gen', color:'var(--r-mkt)', owner:'p4', mode:'admin', level:2,
+      duty:['策划增长活动','邮件和站内信营销','SEO 内容'], tools:['营销自动化','落地页','数据分析'], perm:['继承何雨的权限','价格和优惠需审批','群发需审批'], kpi:['新注册','付费转化','获客成本']},
+    hr:{name:'招聘 AI', ch:'聘', title:'简历筛选与面试安排', tier:'gen', color:'var(--r-fin)', owner:'p5', mode:'self', level:2,
+      duty:['盲筛简历','安排面试','起草 Offer'], tools:['招聘系统','日历','邮件'], perm:['继承郑欣的权限','只做盲筛，不看姓名、年龄、性别','发 Offer 属于红线'], kpi:['筛选时效','面试到岗率']},
+    cs:{name:'客户成功 AI', ch:'客', title:'客户上手与续费', tier:'gen', color:'var(--r-x)', owner:null, mode:'self', level:2,
+      duty:['跟进新付费客户上手','识别流失风险客户','整理续费名单'], tools:['CRM','产品使用数据','邮件'], perm:['继承所属员工的权限','不能自行给折扣'], kpi:['续费率','客户健康分'],
+      onAssign:[
+        {dt:5, from:'cs', to:'ceo', kind:'report', text:'已接入客户数据。7 个付费团队近 14 天没有登录，属于流失风险，已列入跟进名单。'},
+        {dt:30, from:'cs', to:'pm', kind:'handoff', text:'3 个大客户都在问 SSO 单点登录，建议提高优先级。'}
+      ]}
+  },
+  market:{
+    sec:{name:'安全审计 AI', ch:'安', title:'依赖与代码安全', tier:'gen', color:'var(--r-x)', budget:'¥200–400', mode:'self', level:2,
+      duty:['扫描依赖漏洞','审查高风险代码改动','跟踪修复进度'], tools:['代码仓库','漏洞库'], perm:['只能提 PR'], kpi:['高危漏洞修复时长'],
+      onAssign:[{dt:5, from:'sec', to:'dev', kind:'report', text:'依赖库扫描完成，发现 2 个中危漏洞，已提交升级 PR。'}]},
+    doc:{name:'技术文档 AI', ch:'文', title:'帮助文档与更新日志', tier:'lite', color:'var(--r-x)', budget:'¥80–150', mode:'self', level:3,
+      duty:['同步更新日志','维护帮助中心','整理 API 文档'], tools:['文档系统','代码仓库（只读）'], perm:['发布前需员工确认'], kpi:['文档覆盖率'],
+      onAssign:[{dt:5, from:'doc', to:'pm', kind:'report', text:'v3.7.2 的更新日志和帮助文档已同步更新。'}]},
+    sales:{name:'销售 AI', ch:'销', title:'试用转付费', tier:'gen', color:'var(--r-x)', budget:'¥200–400', mode:'self', level:2,
+      duty:['跟进试用团队','预约演示','起草报价'], tools:['CRM','邮件','日历'], perm:['折扣需审批'], kpi:['试用转付费率'],
+      onAssign:[{dt:5, from:'sales', to:'ceo', kind:'report', text:'整理了 23 个试用期即将结束的团队，按活跃度排序，准备逐个跟进。'}]}
+  },
+  script:[
+    {t:'08:00', from:'system', kind:'system', text:'新的一天开始。本周目标：发布 v3.8 看板视图，新注册 1,500，P1 缺陷清零。'},
+    {t:'08:01', from:'ceo', to:'all', kind:'plan', text:'晨会：昨天新注册 204，P1 缺陷剩 1 个。今天：① 产品 AI 汇总反馈，研发 AI 先修 P1；② 增长 AI 评估竞品涨价带来的机会；③ 招聘 AI 完成后端岗位初筛。'},
+    {t:'08:04', from:'pm', kind:'tool', text:'汇总昨晚 126 条用户反馈：38 条集中在「导出 Excel 中文乱码」，判定为 P1。'},
+    {t:'08:06', from:'pm', to:'dev', kind:'handoff', text:'P1 缺陷：导出 Excel 中文乱码，影响 Windows 用户。附复现步骤和 12 个客户工单号。'},
+    {t:'08:30', from:'dev', kind:'tool', text:'定位到导出服务缺少 UTF-8 BOM，已提交修复 PR #2417 和单元测试。'},
+    {t:'08:31', from:'dev', to:'qa', kind:'handoff', text:'PR #2417 请回归测试。'},
+    {t:'08:50', from:'qa', to:'dev', kind:'report', text:'842 条回归用例全部通过，Windows 和 macOS 上的 Excel 打开正常。', kpi:{bugs:1}},
+    {t:'08:52', from:'dev', kind:'approval', risk:'high', title:'发布热修复 v3.7.2', detail:'修复导出乱码，回归已通过。先灰度 10%，30 分钟无异常再全量。',
+      onApprove:[
+        {dt:3, from:'dev', to:'生产环境', kind:'external', text:'灰度 10% 后全量发布，错误率没有上升。'},
+        {dt:6, from:'pm', to:'12 位客户', kind:'external', text:'已给反馈过的客户发送修复通知。'}
+      ],
+      onReject:[{dt:3, from:'dev', to:'p2', kind:'report', text:'暂不发布，等今晚低峰期再提交。'}]},
+    {t:'09:30', from:'gr', to:'ceo', kind:'report', text:'主要竞品宣布涨价 20%，建议推出「迁移优惠」：从竞品迁移过来的团队首年 7 折。'},
+    {t:'09:33', from:'gr', kind:'approval', risk:'high', title:'上线迁移优惠：首年 7 折', detail:'落地页和邮件已备好，涉及定价调整。',
+      onApprove:[
+        {dt:3, from:'gr', to:'8,400 位订阅用户', kind:'external', text:'迁移优惠落地页上线，邮件已分批发送。'},
+        {dt:300, from:'gr', to:'ceo', kind:'report', text:'复盘「迁移优惠」：5 小时带来 214 个新注册、9 个团队付费（审批时预测首月 30–40 个），新增 MRR ¥6,300。', kpi:{signups:214, mrr:6300}}
+      ],
+      onReject:[{dt:3, from:'gr', to:'p4', kind:'report', text:'不做折扣，改为免费提供数据迁移服务。'}]},
+    {t:'10:00', from:'hr', kind:'tool', text:'盲筛 63 份后端工程师简历（已隐去姓名、年龄、性别），12 份推荐进入初面。', kpi:{resumes:63}},
+    {t:'10:03', from:'hr', kind:'approval', risk:'mid', title:'向 12 位候选人发面试邀约', detail:'已按面试官日历排好时间，邀约邮件沿用公司标准模板。',
+      onApprove:[{dt:2, from:'hr', to:'12 位候选人', kind:'external', text:'面试邀约已发出，候选人可以自助改期。'}],
+      onReject:[{dt:2, from:'hr', to:'p5', kind:'report', text:'已撤回，等你调整名单后再发。'}]},
+    {t:'10:30', from:'pm', to:'p1', kind:'report', text:'「看板视图」PRD 初稿完成，列出 3 个需要你决策的问题。'},
+    {t:'11:30', from:'system', kind:'alert', also:'dev', text:'成本监控：本月云资源费用预计超预算 18%，主要是 6 台测试服务器长期没关机。'},
+    {t:'11:33', from:'dev', kind:'approval', risk:'low', title:'关闭 6 台闲置测试服务器', detail:'确认 14 天无流量，关机前已打快照。',
+      onApprove:[{dt:2, from:'dev', to:'ceo', kind:'report', text:'已关机，预计每月节省 ¥4,200。'}],
+      onReject:[{dt:2, from:'dev', to:'p2', kind:'report', text:'保留服务器，改为夜间自动关机。'}]},
+    {t:'12:00', from:'ceo', to:'admin', kind:'report', text:s => `午报：新注册 ${s.kpi.signups}，修复缺陷 ${s.kpi.bugs} 个，简历筛选 ${s.kpi.resumes} 份。${pendingText(s)}`},
+    {t:'13:30', from:'gr', to:'ceo', kind:'report', text:'上午自然注册 186。', kpi:{signups:186}},
+    {t:'14:00', from:'pm', kind:'approval', risk:'mid', title:'v3.8 发布排期：下周三', detail:'研发和测试都确认能按期完成，发布说明草稿已附上。',
+      onApprove:[{dt:2, from:'pm', to:'all', kind:'plan', text:'v3.8 定在下周三发布，已同步到各 AI 员工的任务看板。'}],
+      onReject:[{dt:2, from:'pm', to:'p1', kind:'report', text:'排期已撤回，等你和研发再对一次范围。'}]},
+    {t:'15:00', from:'qa', to:'dev', kind:'handoff', text:'看板视图拖拽在 Safari 上卡顿，已提 P2 缺陷。'},
+    {t:'15:40', from:'dev', to:'qa', kind:'report', text:'已修复，PR #2431，明天请回归。', kpi:{bugs:1}},
+    {t:'16:00', from:'hr', kind:'approval', risk:'red', title:'发 Offer：高级后端工程师', detail:'上周终面通过的候选人，月薪 ¥35,000。录用真人员工属于红线。',
+      onApprove:[{dt:3, from:'hr', to:'候选人', kind:'external', text:'Offer 已发出，入职材料清单一并发送。'}],
+      onReject:[{dt:3, from:'hr', to:'p5', kind:'report', text:'暂缓发 Offer，和候选人保持沟通。'}]},
+    {t:'17:00', from:'gr', to:'ceo', kind:'report', text:s => `增长日报：今日新注册 ${s.kpi.signups}，新增 MRR ¥${fmt(s.kpi.mrr)}。`},
+    {t:'17:30', from:'ceo', to:'all', kind:'plan', text:s => `复盘：P1 已清零，迁移活动明天再推一轮。${s.agents.cs && s.agents.cs.owner ? '客户成功 AI 已开始跟进流失风险客户。' : (s.solo ? '建议启用待分配的「客户成功 AI」，跟进流失风险客户。' : '吴凡还没有 AI 员工，建议总管理员把「客户成功 AI」分配给吴凡。')}`},
+    {t:'18:00', from:'ceo', to:'admin', kind:'report', text:s => `日报：新注册 ${s.kpi.signups}，新增 MRR ¥${fmt(s.kpi.mrr)}，修复缺陷 ${s.kpi.bugs} 个。审批：总管理员 ${s.kpi.byAdmin} 项，员工 ${s.kpi.byStaff} 项，AI 自动 ${s.kpi.auto} 项。`},
+    {t:'18:05', from:'system', kind:'system', text:'白天班结束。研发 AI 夜间继续盯线上监控，有告警会通知林峰。'}
+  ]
+};
+
+TPL.trade = {
+  label:'外贸', company:'示例公司 · 家居收纳出海工厂', adminTitle:'老板', prerun:'08:20',
+  people:[
+    {id:'p1', name:'陈立', role:'业务经理'}, {id:'p2', name:'黄珊', role:'外贸销售'}, {id:'p3', name:'马骏', role:'跟单 / 生产'},
+    {id:'p4', name:'冯敏', role:'财务'}, {id:'p5', name:'杨帆', role:'新媒体'}, {id:'p6', name:'唐悦', role:'数据专员 · 新入职'}
+  ],
+  kpis:[['leads','新线索', fmt], ['opps','有效商机', fmt], ['deals','签约额', v => '$' + fmt(v)], ['sent','对外触达', fmt]],
+  agents:{
+    ceo:{name:'决策者', ch:'决', title:'统筹规划 · 跨岗位调度', tier:'flag', color:'var(--r-ceo)', owner:'admin', mode:'admin', level:2,
+      duty:['把 OKR 拆成每日任务','晨会、午报、日报','监控询盘、毛利、交期','超出授权的事项提交总管理员'], tools:['经营看板','任务看板','公司频道'], perm:['只能调度，不能签约或付款','不能修改任何 AI 员工的权限'], kpi:['周 OKR 完成率','毛利率']},
+    legal:{name:'法务 AI', ch:'法', title:'合同与合规', tier:'gen', color:'var(--r-legal)', owner:'admin', mode:'admin', level:2,
+      duty:['审核开发信和对外内容','起草和审查合同','标出需要确认的条款'], tools:['合同模板库','合规规则库'], perm:['可以驳回任何对外内容','不能代表公司签字'], kpi:['审核时效','问题拦截数']},
+    bd:{name:'业务 AI', ch:'拓', title:'获客与开发信', tier:'gen', color:'var(--r-bd)', owner:'p1', mode:'self', level:2,
+      duty:['检索 B2B 平台公开采购需求和企业官网','线索核验、打分','撰写并发送开发信','A 级线索交给销售 AI'], tools:['网页检索','B2B 询盘接口','邮箱验证','邮件','CRM'], perm:['继承陈立的权限','每日外发 ≤ 50 封','退信率超过 8% 自动熔断'], kpi:['有效线索数','回复率']},
+    sales:{name:'销售 AI', ch:'销', title:'报价与成交', tier:'gen', color:'var(--r-sales)', owner:'p2', mode:'self', level:2,
+      duty:['跟进 A/B 级线索','报价，权限内议价','推动签约，交接给跟单和财务'], tools:['邮件','CRM','报价单生成'], perm:['继承黄珊的权限','自主让价 ≤ 5%','不能签署合同'], kpi:['商机转化率','签约额','毛利率']},
+    ops:{name:'跟单 AI', ch:'交', title:'排产与采购', tier:'gen', color:'var(--r-ops)', owner:'p3', mode:'admin', level:2,
+      duty:['订单排产','原料比价与下单','物流跟踪'], tools:['ERP','供应商库','物流查询'], perm:['继承马骏的权限','采购需审批','付款必须总管理员授权'], kpi:['准时交付率','采购成本']},
+    fin:{name:'财务 AI', ch:'财', title:'账务与资金', tier:'gen', color:'var(--r-fin)', owner:'p4', mode:'admin', level:2,
+      duty:['测算报价毛利','开票、收款跟踪','财务日报'], tools:['财务软件','银行流水（只读）'], perm:['继承冯敏的权限','只能发起付款申请'], kpi:['回款周期','账务准确率']},
+    mkt:{name:'内容 AI', ch:'内', title:'社媒内容与投放', tier:'gen', color:'var(--r-mkt)', owner:'p5', mode:'self', level:2,
+      duty:['追热点、写内容','多平台排期','投放建议'], tools:['趋势监测','社媒排期','数据分析'], perm:['继承杨帆的权限','内容先过法务 AI','投放预算需审批'], kpi:['私信询价数','单条询价成本']},
+    ana:{name:'数据 AI', ch:'析', title:'渠道与转化分析', tier:'gen', color:'var(--r-x)', owner:null, mode:'self', level:3,
+      duty:['汇总各渠道线索与转化','做渠道归因','每周出经营分析'], tools:['数据仓库','CRM'], perm:['只读数据权限'], kpi:['分析建议采纳率'],
+      onAssign:[{dt:5, from:'ana', to:'ceo', kind:'report', text:'已接入询盘数据：开发信回复率约 3.7%，社媒私信转询价约 12%，内容渠道性价比更高。'}]}
+  },
+  market:{
+    bid:{name:'招投标 AI', ch:'标', title:'公开招标监控', tier:'gen', color:'var(--r-x)', budget:'¥150–300', mode:'self', level:2,
+      duty:['订阅公开招标平台','匹配产品与资质','准备投标资料清单'], tools:['招标信息订阅','资质档案库'], perm:['投标需审批'], kpi:['匹配公告数','中标率'],
+      onAssign:[{dt:6, from:'bid', to:'sales', kind:'handoff', text:'已订阅 5 个公开招标平台，今天匹配到 2 条收纳类采购公告，资质要求都满足。', kpi:{opps:2}}]},
+    i18n:{name:'多语种客服 AI', ch:'译', title:'小语种买家沟通', tier:'lite', color:'var(--r-x)', budget:'¥80–150', mode:'self', level:2,
+      duty:['处理德语、日语、西班牙语询盘','本地化产品资料'], tools:['邮件','知识库'], perm:['不能报价'], kpi:['响应时间'],
+      onAssign:[{dt:6, from:'i18n', to:'sales', kind:'handoff', text:'一位德国买家用德语询价 2,000 件，已翻译整理需求交给你。', kpi:{leads:1}}]},
+    buy:{name:'采购 AI', ch:'采', title:'原料比价', tier:'gen', color:'var(--r-x)', budget:'¥150–300', mode:'self', level:2,
+      duty:['原料与包材比价','跟踪供应商交期'], tools:['供应商库','ERP'], perm:['不能付款'], kpi:['采购成本'],
+      onAssign:[{dt:6, from:'buy', to:'ops', kind:'report', text:'PP 原料 3 家供应商比价完成，最低价比上月低 4%，交期 2 天。'}]}
+  },
+  script:[
+    {t:'08:00', from:'system', kind:'system', text:'新的一天开始。本周 OKR：有效询盘 100 条（已完成 58），签约 6 单（已完成 3），毛利率不低于 20%。'},
+    {t:'08:01', from:'ceo', to:'all', kind:'plan', text:'晨会：昨天询盘 14 条，低于日目标 20 条。今天：① 业务 AI 扩大北美和澳洲零售商名单；② 内容 AI 围绕「小户型收纳」出 3 条内容；③ 销售 AI 优先推进澳洲连锁客户报价。'},
+    {t:'08:06', from:'bd', kind:'tool', text:'检索 B2B 平台公开采购需求、展会公开名录和企业官网联系页；核验 41 个邮箱，有效 27 个。', kpi:{leads:27}},
+    {t:'08:12', from:'bd', to:'legal', kind:'check', text:'请审开发信模板 v3：主题行、发件人信息、退订链接。'},
+    {t:'08:18', from:'legal', to:'bd', kind:'check', text:'通过，删掉了「市场最低价」这种无法证明的说法。'},
+    {t:'08:20', from:'bd', to:'sales', kind:'handoff', text:'3 条 A 级线索。重点：澳洲一家 40 门店的家居连锁在询价伸缩收纳架 5000 件，过往采购价 $2.9–3.4，建议首报 $3.20。', kpi:{opps:3}},
+    {t:'08:30', from:'bd', kind:'approval', risk:'mid', title:'批量发送开发信', detail:'向 27 家已核验邮箱的零售商发送首封开发信，模板已过法务 AI 审核。',
+      onApprove:[
+        {dt:2, from:'bd', to:'27 家零售商', kind:'external', text:'首封开发信分批发出，按对方时区早上 9 点送达。', kpi:{sent:27}},
+        {dt:205, from:'bd', to:'sales', kind:'handoff', text:'开发信收到 2 封回复：一家加拿大网店想要样品目录和起订量，需求已整理好。', kpi:{opps:1}},
+        {dt:450, from:'system', kind:'alert', pause:'bd', text:'风控规则触发：业务 AI 今日退信率 9.6%，超过 8% 阈值。已自动暂停它的对外发信。'},
+        {dt:454, from:'ceo', to:'bd', kind:'task', text:'先清洗名单：剔除退信地址和 info@ 这类通用邮箱，再恢复外发。'},
+        {dt:478, from:'bd', to:'p1', kind:'report', resume:'bd', text:'名单已清洗，剔除 6 个无效地址。抽样复验退信率 2.1%，外发已恢复。'}
+      ],
+      onReject:[{dt:2, from:'bd', to:'p1', kind:'report', text:'开发信被驳回，改为只给 3 家 A 级客户单独写邮件。'}]},
+    {t:'09:05', from:'mkt', to:'ceo', kind:'report', text:'「租房收纳」话题本周搜索量上升，建议今天的内容都换成这个主题。'},
+    {t:'09:40', from:'mkt', to:'legal', kind:'check', text:'3 篇图文和 1 条短视频脚本请审核，已加上「AI 生成」标识。'},
+    {t:'09:52', from:'legal', to:'mkt', kind:'check', text:'第 3 篇写了「甲醛零释放」，没有检测报告支撑，已改成「采用 PP 材质」。其余通过。'},
+    {t:'10:00', from:'mkt', kind:'approval', risk:'mid', title:'发布 3 条社媒内容', detail:'小红书 2 篇、Instagram 1 篇。小红书没有开放自动发布接口，批准后推送到手机一键发布。',
+      onApprove:[
+        {dt:2, from:'mkt', to:'社媒平台', kind:'external', text:'Instagram 已发布；小红书 2 篇已推送到手机，等一键发布。', kpi:{sent:3}},
+        {dt:330, from:'mkt', to:'p5', kind:'report', text:'租房收纳笔记 5 小时收藏 1,240，带来 11 条私信询价，已转给销售 AI。', kpi:{leads:11}},
+        {dt:338, from:'mkt', kind:'approval', risk:'high', title:'明日投放预算 ¥500', detail:'给表现最好的笔记追加投放 ¥500，目标 30 条私信询价，单条成本不超过 ¥17。',
+          onApprove:[{dt:2, from:'mkt', to:'ceo', kind:'report', text:'投放已排期，明早 9 点开始。'}],
+          onReject:[{dt:2, from:'mkt', to:'p5', kind:'report', text:'不追加投放，明天改写后在其他平台复用。'}]}
+      ],
+      onReject:[{dt:2, from:'mkt', to:'p5', kind:'report', text:'内容被驳回，改稿后明早再提交。'}]},
+    {t:'10:15', from:'sales', to:'澳洲家居连锁', kind:'external', text:'发出正式报价：伸缩收纳架 5000 件，FOB 宁波 $3.20/件，交期 35 天。', kpi:{sent:1}},
+    {t:'10:55', from:'澳洲家居连锁', to:'sales', kind:'inbound', text:'客户回复：量大，希望单价降到 $2.85。'},
+    {t:'10:57', from:'sales', to:'fin', kind:'task', text:'客户还价到 $2.85，降幅 11%，请测算毛利。'},
+    {t:'11:02', from:'fin', to:'sales', kind:'report', text:'$2.85 时毛利率 19.2%，低于 20% 底线。建议报 $2.95（毛利 21.9%），首单附送样品作为让步。'},
+    {t:'11:05', from:'sales', kind:'approval', risk:'high', esc:true, escWhy:'让价 ≤ 5%', title:'报价让利 7.8%', detail:'报 $2.95/件（原价 $3.20），让利 7.8%，毛利 21.9%，高于底线。',
+      onApprove:[
+        {dt:3, from:'sales', to:'澳洲家居连锁', kind:'external', text:'发出新报价 $2.95/件，首单附送免费样品。', kpi:{sent:1}},
+        {dt:180, from:'澳洲家居连锁', to:'sales', kind:'inbound', text:'客户接受 $2.95，要求 30% 预付，70% 见提单副本后付清。'},
+        {dt:182, from:'sales', to:'legal', kind:'task', text:'请按客户条款起草销售合同。'},
+        {dt:198, from:'legal', to:'sales', kind:'check', text:'合同草案完成：FOB 宁波，30% 预付，延期交货每周罚 0.5%、上限 5%。'},
+        {dt:200, from:'sales', kind:'approval', risk:'red', title:'签署销售合同 $14,750', detail:'伸缩收纳架 5000 件 × $2.95。需要法定代表人电子签名，AI 员工不能代签。',
+          onApprove:[
+            {dt:2, from:'sales', to:'澳洲家居连锁', kind:'external', text:'合同已双方签署并回传。', kpi:{deals:14750, sent:1}},
+            {dt:4, from:'sales', to:'ops', kind:'handoff', text:'新订单：伸缩收纳架 5000 件，35 天交期，请排产。'},
+            {dt:5, from:'sales', to:'fin', kind:'handoff', text:'请开 30% 预付款形式发票，金额 $4,425。'},
+            {dt:20, from:'ops', to:'p3', kind:'report', text:'已排产。PP 原料库存不够，需要采购 2 吨。'},
+            {dt:24, from:'ops', kind:'approval', risk:'red', title:'支付原料货款 ¥18,600', detail:'向长期合作的原料供应商采购 2 吨，比价 3 家后选了最低价。资金支出属于红线。',
+              onApprove:[
+                {dt:3, from:'fin', to:'ops', kind:'report', text:'付款单已提交银行，等总管理员在网银用 U 盾确认。'},
+                {dt:5, from:'ops', to:'原料供应商', kind:'external', text:'采购单已发出，约定后天送货。', kpi:{sent:1}}
+              ],
+              onReject:[{dt:3, from:'ops', to:'p3', kind:'report', text:'付款被驳回，改为向供应商申请 15 天账期。'}]}
+          ],
+          onReject:[{dt:3, from:'sales', to:'legal', kind:'task', text:'总管理员没有签，请修改条款后重新提交。'}]}
+      ],
+      onReject:[{dt:3, from:'sales', to:'澳洲家居连锁', kind:'external', text:'维持 $3.20，改为提供免费样品并把交期缩短到 30 天。', kpi:{sent:1}}]},
+    {t:'12:00', from:'ceo', to:'admin', kind:'report', text:s => `午报：新线索 ${s.kpi.leads} 条，有效商机 ${s.kpi.opps} 个。${pendingText(s)}`},
+    {t:'13:30', from:'bd', to:'sales', kind:'handoff', text:'发现一条公开招标：某连锁酒店集团采购客房收纳用品，预算约 ¥60 万，下周五截止。', kpi:{opps:1}},
+    {t:'13:45', from:'ops', to:'sales', kind:'report', text:'产能核查：下个月还能额外承接 8000 件，满足招标量。'},
+    {t:'14:00', from:'sales', kind:'approval', risk:'high', esc:true, escWhy:'不能自行投标和缴纳保证金', title:'参与酒店集团投标', detail:'投标报价 ¥56 万，需缴纳投标保证金 ¥1 万。',
+      onApprove:[
+        {dt:5, from:'sales', to:'legal', kind:'task', text:'开始准备标书，资质文件从公司档案库调取。'},
+        {dt:7, from:'fin', to:'sales', kind:'report', text:'保证金 ¥1 万已列入下周付款计划。'}
+      ],
+      onReject:[{dt:3, from:'sales', to:'p2', kind:'report', text:'这次不投标，继续关注同类招标。'}]},
+    {t:'17:00', from:'fin', to:'ceo', kind:'report', text:s => `财务日报：今日签约 $${fmt(s.kpi.deals)}，AI 运营成本 ¥${s.kpi.cost.toFixed(2)}。未来 30 天现金流无缺口。`},
+    {t:'17:30', from:'ceo', to:'all', kind:'plan', text:s => `复盘：开发信回复率偏低，明天对主题行做 A/B 测试；内容渠道今天表现最好。${s.agents.ana && s.agents.ana.owner ? '数据 AI 已上岗，明天起出渠道分析。' : (s.solo ? '建议启用待分配的「数据 AI」，出渠道分析。' : '唐悦还没有 AI 员工，建议总管理员把「数据 AI」分配给唐悦。')}`},
+    {t:'18:00', from:'ceo', to:'admin', kind:'report', text:s => `日报：新线索 ${s.kpi.leads} 条，有效商机 ${s.kpi.opps} 个，签约 $${fmt(s.kpi.deals)}。审批：总管理员 ${s.kpi.byAdmin} 项，员工 ${s.kpi.byStaff} 项，AI 自动 ${s.kpi.auto} 项。`},
+    {t:'18:05', from:'system', kind:'system', text:'白天班结束。业务 AI 夜间继续值守，接待北美时区的客户回复。'}
+  ]
+};
+
+/* ================= 技能清单：每项 = [名称, 触发, 做什么] ================= */
+const SKILLS = {
+  ecom:{
+    ceo:[['晨会派活','每天 08:00','读昨日经营数据和周目标，给每名 AI 员工派当天任务'],['午报 / 日报','12:00 · 18:00','汇总各岗位进展、异常和待审批，发给总管理员'],['异常巡检','每 30 分钟','GMV、评分、库存、退款率偏离阈值时，点名相关 AI 员工处理']],
+    op:[['每日经营日报','每天 08:30','读订单、流量、转化、推广数据，生成日报并标出异常'],['竞品价格巡检','每天 09:00','取在售商品和竞品价格，算价差和毛利，按手册规则提调价'],['推广出价调整','每 2 小时','读推广报表，投产比达标就加预算，跌破下限就降出价或回滚'],['平台活动报名','活动开放时','读活动规则，挑毛利够的商品，生成报名方案'],['标题与主图优化','每周一','读搜索词和点击率，改写标题，提出换图建议']],
+    cs:[['消息接待','每 5 分钟','拉取未回复消息，按知识库回复；需要时查订单和物流'],['售后处理','买家申请时','¥50 以内按售后规则自动退款或补发，超出的生成审批'],['差评预警','新评价时','识别中差评，升级给周婷并起草回复'],['反馈汇总','每天 17:00','把共性问题整理成交接单，发给运营 AI 和内容 AI']],
+    ct:[['热点选题','每天 09:00','监测平台热词和竞品爆款，给出当天选题'],['脚本与笔记','接到选题后','写短视频脚本、种草笔记和直播话术，加 AI 生成标识'],['发布与复盘','发布 24 小时后','读播放、互动、带货数据，总结哪类内容有效']],
+    sc:[['库存巡检','每天 07:30 + 库存事件','对比库存、销量和预售加购，预测断货日期'],['补货下单','预测会断货时','算补货量，向财务 AI 确认现金流，生成采购单和付款申请'],['物流异常','物流事件','发现超时件，通知客服 AI 安抚买家']],
+    fin:[['平台结算对账','每天 10:00','逐笔核对平台结算单和订单系统，找出差异原因'],['利润日报','每天 17:00','计算 GMV、毛利、推广费和 AI 成本'],['现金流预警','每周一 + 大额支出前','预测 30 天现金流，提前提示缺口']],
+    ana:[['流量分析','每天 09:30','拆解各渠道流量和转化，找出跳失率高的页面'],['商品分析','每周一','分析商品贡献和关联购买，给运营 AI 建议']],
+    ads:[['投放巡检','每 2 小时','读计划报表，暂停低效计划，把预算转给高投产比商品']]
+  },
+  saas:{
+    ceo:[['晨会派活','每天 08:00','读 OKR 进度、缺陷和注册数据，给各 AI 员工派任务'],['发布进度跟踪','每天 15:00','检查版本里程碑，卡住的环节点名提醒'],['午报 / 日报','12:00 · 18:00','汇总进展、风险和待审批']],
+    pm:[['反馈聚类','每天 08:00','读工单和用户反馈，按问题聚类并判断优先级'],['缺陷分派','发现 P1 / P2 时','写复现步骤，建缺陷单交给研发 AI'],['PRD 初稿','王浩下指令时','根据需求和反馈写 PRD 初稿，列出待决策问题']],
+    dev:[['缺陷修复','收到缺陷单','读日志定位原因，改代码、补测试，提交 PR'],['代码评审','有新 PR 时','检查逻辑、安全和测试覆盖，给出评审意见'],['云成本巡检','每天','找出闲置资源，提出关停或降配']],
+    qa:[['回归测试','PR 提交后','跑自动化回归，失败时附日志打回'],['发布前检查','发布前','核对检查清单，有阻断问题直接拦下']],
+    gr:[['增长机会监测','每天','监测竞品动态和渠道数据，提出活动方案'],['邮件营销','活动上线时','分群、写邮件、分批发送并跟踪转化'],['增长日报','每天 17:00','汇总注册、转化和 MRR']],
+    hr:[['简历盲筛','每天 10:00','隐去姓名、年龄、性别后按岗位要求打分'],['面试安排','初筛通过后','对齐面试官日历，发邀约'],['Offer 起草','终面通过后','按薪酬规则起草 Offer，提交总管理员']],
+    cs:[['流失预警','每天','读产品使用数据，找出活跃度下降的付费团队'],['续费跟进','到期前 30 天','整理续费名单，起草跟进邮件']]
+  },
+  trade:{
+    ceo:[['晨会派活','每天 08:00','读询盘、商机、订单数据，给各 AI 员工派任务'],['午报 / 日报','12:00 · 18:00','汇总进展、风险和待审批']],
+    legal:[['对外内容审核','收到审核请求','检查广告用语、承诺和 AI 标识'],['合同起草','收到成交通知','按模板和客户条款起草，标出风险条款']],
+    bd:[['线索挖掘','每天 08:00','检索 B2B 平台公开采购需求和企业官网，核验邮箱'],['开发信','线索核验后','按客户画像写开发信，过法务 AI 审核后分批发送'],['回复跟进','收到回复时','整理需求，A 级线索交给销售 AI']],
+    sales:[['报价','收到 A 级线索','按价格表和毛利底线生成报价单'],['议价','客户还价时','请财务 AI 测算毛利，5% 以内自主让价，超出生成审批'],['成交交接','签约后','把订单交给跟单 AI，开票交给财务 AI']],
+    ops:[['排产','新订单','核对产能和原料，生成排产计划'],['原料采购','原料不足时','比价 3 家供应商，生成采购单和付款申请'],['出货跟踪','每天','跟踪生产和物流节点，异常时提醒销售 AI']],
+    fin:[['毛利测算','报价或还价时','按成本和汇率计算毛利'],['收款跟踪','每天','核对预付款和尾款到账，逾期提醒'],['财务日报','每天 17:00','汇总签约、收款和 AI 成本']],
+    mkt:[['热点选题','每天 09:00','监测海外社媒热词，给出选题'],['内容生产','选题确定后','写图文和短视频脚本，过法务 AI 审核'],['投放建议','内容表现好时','提出追加投放方案']],
+    ana:[['渠道分析','每周一','比较开发信、社媒、B2B 平台的询盘成本和转化']]
+  }
+};
+
+/* ================= 执行过程：挂在关键事件上，按发生时间匹配 ================= */
+const TRACES = {
+  ecom:{
+    '08:03':[
+      ['触发','定时任务「消息接待」，每 5 分钟一次'],
+      ['取数','`shop.messages.unread()` 拉到 46 条夜间消息；对涉及订单的 31 条调用 `shop.orders.get()` 查物流'],
+      ['分析','按意图分类：物流 21、尺寸 12、退款 3、其他 10；在知识库里匹配答案'],
+      ['判断','岗位手册：知识库能答的直接回；¥50 以内的退款按售后规则处理；超出的生成审批'],
+      ['执行','`shop.messages.reply()` × 43，`shop.refund.approve()` × 2；第 3 笔 ¥189 转成审批单'],
+      ['复核','回读会话状态确认已回复；没解决的 3 条放进明早复查清单']
+    ],
+    '08:27':[
+      ['触发','定时任务「竞品价格巡检」（今天由决策者提前派发）'],
+      ['取数','`shop.items.onsale()` 取 32 个在售商品；`competitor.prices()` 取 5 家竞品同款价格；`erp.cost()` 取成本'],
+      ['分析','运行 Python：收纳柜 7 日转化率 2.1%（同类 3.0%），比竞品均价高 7.5%，当前毛利 41%'],
+      ['判断','手册规则：价差 > 5% 且调价后毛利 ≥ 30% → 建议降到竞品均价；方案 ¥399 + 定金膨胀'],
+      ['执行','调用 `shop.item.update_price(399)`，治理网关拦下：降幅 7% 超出李娜 3% 的调价权限，转成审批单'],
+      ['复核','批准后回读价格确认生效；24 小时后对比转化率，效果不好就提醒恢复原价']
+    ],
+    '10:12':[
+      ['触发','事件：爆款收纳柜库存低于安全线'],
+      ['取数','`erp.stock()` 可售 820 件；`shop.sales(7d)` 日均 96 件；预售加购 1,860 件'],
+      ['分析','运行 Python 预测：按当前速度 5 天后断货；补货 2,000 件约覆盖 20 天'],
+      ['判断','给财务 AI 发交接单确认现金流，得到「可先付 30% 定金」的答复'],
+      ['执行','`erp.purchase_order.create()` 生成采购单草稿，`finance.payment.request()` 发起付款申请；付款属于红线，交给总管理员'],
+      ['复核','批准后跟踪工厂回执、发货和入库，入库当天通知运营 AI 恢复推广']
+    ],
+    '14:00':[
+      ['触发','定时任务「推广出价调整」，每 2 小时一次'],
+      ['取数','`ads.report(3d)`：预售商品投产比 3.8，日预算已用 62%'],
+      ['分析','投产比高于目标 3.5，近 3 天稳定，没有触顶迹象'],
+      ['判断','手册规则：投产比达标且稳定 → 可以加投，单次不超过 ¥2,000'],
+      ['执行','`ads.budget.update(+2000)` 属于中风险，按员工自批交给李娜'],
+      ['复核','每 2 小时回读投产比，跌破 2.5 自动把预算调回原值']
+    ]
+  },
+  saas:{
+    '08:04':[
+      ['触发','定时任务「反馈聚类」，每天 08:00'],
+      ['取数','`helpdesk.tickets(since="昨晚")` 取 126 条工单和应用内反馈'],
+      ['分析','向量聚类加关键词：38 条指向「导出 Excel 中文乱码」，涉及 12 个付费客户'],
+      ['判断','手册规则：影响付费客户且没有替代方案 → P1'],
+      ['执行','`issues.create(priority="P1")` 建缺陷单，附复现步骤，交接给研发 AI'],
+      ['复核','跟踪缺陷状态，修复上线后给反馈的客户发通知']
+    ],
+    '08:30':[
+      ['触发','收到产品 AI 的 P1 缺陷交接单'],
+      ['取数','`logs.search()` 查导出服务日志；`repo.read()` 读导出模块代码'],
+      ['分析','复现：Windows 版 Excel 打开缺少 BOM 的 UTF-8 文件时按 GBK 解析，导致乱码'],
+      ['判断','最小改动：导出时写入 UTF-8 BOM，补一个单元测试'],
+      ['执行','`repo.branch()` 新建分支并修改代码，`ci.run()` 测试通过，`repo.pull_request()` 提交 PR #2417'],
+      ['复核','PR 交给测试 AI 回归；合并仍需林峰人工评审']
+    ],
+    '08:52':[
+      ['触发','测试 AI 回报回归全部通过'],
+      ['取数','`ci.status("#2417")` 通过；`monitor.error_rate()` 当前基线 0.3%'],
+      ['分析','改动只涉及导出模块，影响面小'],
+      ['判断','手册规则：热修复先灰度 10%，30 分钟无异常再全量'],
+      ['执行','`deploy.release(canary=0.1)` 属于高风险，交给林峰审批'],
+      ['复核','批准后盯错误率和导出成功率，异常自动回滚到上一版本']
+    ]
+  },
+  trade:{
+    '08:06':[
+      ['触发','定时任务「线索挖掘」，每天 08:00'],
+      ['取数','`b2b.inquiries.public()` 读公开采购需求；`web.search()` 查北美、澳洲家居零售商官网联系页'],
+      ['分析','去重后得到 41 家，按门店数、品类匹配度、采购季节打分'],
+      ['判断','只保留公开的企业联系方式；`email.verify()` 核验后 27 个有效'],
+      ['执行','`crm.leads.upsert()` 写入线索库，A 级 3 家交接给销售 AI，其余进开发信队列'],
+      ['复核','开发信发出后跟踪退信率，超过 8% 自动熔断']
+    ],
+    '11:05':[
+      ['触发','客户还价到 $2.85'],
+      ['取数','`crm.deal.get()` 读历史沟通；给财务 AI 发交接单要毛利测算'],
+      ['分析','$2.85 时毛利 19.2%，低于底线；$2.95 时毛利 21.9%'],
+      ['判断','手册规则：毛利不低于 20%；让价超过 5% 必须升级'],
+      ['执行','`quote.create(price=2.95)` 被治理网关拦下：让利 7.8% 超出黄珊 5% 的权限，转给总管理员'],
+      ['复核','批准后发出新报价，48 小时没回复自动跟进一次']
+    ]
+  }
+};
+/* ================= 决策依据：按审批标题匹配，每张审批单都必须有 ================= */
+const EVIDENCE = {
+  ecom:{
+    '退款 ¥189':{
+      summary:'买家照片显示柜门色差明显，属于质量问题；买家信用良好，部分退款比补发更省钱、更快。',
+      metrics:[['订单金额','¥429'],['申请退款','¥189','占订单 44%'],['买家历史','12 单','从未退款'],['同批次色差投诉','3 起','近 30 天']],
+      table:{title:'对照售后规则', head:['检查项','规则','本单情况'], rows:[['售后规则 3.2 条','质量问题可部分退款，不超过 50%','44%，符合'],['照片核验','色差明显、非人为损坏','符合'],['买家信用','近一年退款不超过 2 次','0 次，低风险']]},
+      options:[['部分退款 ¥189 + ¥20 券（推荐）','成本 ¥209，今天解决'],['补发门板','成本约 ¥236，买家要等 3 天'],['拒绝','很可能收到差评，影响店铺评分']],
+      risks:['同批次已有 3 起色差投诉，可能是批次问题'],
+      rollback:'同批次投诉超过 5 起时，自动通知供应链 AI 联系工厂',
+      sources:[['shop.orders.get(#8823)','08:04:10'],['shop.refund.detail()','08:04:11'],['buyer.history()','08:04:12'],['售后规则库 v3','08:04:30']]
+    },
+    '预售价调到 ¥399':{
+      summary:'我们比竞品均价贵 7.5%，转化率比同类低 30%；降到 ¥399 后单件毛利变少，但预计日毛利反而多约 ¥1,800。',
+      metrics:[['当前售价','¥429','竞品均价 ¥399'],['7 日转化率','2.1%','同类平均 3.0%'],['降价后毛利率','36%','底线 30%'],['预计日毛利','+¥1,800','对比维持原价']],
+      charts:[
+        {type:'bars', title:'同款收纳柜售价', pre:'¥', rows:[['我们',429,1],['竞品 A',389],['竞品 B',395],['竞品 C',399],['竞品 D',405],['竞品 E',407]]},
+        {type:'line', title:'近 14 天转化率', suf:'%', vals:[2.9,2.8,2.9,2.7,2.6,2.5,2.4,2.3,2.2,2.2,2.1,2.0,2.1,2.1], ref:3.0, refLabel:'同类平均 3.0%'}
+      ],
+      table:{title:'三种方案测算', head:['方案','售价','毛利率','预计转化率','预计日销','预计日毛利'], rows:[['维持原价','¥429','41%','2.1%','96 件','¥16,900'],['降到 ¥399（推荐）','¥399','36%','2.8%','128 件','¥18,700'],['原价加送收纳篮','¥429','38%','2.4%','110 件','¥18,000']]},
+      reasons:['10 天前竞品 A 降到 ¥389 之后，我们的转化率从 2.9% 一路跌到 2.1%','降价后单件毛利少了，但销量预计多 33%，日毛利多约 ¥1,800','预售期流量是平时的 2 倍，价格劣势造成的损失会被放大'],
+      risks:['近 15 天按 ¥429 购买的 86 位买家可能要求补差价，最多 ¥2,580','竞品可能继续跟着降价'],
+      rollback:'24 小时后转化率仍低于 2.5%，提醒恢复 ¥429',
+      sources:[['shop.items.onsale()','08:20:12'],['competitor.prices()','08:20:15'],['erp.cost()','08:20:16'],['shop.conversion(14d)','08:20:18'],['Python 方案测算','08:20:21']]
+    },
+    '发布 2 条预热短视频':{
+      summary:'「秋冬换季收纳」本周热度上升 64%，正好对上我们的主推款；内容已过合规检查并加了 AI 生成标识。',
+      metrics:[['话题热度','+64%','近 14 天'],['同类爆款平均点赞','2.3 万'],['我们近 5 条完播率','18%','目标 25%'],['合规检查','通过','已加 AI 标识']],
+      charts:[{type:'line', title:'「秋冬换季收纳」话题热度指数', vals:[100,98,105,110,108,115,120,126,131,140,148,155,160,164]}],
+      table:{title:'待发布内容', head:['内容','时长','发布时间','合规'], rows:[['短视频 1：租房党换季收纳','42 秒','12:00','通过'],['短视频 2：免安装收纳柜','35 秒','19:00','通过'],['今晚直播话术','—','20:00','通过']]},
+      options:[['按计划发 2 条（推荐）','赶在热度高峰期'],['先发 1 条看数据','更稳，但可能错过高峰']],
+      risks:['话题热度可能 1 到 2 周后回落'],
+      rollback:'发布 24 小时内完播率低于 12%，暂停这个主题的后续内容',
+      sources:[['trends.topic("秋冬换季收纳")','09:00:05'],['douyin.my_videos.stats(5)','09:01:20'],['合规检查记录','09:28:40']]
+    },
+    '支付补货定金 ¥100,800':{
+      summary:'按现在的加购速度，5 天后断货；补 2,000 件能撑约 20 天。付完 30% 定金后，账上还有 ¥41.9 万，高于安全线。',
+      metrics:[['可售库存','820 件'],['预计断货','5 天后','按日销 160 件'],['付款后余额','¥41.9 万','安全线 ¥20 万'],['选中工厂报价','¥168/件','3 家中最低']],
+      charts:[
+        {type:'line', title:'不补货时的库存预测（件）', vals:[820,660,500,340,180,20,0,0,0,0,0], future:true, zero:true, ref:300, refLabel:'安全库存 300 件'},
+        {type:'bars', title:'3 家工厂报价（每件）', pre:'¥', rows:[['长期合作工厂',168,1],['工厂 B',175],['工厂 C',181]]}
+      ],
+      table:{title:'资金安排', head:['项目','金额'], rows:[['货款 2,000 件 × ¥168','¥336,000'],['本次付 30% 定金','¥100,800'],['尾款（到货后付）','¥235,200'],['3 天后平台结算到账','¥180,000']]},
+      reasons:['预售加购 1,860 件，按历史 70% 的转化，约 1,300 件要在 15 天内发出','长期合作工厂报价最低、15 天交货，近一年次品率 0.6%'],
+      options:[['补 2,000 件，先付 30% 定金（推荐）','能撑约 20 天'],['只补 1,000 件','只够 10 天，还要再下单，单价高 ¥6'],['不补，预售限量 800 件','预计少卖约 1,000 件，少赚毛利约 ¥14 万']],
+      risks:['预售转化低于预期会压货；按最低 50% 转化算，20 天内仍能卖完'],
+      rollback:'工厂 48 小时内没有回执，可以取消订单并退回定金（合同 5.1 条）',
+      sources:[['erp.stock()','10:00:02'],['shop.sales(7d)','10:00:03'],['shop.presale.cart()','10:00:05'],['suppliers.quotes()','10:05:40'],['财务 AI 现金流测算','10:10:12']]
+    },
+    '推广加投 ¥2,000':{
+      summary:'近 3 天投产比稳定在 3.8，高于目标 3.5，今天的预算还有余量。',
+      metrics:[['近 3 天投产比','3.8','目标 3.5'],['今日预算已用','62%'],['加投金额','¥2,000','在日预算内'],['预计新增 GMV','¥7,600','按投产比 3.8 估算']],
+      charts:[{type:'line', title:'近 7 天推广投产比', vals:[3.1,3.3,3.4,3.6,3.7,3.9,3.8], ref:3.5, refLabel:'目标投产比 3.5'}],
+      options:[['加投 ¥2,000（推荐）','预计 GMV +¥7,600'],['加投 ¥1,000','更保守，预计 GMV +¥3,800'],['不加投','错过预售期流量']],
+      risks:['加投后边际投产比通常会下降 10% 到 20%'],
+      rollback:'投产比跌破 2.5，自动把预算调回原值',
+      sources:[['ads.report(7d)','14:00:03'],['ads.budget.get()','14:00:04']]
+    },
+    '对账差异调账 ¥1,260':{
+      summary:'差异全部来自 3 笔跨月退款，平台已在本月结算单里扣回，属于记账时间差。',
+      metrics:[['结算单金额','¥186,420'],['订单系统金额','¥187,680'],['差异','¥1,260'],['已解释','100%','3 笔']],
+      table:{title:'差异明细', head:['订单号','退款时间','金额','原因'], rows:[['#7712','9 月 30 日','¥429','跨月退款'],['#7735','9 月 30 日','¥402','跨月退款'],['#7741','10 月 1 日','¥429','跨月退款']]},
+      options:[['调账并备注（推荐）','今天结清'],['向平台发起核查','需要 3 到 5 个工作日']],
+      risks:['没有发现其他风险'],
+      rollback:'本月结账前可以撤销这次调账',
+      sources:[['tmall.settlement.get("10月")','15:00:02'],['erp.orders.sum()','15:00:03'],['erp.refunds(9/30–10/1)','15:00:20']]
+    },
+    '暂停 3 个低效计划':{
+      summary:'3 个计划近 7 天投产比都低于 1.5，却花了 ¥3,360；暂停后把预算转给投产比 3.8 的预售商品。',
+      metrics:[['3 个计划花费','¥3,360','近 7 天'],['它们的投产比','1.2–1.4'],['账户平均投产比','2.8']],
+      charts:[{type:'bars', title:'各计划近 7 天投产比', rows:[['计划 A',1.2,1],['计划 B',1.3,1],['计划 C',1.4,1],['预售商品',3.8],['爆款常规',3.1]], ref:2.8, refLabel:'账户平均 2.8'}],
+      options:[['暂停 3 个计划（推荐）','预算转给高投产比商品'],['降低出价 30%','保留曝光，但效果不确定']],
+      risks:['计划 C 带来少量新客，暂停后新客略减'],
+      rollback:'暂停的计划保留全部设置，可以一键恢复',
+      sources:[['ads.report(7d)','—'],['ads.campaigns()','—']]
+    }
+  },
+  saas:{
+    '发布热修复 v3.7.2':{
+      summary:'这个 P1 缺陷影响 12 个付费客户，工单还在涨；修复只改了导出模块，842 条回归全部通过，先灰度 10%。',
+      metrics:[['受影响客户','12 个','付费团队'],['回归测试','842 / 842','全部通过'],['改动范围','1 个文件','14 行'],['当前错误率','0.3%','基线']],
+      charts:[{type:'line', title:'「导出乱码」每日新增工单', vals:[1,2,3,5,7,9,11], zero:true}],
+      table:{title:'发布计划', head:['阶段','流量','观察时长','自动回滚条件'], rows:[['灰度','10%','30 分钟','错误率 > 0.6%'],['全量','100%','2 小时','错误率 > 0.6%']]},
+      options:[['现在灰度发布（推荐）','今天解决 P1'],['今晚低峰期发布','客户要再等 12 小时，工单会继续增加']],
+      risks:['导出模块被另外 3 个功能复用，回归已覆盖这 3 个功能'],
+      rollback:'错误率超过 0.6% 自动回滚到 v3.7.1',
+      sources:[['helpdesk.tickets(tag="导出乱码")','08:04:02'],['ci.status("#2417")','08:50:10'],['repo.diff("#2417")','08:50:11'],['monitor.error_rate()','08:51:00']]
+    },
+    '上线迁移优惠：首年 7 折':{
+      summary:'竞品涨价 20% 后，我们比价页的访问量涨了约 3 倍；打 7 折后首年价格比竞品低 42%，毛利率仍有 62%。',
+      metrics:[['竞品涨价','+20%'],['比价页访问','约 3 倍','对比上周'],['7 折后毛利率','62%','底线 50%'],['预计新增付费团队','30–40 个','首月']],
+      charts:[
+        {type:'line', title:'比价页每日访问量', vals:[420,450,430,460,1180,1350,1310], zero:true},
+        {type:'bars', title:'首年价格（每人每年）', pre:'¥', rows:[['竞品涨价后',576],['我们原价',480],['我们 7 折',336,1]]}
+      ],
+      options:[['首年 7 折（推荐）','预计首月 30–40 个团队'],['首年 8 折','预计 20–25 个团队'],['不打折，只送免费迁移服务','预计 10–15 个团队']],
+      risks:['老客户可能要求同样的折扣：优惠只限从竞品迁移过来的新团队'],
+      rollback:'活动可以随时下线；已经签约的客户按约定价格执行',
+      sources:[['analytics.page("compare")','09:30:05'],['competitor.pricing()','09:30:06'],['finance.unit_cost()','09:31:10']]
+    },
+    '向 12 位候选人发面试邀约':{
+      summary:'63 份简历盲筛后，12 位得分在 80 分以上；面试官本周有 14 个空档，排得下。',
+      metrics:[['投递','63 份'],['进入初面','12 位','80 分以上'],['面试官空档','14 个','本周']],
+      charts:[{type:'bars', title:'盲筛得分分布（人数）', rows:[['90 分以上',4,1],['80–89 分',8,1],['70–79 分',17],['70 分以下',34]]}],
+      options:[['邀约 12 位（推荐）','面试官时间够用'],['只邀约 90 分以上的 4 位','轮次少，可能错过合适的人']],
+      risks:['盲筛只看技能和经历，需要面试官补充判断'],
+      rollback:'邀约发出后可以取消，候选人也能自助改期',
+      sources:[['ats.resumes(job="后端")','10:00:01'],['盲筛打分','10:01:30'],['calendar.free_slots()','10:02:10']]
+    },
+    '关闭 6 台闲置测试服务器':{
+      summary:'6 台测试服务器 14 天没有任何流量，每月白花 ¥4,200。',
+      metrics:[['闲置服务器','6 台'],['近 14 天流量','0'],['每月费用','¥4,200']],
+      table:{title:'服务器明细', head:['服务器','最后访问','月费'], rows:[['test-07','14 天前','¥700'],['test-08','16 天前','¥700'],['test-11','21 天前','¥700'],['test-12','21 天前','¥700'],['stage-03','30 天前','¥700'],['stage-04','30 天前','¥700']]},
+      options:[['关机并保留快照（推荐）','每月省 ¥4,200'],['改为夜间自动关机','每月省约 ¥2,100']],
+      risks:['有人临时要用时需要等 10 分钟恢复'],
+      rollback:'关机前已打快照，10 分钟内可以恢复',
+      sources:[['cloud.instances()','11:31:02'],['monitor.traffic(14d)','11:31:05'],['billing.monthly()','11:32:00']]
+    },
+    'v3.8 发布排期：下周三':{
+      summary:'剩余工作量 18 人天，研发、测试加人工评审可用 22 人天，按期完成的把握比较大。',
+      metrics:[['剩余任务','23 个'],['剩余工作量','18 人天'],['可用产能','22 人天'],['未关闭缺陷','1 个 P2']],
+      charts:[{type:'line', title:'燃尽图：剩余任务数', vals:[61,55,50,44,39,33,28,23], zero:true}],
+      options:[['下周三发布（推荐）','产能有余量'],['推迟一周','可以加上 SSO，但大客户要多等']],
+      risks:['Safari 拖拽卡顿的 P2 要在周一前修好'],
+      rollback:'发布前 24 小时检查不通过，会自动提醒延期',
+      sources:[['issues.milestone("v3.8")','14:00:02'],['team.capacity()','14:00:03']]
+    },
+    '发 Offer：高级后端工程师':{
+      summary:'候选人终面平均 4.6 分；期望月薪 ¥35,000，在岗位预算中间，和团队同级水平接近。',
+      metrics:[['终面评分','4.6 / 5','3 位面试官'],['期望月薪','¥35,000'],['岗位预算','¥3–4 万'],['候选人其他 Offer','1 个','周五前答复']],
+      charts:[{type:'bars', title:'同级月薪对比', pre:'¥', rows:[['本 Offer',35000,1],['团队同级中位数',34000],['市场中位数',33000],['市场 75 分位',38000]]}],
+      options:[['按 ¥35,000 发 Offer（推荐）','候选人接受的可能性高'],['还价到 ¥33,000','候选人手上另有 Offer，可能流失']],
+      risks:['候选人周五前要给另一家答复'],
+      rollback:'Offer 发出后 7 天内不接受就自动失效',
+      sources:[['ats.interviews(候选人)','15:58:01'],['hr.salary_bands()','15:59:10'],['市场薪酬报告 2026 Q3','15:59:12']]
+    }
+  },
+  trade:{
+    '批量发送开发信':{
+      summary:'27 个邮箱都已核验有效，模板过了法务审核；上一版模板的回复率是 3.1%。',
+      metrics:[['收件人','27 家','邮箱已核验'],['预计退信率','低于 3%'],['上版模板回复率','3.1%'],['今日外发额度','27 / 50']],
+      table:{title:'收件人分布', head:['地区','数量','平均门店数'], rows:[['美国','14 家','23'],['加拿大','6 家','11'],['澳大利亚','7 家','18']]},
+      options:[['分批发 27 封（推荐）','按对方时区早上送达'],['先发 10 封测试','回复数据来得更慢']],
+      risks:['有几个是 info@ 这类通用邮箱，可能抬高退信率'],
+      rollback:'退信率超过 8% 自动暂停外发',
+      sources:[['b2b.inquiries.public()','08:06:02'],['email.verify()','08:08:40'],['法务 AI 审核记录','08:18:05']]
+    },
+    '发布 3 条社媒内容':{
+      summary:'「租房收纳」搜索量本周涨了 48%，和伸缩收纳架的卖点吻合；内容已过法务审核。',
+      metrics:[['话题搜索量','+48%','近 14 天'],['同类内容私信转化','12%','历史平均'],['合规检查','通过']],
+      charts:[{type:'line', title:'「租房收纳」搜索指数', vals:[100,102,99,104,108,112,115,121,126,131,136,140,144,148]}],
+      options:[['发 3 条（推荐）','覆盖小红书和 Instagram'],['只发 Instagram','能自动发布，但错过国内买手']],
+      risks:['小红书要人工一键发布，可能延后'],
+      rollback:'24 小时互动率低于 1% 的内容自动下架',
+      sources:[['trends.topic("租房收纳")','09:05:01'],['social.history(30d)','09:05:20'],['法务 AI 审核记录','09:52:10']]
+    },
+    '明日投放预算 ¥500':{
+      summary:'这篇笔记 5 小时带来 11 条私信询价，是近 5 篇里最好的；按历史投放效果，单条询价成本约 ¥14。',
+      metrics:[['5 小时收藏','1,240'],['私信询价','11 条'],['预计单条询价成本','¥14','上限 ¥17'],['投放预算','¥500']],
+      charts:[{type:'bars', title:'近 5 篇笔记带来的私信询价', rows:[['租房收纳（今天）',11,1],['衣柜整理',6],['阳台收纳',5],['厨房收纳',4],['浴室收纳',3]]}],
+      options:[['投 ¥500（推荐）','预计 30 多条询价'],['投 ¥200 试水','预计 12 到 14 条']],
+      risks:['投放后的询价质量可能低于自然流量'],
+      rollback:'单条询价成本超过 ¥17 自动停投',
+      sources:[['social.post.stats()','15:30:02'],['ads.history(90d)','15:31:10']]
+    },
+    '报价让利 7.8%':{
+      summary:'客户是 40 门店的连锁，首单之后每年的采购潜力约 $12 万；报 $2.95 时毛利 21.9%，仍高于 20% 底线。',
+      metrics:[['首单金额','$14,750'],['毛利率','21.9%','底线 20%'],['客户年采购潜力','约 $12 万'],['让利幅度','7.8%','销售权限 5%']],
+      charts:[{type:'bars', title:'不同报价下的毛利率', suf:'%', rows:[['$3.20 原价',28.0],['$2.95 建议',21.9,1],['$2.85 客户要价',19.2]], ref:20, refLabel:'毛利底线 20%'}],
+      table:{title:'报价测算（5,000 件）', head:['报价','单价','毛利率','首单毛利'], rows:[['原价','$3.20','28.0%','$4,480'],['建议（推荐）','$2.95','21.9%','$3,230'],['客户要价','$2.85','19.2%','$2,730']]},
+      reasons:['这家连锁过去从 3 家供应商采购，价格在 $2.9 到 $3.4，$2.95 在区间低端，有竞争力','首单附送样品成本约 $60，用来换长期合作'],
+      options:[['让利到 $2.95（推荐）','保住毛利底线，争取长期客户'],['维持 $3.20，缩短交期','客户可能转向报价更低的供应商'],['接受 $2.85','低于毛利底线，不建议']],
+      risks:['客户后续订单可能以这次的价格为基准'],
+      rollback:'报价有效期 7 天，过期恢复原价',
+      sources:[['crm.deal.get()','11:03:10'],['finance.margin(2.85, 2.95)','11:02:30'],['customs.import_records()','11:04:05']]
+    },
+    '签署销售合同 $14,750':{
+      summary:'合同金额、交期和付款方式都和客户确认的报价一致；有 2 处条款和标准模板不同，已标出。',
+      metrics:[['合同金额','$14,750'],['预付款','30%','$4,425'],['交期','35 天','产能可满足'],['偏离标准的条款','2 处']],
+      table:{title:'条款对比', head:['条款','标准模板','本合同','法务意见'], rows:[['延期罚则','每周 0.3%，上限 3%','每周 0.5%，上限 5%','可以接受，交期有余量'],['尾款条件','见提单付 70%','见提单副本付 70%','需要确认客户信用'],['质量异议期','30 天','30 天','一致']]},
+      options:[['签署（推荐）','今天锁定订单'],['改回标准罚则再签','可能拖 2 到 3 天']],
+      risks:['首次合作，尾款有违约风险，建议投保出口信用保险'],
+      rollback:'签署前可以撤回；签署后按合同变更流程处理',
+      sources:[['contract.draft("S-1042")','14:23:01'],['contract.template("标准销售合同")','14:23:02'],['erp.capacity()','13:45:10']]
+    },
+    '支付原料货款 ¥18,600':{
+      summary:'这个订单需要 PP 原料 2.6 吨，库存只有 0.6 吨；比价 3 家后选了最低价。',
+      metrics:[['需要原料','2.6 吨'],['现有库存','0.6 吨'],['本次采购','2 吨'],['金额','¥18,600']],
+      charts:[{type:'bars', title:'3 家供应商报价（每吨）', pre:'¥', rows:[['长期供应商',9300,1],['供应商 B',9650],['供应商 C',9800]]}],
+      options:[['向长期供应商采购（推荐）','最便宜，后天到货'],['申请 15 天账期','现金压力小，单价可能上浮']],
+      risks:['原料晚到会影响 35 天交期'],
+      rollback:'付款前可以撤回；到货质检不合格可以退货',
+      sources:[['erp.bom("S-1042")','14:47:02'],['erp.stock("PP")','14:47:03'],['suppliers.quotes("PP")','14:49:30']]
+    },
+    '参与酒店集团投标':{
+      summary:'招标需求和我们的产品、产能都匹配；报价 ¥56 万，毛利约 24%。',
+      metrics:[['招标预算','约 ¥60 万'],['我们的报价','¥56 万'],['预计毛利率','24%'],['保证金','¥1 万','可退']],
+      table:{title:'资质对照', head:['招标要求','我们的情况','是否满足'], rows:[['年产能不低于 5 万件','12 万件','满足'],['ISO 9001 认证','已认证','满足'],['同类供货案例不少于 2 个','4 个','满足']]},
+      options:[['参与投标（推荐）','往年同类中标率约 30%'],['放弃','继续关注同类招标']],
+      risks:['中标后 25 天交期，需要和澳洲订单错开排产'],
+      rollback:'开标前可以撤回，保证金退回',
+      sources:[['bid.notice()','13:30:05'],['erp.capacity()','13:45:10'],['资质档案库','13:50:00']]
+    }
+  }
+};
+function attachEvidence(list, map){
+  (list || []).forEach(e => {
+    if (e.kind === 'approval' && map[e.title]) e.evidence = map[e.title];
+    attachEvidence(e.onApprove, map); attachEvidence(e.onReject, map);
+  });
+}
+for (const key in EVIDENCE){
+  const t = TPL[key];
+  attachEvidence(t.script, EVIDENCE[key]);
+  Object.values(t.agents).concat(Object.values(t.market)).forEach(a => attachEvidence(a.onAssign, EVIDENCE[key]));
+}
+
+/* ================= 可调方案：审批人在讨论中改参数，页面现场重算（数字由代码算出） ================= */
+const pctf = x => (Math.round(x * 1000) / 10).toFixed(1) + '%';
+const ADJUST = {
+  '预售价调到 ¥399':{
+    label:'预售价', min:359, max:428, step:1, value:399, example:409, fmtV:v => '¥' + v,
+    calc(v){
+      const cost = 253.1, conv = 2.1 * Math.pow(429 / v, 3.97), units = 4571 * conv / 100;
+      const gp = units * (v - cost), margin = (v - cost) / v, drop = (429 - v) / 429, base = 96 * (429 - cost);
+      return {
+        title:`预售价调到 ¥${v}`, risk:drop > 0.03 ? 'high' : 'mid', esc:drop > 0.03, escWhy:'调价 ≤ 3%',
+        metrics:[['新售价', `¥${v}`, `降幅 ${pctf(drop)}`], ['预计转化率', `${conv.toFixed(1)}%`, '同类平均 3.0%'], ['毛利率', pctf(margin), '底线 30%'], ['预计日毛利', `¥${fmt(gp)}`, `对比维持原价 ${gp >= base ? '+' : '−'}¥${fmt(Math.abs(gp - base))}`]],
+        summary:`按 ¥${v} 测算：转化率约 ${conv.toFixed(1)}%，日销约 ${Math.round(units)} 件，日毛利约 ¥${fmt(gp)}，毛利率 ${pctf(margin)}。`,
+        block:margin < 0.30 ? '毛利率低于 30% 底线，治理网关不允许提交' : null,
+        subst:[['¥399', `¥${v}`], ['预测 2.8%', `预测 ${conv.toFixed(1)}%`], ['转化率 2.9%', `转化率 ${(conv + 0.1).toFixed(1)}%`]]
+      };
+    }
+  },
+  '支付补货定金 ¥100,800':{
+    label:'补货数量', min:500, max:3000, step:100, value:2000, example:1500, fmtV:v => fmt(v) + ' 件',
+    calc(v){
+      const unit = v >= 1500 ? 168 : 174, total = v * unit, dep = Math.round(total * 0.3), bal = 520000 - dep, days = Math.round(v / 100);
+      return {
+        title:`支付补货定金 ¥${fmt(dep)}`, risk:'red',
+        metrics:[['补货数量', `${fmt(v)} 件`, `约撑 ${days} 天`], ['单价', `¥${unit}`, v >= 1500 ? '满 1,500 件享最低价' : '不足 1,500 件，单价 +¥6'], ['本次定金（30%）', `¥${fmt(dep)}`, `货款 ¥${fmt(total)}`], ['付款后余额', `¥${(bal / 10000).toFixed(1)} 万`, '安全线 ¥20 万']],
+        summary:`补 ${fmt(v)} 件约撑 ${days} 天，先付定金 ¥${fmt(dep)}，付完账上还有 ¥${(bal / 10000).toFixed(1)} 万。${days < 15 ? '撑不到预售发货的 15 天，之后还得再补一次。' : ''}`,
+        block:bal < 200000 ? '付款后余额低于 ¥20 万安全线' : null,
+        subst:[['2,000 件', `${fmt(v)} 件`]]
+      };
+    }
+  },
+  '推广加投 ¥2,000':{
+    label:'加投金额', min:500, max:5000, step:500, value:2000, example:3500, fmtV:v => '¥' + fmt(v),
+    calc(v){
+      const roi = 4.0 - 0.1 * v / 1000, gmv = v * roi, esc = v > 3000;
+      return {
+        title:`推广加投 ¥${fmt(v)}`, risk:v <= 1000 ? 'low' : 'mid', esc, escWhy:'推广日预算 ≤ ¥3,000',
+        metrics:[['加投金额', `¥${fmt(v)}`, esc ? '超出日预算权限' : '在日预算内'], ['预计投产比', roi.toFixed(2), '目标 3.5'], ['预计新增 GMV', `¥${fmt(gmv)}`], ['今日预算已用', '62%']],
+        summary:`加投 ¥${fmt(v)}，按边际递减估算投产比约 ${roi.toFixed(2)}，预计新增 GMV ¥${fmt(gmv)}。`,
+        block:null,
+        subst:[['¥2,000', `¥${fmt(v)}`], ['预测 3.8', `预测 ${roi.toFixed(1)}`], ['GMV ¥8,200', `GMV ¥${fmt(gmv * 1.05)}`], [8200, Math.round(gmv * 1.05)]]
+      };
+    }
+  },
+  '报价让利 7.8%':{
+    label:'报价（美元/件）', min:2.8, max:3.15, step:0.05, value:2.95, example:3.05, fmtV:v => '$' + v.toFixed(2),
+    calc(v){
+      v = Math.round(v * 100) / 100;
+      const cost = 2.304, margin = (v - cost) / v, disc = (3.2 - v) / 3.2, profit = 5000 * (v - cost);
+      const acc = {'2.80':.92, '2.85':.9, '2.90':.82, '2.95':.72, '3.00':.58, '3.05':.45, '3.10':.33, '3.15':.24}[v.toFixed(2)] ?? .5;
+      const esc = disc > 0.05;
+      return {
+        title:`报价让利 ${pctf(disc)}`, risk:'high', esc, escWhy:'让价 ≤ 5%',
+        metrics:[['报价', `$${v.toFixed(2)}`, `让利 ${pctf(disc)}`], ['毛利率', pctf(margin), '底线 20%'], ['首单毛利', `$${fmt(profit)}`], ['客户接受概率', `约 ${Math.round(acc * 100)}%`, '按同类客户历史成交估算']],
+        summary:`报 $${v.toFixed(2)}：毛利率 ${pctf(margin)}，首单毛利 $${fmt(profit)}，客户接受概率约 ${Math.round(acc * 100)}%，期望毛利约 $${fmt(profit * acc)}。`,
+        block:margin < 0.20 ? '毛利率低于 20% 底线，治理网关不允许提交' : null,
+        subst:[['$2.95', `$${v.toFixed(2)}`], ['$14,750', `$${fmt(5000 * v)}`], ['$4,425', `$${fmt(5000 * v * 0.3)}`], [14750, Math.round(5000 * v)]]
+      };
+    }
+  },
+  '上线迁移优惠：首年 7 折':{
+    label:'首年折扣', min:5, max:9.5, step:0.5, value:7, example:8, fmtV:v => `${v} 折`,
+    calc(v){
+      const d = v / 10, price = 480 * d, margin = (price - 128) / price, teams = Math.round(10 + 85 * (1 - d)), mrr = Math.round(teams * 8 * price / 12);
+      return {
+        title:`上线迁移优惠：首年 ${v} 折`, risk:'high', esc:false,
+        metrics:[['首年价格', `¥${fmt(price)}`, '每人每年，竞品 ¥576'], ['毛利率', pctf(margin), '底线 50%'], ['预计首月新增付费团队', `约 ${teams} 个`], ['预计新增 MRR', `¥${fmt(mrr)}`, '按每队 8 人']],
+        summary:`首年 ${v} 折：每人每年 ¥${fmt(price)}，毛利率 ${pctf(margin)}，预计首月新增约 ${teams} 个付费团队，新增 MRR 约 ¥${fmt(mrr)}。`,
+        block:margin < 0.5 ? '毛利率低于 50% 底线，治理网关不允许提交' : null,
+        subst:[['首年 7 折', `首年 ${v} 折`], ['30–40 个', `约 ${teams} 个`]]
+      };
+    }
+  }
+};
+// 把方案里的旧数字替换成新数字（字符串和 KPI 数值都换），用于修订后的后续事件和依据
+function deepSub(x, pairs){
+  if (typeof x === 'string') return pairs.reduce((s, [a, b]) => typeof a === 'string' ? s.split(a).join(b) : s, x);
+  if (typeof x === 'number'){ const hit = pairs.find(([a]) => a === x); return hit ? hit[1] : x; }
+  if (Array.isArray(x)) return x.map(y => deepSub(y, pairs));
+  if (x && typeof x === 'object'){ const o = {}; for (const k in x) o[k] = deepSub(x[k], pairs); return o; }
+  return x;
+}
+
+for (const key in SKILLS) for (const k in SKILLS[key]){
+  const t = TPL[key], a = t.agents[k] || t.market[k];
+  if (a) a.skills = SKILLS[key][k];
+}
+for (const key in TRACES) TPL[key].script.forEach(e => { if (TRACES[key][e.t]) e.trace = TRACES[key][e.t]; });
+
+/* ================= 状态 ================= */
+let S = null, timer = null, seq = 0, apSeq = 0, runId = 0;
+
+function fresh(key, solo){
+  const t = TPL[key];
+  const agents = {};
+  for (const [k, a] of Object.entries(t.agents)){
+    const x = Object.assign({}, a, {done:0, cost:0, started:!!a.owner});
+    // 一人公司：所有在岗 AI 归总管理员，自治等级至少 L3，避免审批把一个人淹没
+    if (solo && x.owner){ x.owner = 'admin'; x.mode = 'admin'; x.level = Math.max(x.level, 3); }
+    agents[k] = x;
+  }
+  const kpi = {cost:0, byAdmin:0, byStaff:0, auto:0};
+  t.kpis.forEach(([k]) => kpi[k] = 0);
+  return { key, t, solo:!!solo, now:toMin('08:00'), queue:[], pending:[], agents, view:'admin', speed:S ? S.speed : 1, running:true,
+    kpi, active:{}, paused:new Set(), tick:0, decidedBy:{}, chats:{} };
+}
+const staff = () => S.solo ? [] : S.t.people;
+// 一人公司模式下，剧本里提到的员工都由总管理员本人担任
+const rid = k => (S.solo && /^p\d+$/.test(k)) ? 'admin' : k;
+function soloize(text){
+  if (!S.solo || typeof text !== 'string') return text;
+  let t = text;
+  S.t.people.forEach(p => { t = t.split('继承' + p.name + '的权限').join('权限由你直接设定').split(p.name).join('你'); });
+  return t;
+}
+const codeFmt = s => esc(soloize(s)).replace(/`([^`]+)`/g, '<code>$1</code>');
+const people = () => [{id:'admin', name:'总管理员', role:S.t.adminTitle}].concat(staff());
+function pname(id){
+  id = rid(id);
+  if (id === 'admin') return '总管理员';
+  const p = S.t.people.find(p => p.id === id);
+  return p ? p.name : id;
+}
+const agentsOf = id => Object.keys(S.agents).filter(k => S.agents[k].owner === id);
+
+function schedule(ev, at){
+  S.queue.push(Object.assign({}, ev, {at:Math.max(at, S.now), seq:seq++}));
+  S.queue.sort((a, b) => a.at - b.at || a.seq - b.seq);
+}
+const delay = () => 1500 / S.speed;
+const staffPendingNotViewer = () => S.pending.some(p => p.approver !== 'admin' && p.approver !== S.view);
+const needTicks = () => S.queue.length > 0 || staffPendingNotViewer();
+function kick(){
+  if (timer || !S.running) { renderStatus(); return; }
+  if (needTicks()) timer = setTimeout(step, delay());
+  renderStatus();
+}
+function step(){
+  timer = null;
+  if (!S.running) return;
+  S.tick++;
+  // 模拟员工按「模拟时间」处理自己手里的审批：到点且至少展示了两步才处理
+  const staff = S.pending.filter(p => p.approver !== 'admin' && p.approver !== S.view && S.tick >= p.due && !p.discussing)
+    .sort((a, b) => a.dueAt - b.dueAt)[0];
+  const next = S.queue[0];
+  if (staff && (!next || staff.dueAt <= next.at)){
+    S.now = Math.max(S.now, staff.dueAt);
+    $('#clock').textContent = hhmm(S.now);
+    decide(staff.id, true, 'sim');
+  } else if (next){
+    fire(S.queue.shift());
+  } else renderTeam();
+  if (needTicks()) timer = setTimeout(step, delay());
+  renderStatus();
+}
+
+function who(k){
+  k = rid(k);
+  const a = S.agents[k];
+  if (a) return {label:a.name, ch:a.ch, style:`--c:${a.color}`, cls:''};
+  if (k === 'system') return {label:'系统', ch:'系', style:'--c:var(--r-ext)', cls:''};
+  if (k === 'admin') return {label:'总管理员', ch:'管', style:'', cls:'human admin'};
+  const p = S.t.people.find(p => p.id === k);
+  if (p) return {label:p.name, ch:p.name[0], style:'', cls:'human'};
+  return {label:k, ch:'外', style:'', cls:'ext'};
+}
+function toLabel(k){
+  if (!k) return '';
+  if (k === 'all') return '全员';
+  return who(k).label;
+}
+
+/* ---------- 公司频道 ---------- */
+function visible(li){
+  if (S.view === 'admin') return true;
+  const inv = li.dataset.inv.split(' ');
+  if (inv.includes(S.view) || inv.includes('all')) return true;
+  return inv.some(k => S.agents[k] && S.agents[k].owner === S.view);
+}
+function addFeed(e){
+  e = Object.assign({}, e, {from:rid(e.from), to:rid(e.to), text:soloize(e.text)});
+  const w = who(e.from);
+  const inv = new Set([e.from, e.to, e.also]);
+  [e.from, e.to, e.also].forEach(k => { const a = S.agents[k]; if (a && a.owner) inv.add(a.owner); });
+  if (e.to === 'all') inv.add('all');
+  const fa = S.agents[e.from];
+  const own = fa && fa.owner && !S.solo ? `<span class="own">${esc(pname(fa.owner))}</span>` : '';
+  const evl = e.evref && e.evref.evidence ? evLink(e.evref) : '';
+  const trace = e.trace ? `<details class="trace"><summary>查看执行过程 · ${e.trace.length} 步</summary><ol>${e.trace.map(([k, v]) => `<li><b>${k}</b><span>${codeFmt(v)}</span></li>`).join('')}</ol></details>` : '';
+  const li = document.createElement('li');
+  li.className = 'ev' + (e.kind === 'alert' ? ' is-alert' : '');
+  li.dataset.inv = [...inv].filter(Boolean).join(' ');
+  li.innerHTML = `<time>${hhmm(S.now)}</time>
+    <span class="av sm ${w.cls}" style="${w.style}" aria-hidden="true">${esc(w.ch)}</span>
+    <div><div class="ev-head"><b>${esc(w.label)}</b>${own}${e.to ? `<span class="to">→ ${esc(toLabel(e.to))}</span>` : ''}<span class="chip k-${e.kind}">${KIND[e.kind] || e.kind}</span></div>
+    <p>${esc(e.text)}</p>${evl}${trace}</div>`;
+  li.hidden = !visible(li);
+  $('#events').prepend(li);
+  countFeed();
+}
+function countFeed(){ $('#evCount').textContent = $('#events').querySelectorAll('li:not([hidden])').length + ' 条'; }
+function refilterFeed(){ $('#events').querySelectorAll('li').forEach(li => li.hidden = !visible(li)); countFeed(); }
+
+function touch(k, text){ if (S.agents[k]) S.active[k] = {text, until:S.tick + 4}; }
+function charge(k, mult){
+  const a = S.agents[k]; if (!a) return;
+  const c = TIERS[a.tier].cost * (mult || 1);
+  a.cost += c; S.kpi.cost += c;
+}
+function flash(...keys){
+  keys.forEach(k => {
+    const el = document.querySelector(`.agent[data-agent="${k}"]`);
+    if (!el) return;
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 1100);
+  });
+}
+
+/* ---------- 事件与审批 ---------- */
+function fire(ev){
+  S.now = Math.max(S.now, ev.at);
+  $('#clock').textContent = hhmm(S.now);
+  const a = S.agents[ev.from];
+  if (a && !a.owner){
+    addFeed({from:'system', kind:'system', text:`「${a.name}」目前没有分配给员工，一项工作已挂起。`});
+    renderTeam();
+    return;
+  }
+  if (ev.kind === 'approval') return fireApproval(ev);
+  const text = typeof ev.text === 'function' ? ev.text(S) : ev.text;
+  addFeed(Object.assign({}, ev, {text, also:ev.also || ev.pause || ev.resume}));
+  if (ev.kpi) for (const k in ev.kpi) if (k in S.kpi) S.kpi[k] += ev.kpi[k];
+  charge(ev.from, ev.kind === 'tool' ? 3 : 1);
+  if (a) a.done++;
+  if (ev.pause) S.paused.add(ev.pause);
+  if (ev.resume) S.paused.delete(ev.resume);
+  touch(ev.from, text);
+  if (S.agents[ev.to]) touch(ev.to, '处理来自' + toLabel(ev.from) + '的事项');
+  renderKpi(ev.kpi); renderTeam(); flash(ev.from, ev.to);
+}
+
+function route(ev){
+  const a = S.agents[ev.from];
+  if (ev.risk === 'red') return {to:'admin', why:'红线事项，只能由总管理员审批。'};
+  if (ev.esc){
+    const lim = ev.escWhy ? `（${ev.escWhy}）` : '';
+    if (a.owner === 'admin') return {to:'admin', why:`超出这名 AI 的授权额度${lim}。`};
+    return {to:'admin', why:`超出${pname(a.owner)}本人的权限${lim}，跳过员工自动升级。`};
+  }
+  if (RISK[ev.risk].lvl < a.level) return {to:'auto'};
+  if (a.owner === 'admin') return {to:'admin', why:'这名 AI 员工归总管理员。'};
+  if (a.mode === 'admin') return {to:'admin', why:`${pname(a.owner)}的 AI 员工设为管理员审批。`};
+  return {to:a.owner, why:`员工自批，由${pname(a.owner)}审批。`};
+}
+function fireApproval(ev){
+  const a = S.agents[ev.from];
+  charge(ev.from); touch(ev.from, '申请：' + ev.title);
+  const r = route(ev);
+  if (r.to === 'auto'){
+    S.kpi.auto++; a.done++;
+    addFeed({from:ev.from, kind:'auto', trace:ev.trace, evref:ev, text:`「${ev.title}」属于${RISK[ev.risk].label}，在它的 L${a.level} 授权之内，已自动执行。`});
+    (ev.onApprove || []).forEach(x => schedule(x, S.now + x.dt));
+  } else {
+    ev.base = ev.base || ev.title;
+    ev.chain = ev.chain || ('ch' + apSeq);
+    S.pending.push({id:'ap' + (apSeq++), ev, approver:r.to, why:r.why, due:S.tick + 2, dueAt:S.now + 8, at:S.now});
+    addFeed({from:ev.from, to:r.to, kind:'approval', trace:ev.trace, evref:ev, text:`申请「${ev.title}」，提交${r.to === 'admin' ? '总管理员' : pname(r.to)}审批。`});
+    renderApprovals();
+  }
+  renderKpi(); renderTeam(); flash(ev.from); kick();
+}
+function decide(id, ok, actor){
+  const i = S.pending.findIndex(p => p.id === id);
+  if (i < 0) return;
+  const p = S.pending.splice(i, 1)[0];
+  const by = actor === 'sim' ? p.approver : actor;
+  const card = $('#aps').querySelector(`.card[data-id="${id}"]`);
+  const run = runId;
+  const done = () => {
+    if (run !== runId) return;
+    if (card) card.remove();
+    resolve(p, ok, by); renderApprovals(); renderStatus();
+  };
+  if (card){
+    card.classList.add('stamping');
+    card.querySelectorAll('button').forEach(b => b.disabled = true);
+    const st = document.createElement('div');
+    st.className = 'stamp' + (ok ? '' : ' no');
+    st.innerHTML = `${ok ? '准' : '驳回'}<small>${esc(by === 'admin' ? '总管理员' : pname(by))}</small>`;
+    card.append(st);
+    setTimeout(done, 750);
+  } else done();
+  updateApCount(); renderTeam();
+}
+function resolve(p, ok, by){
+  ((ok ? p.ev.onApprove : p.ev.onReject) || []).forEach(x => schedule(x, S.now + x.dt));
+  if (by === 'admin') S.kpi.byAdmin++; else S.kpi.byStaff++;
+  S.decidedBy[by] = (S.decidedBy[by] || 0) + 1;
+  const over = by === 'admin' && p.approver !== 'admin' ? '（总管理员直接处理）' : '';
+  addFeed({from:by, to:p.ev.from, kind:'decision', text:`查看依据后${ok ? '批准' : '驳回'}：${p.ev.title}${over}`});
+  renderKpi(); renderTeam(); kick();
+}
+
+/* ---------- 渲染 ---------- */
+function statusOf(k){
+  const a = S.agents[k];
+  if (!a.owner) return ['idle','待分配'];
+  if (S.pending.some(p => p.ev.from === k)) return ['waiting','等审批'];
+  if (S.paused.has(k)) return ['paused','已熔断'];
+  const act = S.active[k];
+  if (act && S.tick <= act.until) return ['working','工作中'];
+  return ['idle','待命'];
+}
+function agentRow(k){
+  const a = S.agents[k], [cls, label] = statusOf(k), act = S.active[k];
+  const sub = act && cls !== 'idle' ? act.text : a.title;
+  const ml = a.owner ? `${MODES[a.mode]} · L${a.level}` : `${TIERS[a.tier].label}`;
+  return `<button type="button" class="agent" data-agent="${k}">
+    <span class="av" style="--c:${a.color}" aria-hidden="true">${a.ch}</span>
+    <span class="who"><span class="who-top"><b>${a.name}</b><span class="pill ${cls}">${label}</span></span><small>${esc(sub)}</small><small class="ml">${ml}</small></span>
+  </button>`;
+}
+function renderTeam(){
+  const admin = S.view === 'admin';
+  const list = admin ? people() : people().filter(p => p.id === S.view);
+  let html = list.map(p => {
+    const ks = agentsOf(p.id), isA = p.id === 'admin';
+    const name = isA ? '总管理员（你）' : p.name + (admin ? '' : '（你）');
+    const head = `<div class="person"><span class="av sm human ${isA ? 'admin' : ''}" aria-hidden="true">${isA ? '管' : p.name[0]}</span><span><b>${esc(name)}</b><small>${esc(p.role)}</small></span></div>`;
+    let body;
+    if (ks.length) body = ks.map(agentRow).join('');
+    else if (admin) body = `<button type="button" class="assign" data-assign="${p.id}">+ 分配 AI 员工</button>`;
+    else body = '<p class="empty">还没有分配 AI 员工，请联系总管理员。</p>';
+    return `<li>${head}<div class="agents">${body}</div></li>`;
+  }).join('');
+  if (admin){
+    const pool = Object.keys(S.agents).filter(k => !S.agents[k].owner);
+    html += `<li class="pool"><div class="pool-h">待分配 AI 员工 · ${pool.length}</div>${pool.length ? pool.map(agentRow).join('') : '<p class="empty">没有待分配的 AI 员工，可以去 AI 员工库雇佣。</p>'}</li>`;
+  } else {
+    html += '<li class="pool"><p class="empty">你只能看到自己的 AI 员工和与你有关的协作记录。AI 员工的归属和权限由总管理员设置。</p></li>';
+  }
+  $('#team').innerHTML = html;
+  $('#teamTitle').textContent = admin ? '团队与 AI 员工' : '我的 AI 员工';
+  $('#teamCount').textContent = admin ? `${staff().length + 1} 人 · ${Object.keys(S.agents).length} 名 AI` : '';
+  $('#openMarket2').hidden = !admin;
+}
+
+function visiblePending(){
+  if (S.view === 'admin') return S.pending;
+  return S.pending.filter(p => p.approver === S.view || (S.agents[p.ev.from] && S.agents[p.ev.from].owner === S.view));
+}
+const viewed = p => !!(p.viewedBy && p.viewedBy.has(S.view));
+function buildCard(p){
+  const ev = p.ev, a = S.agents[ev.from], w = who(ev.from), r = RISK[ev.risk], E = ev.evidence;
+  const mine = S.view === 'admin' ? p.approver === 'admin' : p.approver === S.view;
+  const override = S.view === 'admin' && p.approver !== 'admin';
+  const ownerTxt = a && a.owner && !S.solo ? pname(a.owner) : '';
+  const apTxt = p.approver === 'admin' ? '总管理员' : pname(p.approver);
+  const seen = viewed(p) || !E;
+  const look = cls => `<button type="button" class="look${cls}" data-act="look">${viewed(p) ? '依据与讨论' : '查看决策依据'}</button>`;
+  let acts;
+  if (mine) acts = seen
+    ? `<div class="acts"><button type="button" class="yes" data-act="yes">批准</button><button type="button" data-act="no">驳回</button>${look(' mini')}</div>`
+    : `<div class="acts">${look('')}</div><p class="gate-note">先看完数据依据，才能批准或驳回。</p>`;
+  else if (override) acts = `<div class="acts"><span class="waiting">等待${esc(apTxt)}处理…</span>${seen ? '<button type="button" class="mini" data-act="yes">直接批准</button><button type="button" class="mini" data-act="no">驳回</button>' : ''}${look(' mini')}</div>`;
+  else acts = `<div class="acts"><span class="waiting">已提交${esc(apTxt)}，等待处理</span>${look(' mini')}</div>`;
+  const brief = E
+    ? `<p class="brief">${esc(soloize(E.summary))}</p><div class="kchips">${E.metrics.slice(0, 3).map(m => `<span class="kchip">${esc(soloize(m[0]))}<b>${esc(soloize(m[1]))}</b></span>`).join('')}</div>`
+    : `<p>${esc(soloize(ev.detail))}</p><p class="gate-note">缺少决策依据，治理网关会退回补齐。</p>`;
+  const card = document.createElement('article');
+  card.className = 'card' + (mine ? '' : ' other');
+  card.dataset.id = p.id;
+  card.innerHTML = `<header><span class="av sm" style="${w.style}" aria-hidden="true">${w.ch}</span><span><b>${esc(w.label)}</b>${ownerTxt ? ` · 为${esc(ownerTxt)}工作` : ''} · ${hhmm(p.at)}</span><span class="risk ${ev.risk}">${r.label}</span></header>
+    <h4>${esc(soloize(ev.title))}${ev.version > 1 ? `<span class="ver">第 ${ev.version} 版</span>` : ''}</h4>${brief}
+    <p class="route"><b>审批人：${esc(apTxt)}</b> · ${esc(p.why)}</p>${acts}`;
+  card.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.act === 'look') openEvidence(ev);
+    else decide(p.id, b.dataset.act === 'yes', S.view);
+  }));
+  return card;
+}
+function refreshCard(p){
+  const c = $('#aps').querySelector(`.card[data-id="${p.id}"]`);
+  if (c && !c.classList.contains('stamping')) c.replaceWith(buildCard(p));
+}
+
+/* ---------- 决策依据面板 ---------- */
+const EVREG = [];
+function evLink(ev){
+  EVREG.push(ev);
+  return `<button type="button" class="evlink" data-evid="${EVREG.length - 1}">查看决策依据 →</button>`;
+}
+const fv = (c, v) => (c.pre || '') + (Number.isInteger(v) ? v.toLocaleString('en-US') : String(v)) + (c.suf || '');
+const xLabel = (c, i, n) => c.future ? (i === 0 ? '今天' : `${i} 天后`) : (i === n - 1 ? '今天' : `${n - 1 - i} 天前`);
+function barsHtml(c){
+  const max = Math.max(...c.rows.map(r => r[1]), c.ref || 0) * 1.3;
+  const pct = v => (v / max * 100).toFixed(2);
+  return `<div class="bars">${c.rows.map(([l, v, hi]) => `<div class="bar-row"><span title="${esc(l)}">${esc(l)}</span><div class="bar-track"><div class="bar${hi ? ' hi' : ''}" style="width:${pct(v)}%"></div><span class="bar-v" style="left:${pct(v)}%">${esc(fv(c, v))}</span>${c.ref != null ? `<div class="bar-ref" style="left:${pct(c.ref)}%"></div>` : ''}</div></div>`).join('')}</div>${c.ref != null ? `<p class="ref-l">虚线：${esc(c.refLabel)}</p>` : ''}`;
+}
+function lineGeom(c){
+  const v = c.vals, n = v.length;
+  let lo = Math.min(...v), hi = Math.max(...v);
+  if (c.ref != null){ lo = Math.min(lo, c.ref); hi = Math.max(hi, c.ref); }
+  const pad = (hi - lo) * 0.15 || 1;
+  lo = c.zero ? Math.min(0, lo) : lo - pad;
+  hi = hi + pad;
+  return { v, n, lo, hi, X: i => n === 1 ? 50 : i / (n - 1) * 100, Y: x => (hi - x) / (hi - lo) * 100 };
+}
+function niceTicks(lo, hi){
+  const raw = (hi - lo) / 3, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(s => s * mag).find(s => s >= raw);
+  const out = [];
+  for (let t = Math.ceil(lo / step) * step; t <= hi + 1e-9; t += step) out.push(+t.toFixed(6));
+  return out;
+}
+function lineHtml(c, ci){
+  const g = lineGeom(c), last = g.v[g.n - 1];
+  const pts = g.v.map((x, i) => `${g.X(i).toFixed(2)},${g.Y(x).toFixed(2)}`).join(' ');
+  const ticks = niceTicks(g.lo, g.hi).map(t => `<div class="lc-grid" style="top:${g.Y(t).toFixed(2)}%"><span>${esc(fv(c, t))}</span></div>`).join('');
+  const ry = c.ref != null ? g.Y(c.ref).toFixed(2) : null;
+  return `<div class="lc-plot" tabindex="0" data-ci="${ci}" aria-label="${esc(c.title)}，最新值 ${esc(fv(c, last))}。用左右方向键查看每个点。">
+      ${ticks}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <polygon class="lc-area" points="0,100 ${pts} 100,100"></polygon>
+        ${ry != null ? `<line class="lc-ref" x1="0" x2="100" y1="${ry}" y2="${ry}" vector-effect="non-scaling-stroke"></line>` : ''}
+        <polyline class="lc-line" points="${pts}" vector-effect="non-scaling-stroke"></polyline>
+      </svg>
+      <div class="lc-dot" style="left:100%;top:${g.Y(last).toFixed(2)}%"></div>
+      <div class="lc-lab" style="left:100%;top:${g.Y(last).toFixed(2)}%">${esc(fv(c, last))}</div>
+      <div class="lc-cross" hidden></div><div class="lc-dot lc-h" hidden></div><div class="lc-tip" hidden></div>
+    </div>
+    <div class="lc-x"><span>${xLabel(c, 0, g.n)}</span><span>${xLabel(c, g.n - 1, g.n)}</span></div>
+    ${c.ref != null ? `<p class="ref-l">虚线：${esc(c.refLabel)}</p>` : ''}`;
+}
+function wireLine(el, c){
+  const g = lineGeom(c);
+  const cross = el.querySelector('.lc-cross'), dot = el.querySelector('.lc-h'), tip = el.querySelector('.lc-tip');
+  let idx = g.n - 1;
+  const show = i => {
+    idx = i;
+    const x = g.X(i), y = g.Y(g.v[i]);
+    cross.style.left = x + '%'; dot.style.left = x + '%'; dot.style.top = y + '%';
+    tip.style.left = Math.min(Math.max(x, 15), 85) + '%';
+    tip.textContent = `${xLabel(c, i, g.n)}：${fv(c, g.v[i])}`;
+    cross.hidden = dot.hidden = tip.hidden = false;
+  };
+  const hide = () => { cross.hidden = dot.hidden = tip.hidden = true; };
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    show(Math.round(Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1) * (g.n - 1)));
+  });
+  el.addEventListener('mouseleave', hide);
+  el.addEventListener('focus', () => show(idx));
+  el.addEventListener('blur', hide);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft'){ e.preventDefault(); show(Math.max(0, idx - 1)); }
+    if (e.key === 'ArrowRight'){ e.preventDefault(); show(Math.min(g.n - 1, idx + 1)); }
+  });
+}
+function twinHtml(c){
+  const rows = c.type === 'bars' ? c.rows.map(r => [r[0], fv(c, r[1])]) : c.vals.map((v, i) => [xLabel(c, i, c.vals.length), fv(c, v)]);
+  return `<details class="twin"><summary>以表格查看</summary><table><tbody>${rows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></details>`;
+}
+function openEvidence(ev){
+  const d = $('#dlgEvidence'), E = ev.evidence, a = S.agents[ev.from], w = who(ev.from), r = RISK[ev.risk];
+  const p = S.pending.find(x => x.ev === ev);
+  if (p) (p.viewedBy = p.viewedBy || new Set()).add(S.view);
+  const canAct = !!p && (S.view === 'admin' || p.approver === S.view);
+  const sz = s => esc(soloize(s));
+  const apTxt = p ? (p.approver === 'admin' ? '总管理员' : pname(p.approver)) : '';
+  let body;
+  if (!E) body = '<p class="evd-sum">这张审批单没有附决策依据。按平台规则，治理网关会把它退回给 AI 员工补齐。</p>';
+  else body = `
+    <div><h5>结论</h5><p class="evd-sum">${sz(E.summary)}</p></div>
+    <div><h5>关键数据</h5><div class="stats">${E.metrics.map(m => `<div class="stat"><span>${sz(m[0])}</span><b>${sz(m[1])}</b>${m[2] ? `<small>${sz(m[2])}</small>` : ''}</div>`).join('')}</div></div>
+    ${E.charts ? `<div><h5>图表</h5><div class="charts">${E.charts.map((c, i) => `<div class="chart"><div class="chart-t">${sz(c.title)}</div>${c.type === 'bars' ? barsHtml(c) : lineHtml(c, i)}${twinHtml(c)}</div>`).join('')}</div></div>` : ''}
+    ${E.table ? `<div><h5>${sz(E.table.title)}</h5><div class="tbl-wrap evd-tbl"><table><thead><tr>${E.table.head.map(h => `<th>${sz(h)}</th>`).join('')}</tr></thead><tbody>${E.table.rows.map(row => `<tr>${row.map(x => `<td>${sz(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>` : ''}
+    ${E.reasons ? `<div><h5>为什么这样建议</h5><ul>${E.reasons.map(x => `<li>${sz(x)}</li>`).join('')}</ul></div>` : ''}
+    ${E.options ? `<div><h5>备选方案</h5><div class="opts">${E.options.map(o => `<div class="opt${o[0].includes('推荐') || o[0].includes('（当前）') ? ' rec' : ''}"><b>${sz(o[0])}</b>${o[1] ? `<span>${sz(o[1])}</span>` : ''}</div>`).join('')}</div></div>` : ''}
+    <div class="two-col">
+      <div><h5>风险</h5><ul>${(E.risks || []).map(x => `<li>${sz(x)}</li>`).join('')}</ul></div>
+      <div><h5>回滚方案</h5><ul><li>${sz(E.rollback || '无')}</li></ul></div>
+    </div>
+    <div><h5>数据来源 · 上面每个数字都来自这些查询和计算，可以回放</h5><div class="srcs">${E.sources.map(s => `<div><code>${esc(s[0])}</code><time>${esc(s[1])}</time></div>`).join('')}</div></div>`;
+  const foot = `<div class="evd-foot"><p class="route">${p ? `<b>审批人：${esc(apTxt)}</b> · ${esc(p.why)}` : '这项事务已经处理，决策依据存档在审计日志里。'}</p>${canAct ? `<div class="acts"><button type="button" class="yes" data-dec="yes">${S.view === 'admin' && p.approver !== 'admin' ? '直接批准' : '批准'}</button><button type="button" data-dec="no">驳回</button></div>` : ''}</div>`;
+  d.innerHTML = `<div class="dlg-h"><span class="av" style="${w.style}" aria-hidden="true">${w.ch}</span>
+      <div><h3>${sz(ev.title)}</h3><p>决策依据 · ${esc(w.label)}${a && a.owner && !S.solo ? `（为${esc(pname(a.owner))}工作）` : ''} · ${r.label} · ${p ? `待${esc(apTxt)}审批` : '已处理'}</p></div>
+      <div style="margin-left:auto;display:flex;gap:8px;flex:none">${canAct ? '<button class="btn" type="button" id="toDisc">讨论这份依据</button>' : ''}<button class="btn x" type="button" data-close>关闭</button></div></div>
+    <div class="dlg-b evd">${changeHtml(ev)}${body}${canAct ? discHtml(p) : ''}${foot}</div>`;
+  if (E && E.charts) d.querySelectorAll('.lc-plot').forEach(el => wireLine(el, E.charts[+el.dataset.ci]));
+  d.querySelectorAll('[data-dec]').forEach(b => b.addEventListener('click', () => { d.close(); decide(p.id, b.dataset.dec === 'yes', S.view); }));
+  if (canAct){ p.discussing = true; wireDisc(d, p); }
+  d.addEventListener('close', () => {
+    if (p){ p.discussing = false; const ch = S.chats[p.ev.chain]; if (ch && ch.ctl) ch.ctl.abort(); }
+    if (p && S.pending.includes(p)) refreshCard(p);
+  }, {once:true});
+  d.showModal();
+}
+
+/* ---------- 和 AI 员工讨论决策依据 ---------- */
+// 在 claude.ai 里打开时，通过 sample 能力接入真实的 Claude；本地文件打开时没有 window.claude，走离线演示
+let SAMPLE = null, SAMPLE_TOOLS = false, LIVE_OFF = false;
+(async () => {
+  try {
+    if (window.claude && typeof window.claude.use === 'function'){
+      SAMPLE = await window.claude.use('sample');
+      if (SAMPLE){ const lim = await SAMPLE.limits().catch(() => null); SAMPLE_TOOLS = !!(lim && lim.tools); }
+    }
+  } catch (e) { SAMPLE = null; }
+  const m = document.querySelector('#discMode'); if (m) setMode(m);
+})();
+const live = () => !!SAMPLE && !LIVE_OFF;
+function setMode(el){
+  el.textContent = live() ? '实时 AI' : '离线演示';
+  el.className = 'mode' + (live() ? ' live' : '');
+  el.title = live() ? '由 Claude 实时回答，消耗你自己的 Claude 用量' : '只回答几类常见问题；在 claude.ai 打开这个页面可以自由对话';
+}
+const adjOf = ev => ADJUST[ev.base || ev.title];
+const curVal = ev => { const adj = adjOf(ev); return ev.adjValue ?? (adj && adj.value); };
+const chatOf = p => (S.chats[p.ev.chain] = S.chats[p.ev.chain] || {items:[], turns:[], ctl:null});
+const viewerName = () => S.view === 'admin' ? '总管理员' : pname(S.view);
+const snap = (adj, v) => {
+  v = Math.min(adj.max, Math.max(adj.min, v));
+  v = Math.round((v - adj.min) / adj.step) * adj.step + adj.min;
+  return Math.round(v * 100) / 100;
+};
+
+function changeHtml(ev){
+  const c = ev.evidence && ev.evidence.change;
+  if (!c) return '';
+  return `<div class="change"><b>修改记录 · 第 ${ev.version} 版</b><span>「${esc(soloize(c.from))}」→「${esc(soloize(c.to))}」</span><span>${esc(soloize(c.note))} · ${esc(c.byName)} · ${esc(c.at)}</span></div>`;
+}
+function discHtml(p){
+  const a = S.agents[p.ev.from], adj = adjOf(p.ev), cur = curVal(p.ev);
+  const qs = ['为什么建议这样做？', '有什么风险，怎么兜底？', '数据从哪来，什么时候取的？', '还有其他方案吗？'];
+  if (adj) qs.push(`如果改成 ${adj.fmtV(adj.example)} 呢？`);
+  return `<section class="disc" id="disc" aria-label="和 ${esc(a.name)} 讨论">
+    <div class="disc-h"><h5>和 ${esc(a.name)} 讨论这份依据</h5><span class="mode" id="discMode"></span></div>
+    <div class="msgs" id="msgs" aria-live="polite"></div>
+    <div class="qchips" id="qchips">${qs.map(q => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+    <form class="ask" id="askForm"><input id="askInput" autocomplete="off" placeholder="追问数据，或者说说你的想法"><button type="submit" class="btn primary">发送</button><button type="button" class="btn" id="stopBtn" hidden>停止</button></form>
+    <div class="disc-tools">
+      ${adj ? `<div class="adj"><label for="adjRange">换个${esc(adj.label)}重算</label><input type="range" id="adjRange" min="${adj.min}" max="${adj.max}" step="${adj.step}" value="${cur}"><output id="adjOut" for="adjRange">${esc(adj.fmtV(cur))}</output><button type="button" class="btn" id="adjBtn">让 AI 测算</button></div>` : ''}
+      <div class="rep"><label for="repInput">退回重新处理</label><input id="repInput" autocomplete="off" placeholder="写下要求，例如：再拉一次竞品价格，并考虑库存"><button type="button" class="btn" id="repBtn">退回给 AI</button></div>
+    </div>
+  </section>`;
+}
+function routePreview(p, r){
+  if (r.block) return '不能提交：' + r.block;
+  const rt = route(Object.assign({}, p.ev, {risk:r.risk, esc:r.esc, escWhy:r.escWhy}));
+  if (rt.to === 'auto') return '审批路由：在这名 AI 的授权之内，修订后自动执行';
+  return `审批路由：修订后交给${rt.to === 'admin' ? '总管理员' : pname(rt.to)}审批（${rt.why}）`;
+}
+function itemEl(d, p, it){
+  const el = document.createElement('div');
+  if (it.k === 'user' || it.k === 'ai' || it.k === 'sys'){ el.className = 'msg ' + it.k; el.textContent = soloize(it.text); return el; }
+  el.className = 'ccard';
+  if (it.k === 'calc' || it.k === 'draft'){
+    const adj = adjOf(p.ev), r = adj.calc(it.v), same = it.v === curVal(p.ev), open = S.pending.includes(p);
+    if (r.block) el.classList.add('blocked');
+    el.innerHTML = `<b>${it.k === 'draft' ? 'AI 起草的修订方案' : '重新测算'}：${esc(adj.label)} ${esc(adj.fmtV(it.v))}</b>
+      <div class="stats">${r.metrics.map(m => `<div class="stat"><span>${esc(m[0])}</span><b>${esc(m[1])}</b>${m[2] ? `<small>${esc(m[2])}</small>` : ''}</div>`).join('')}</div>
+      ${it.note ? `<span>${esc(soloize(it.note))}</span>` : ''}
+      <span class="rt${r.block ? ' bad' : ''}">${esc(routePreview(p, r))}</span>
+      <div class="row2"><button type="button">${same ? '和当前方案相同' : !open ? '这张审批单已经处理' : `按这个方案修订（生成第 ${(p.ev.version || 1) + 1} 版）`}</button></div>`;
+    const b = el.querySelector('button');
+    b.disabled = !!r.block || same || !open;
+    b.addEventListener('click', () => { d.close(); applyRevision(p, it.v, it.note || `${viewerName()}要求把${adj.label}改为 ${adj.fmtV(it.v)}`); });
+  } else if (it.k === 'rep'){
+    el.innerHTML = `<b>AI 建议退回重新处理</b><span>${esc(soloize(it.instruction))}</span><div class="row2"><button type="button">同意，退回重新处理</button></div>`;
+    const b = el.querySelector('button');
+    b.disabled = !S.pending.includes(p);
+    b.addEventListener('click', () => { d.close(); reprocess(p, it.instruction); });
+  }
+  return el;
+}
+function renderMsgs(d, p){
+  const box = d.querySelector('#msgs'); if (!box) return;
+  const ch = chatOf(p);
+  box.replaceChildren(...ch.items.map(it => itemEl(d, p, it)));
+  box.scrollTop = box.scrollHeight;
+  const busy = !!ch.ctl;
+  d.querySelector('#stopBtn').hidden = !busy;
+  d.querySelectorAll('#askForm button[type="submit"], #qchips button, #adjBtn, #repBtn').forEach(b => { b.disabled = busy; });
+}
+function wireDisc(d, p){
+  const ch = chatOf(p), adj = adjOf(p.ev);
+  setMode(d.querySelector('#discMode'));
+  if (!ch.items.length) ch.items.push({k:'ai', text:`我是${S.agents[p.ev.from].name}。对这份依据有疑问，或者想换个方案，直接问我。`});
+  renderMsgs(d, p);
+  const td = d.querySelector('#toDisc');
+  if (td) td.addEventListener('click', () => { d.querySelector('#disc').scrollIntoView({block:'start'}); d.querySelector('#askInput').focus(); });
+  const send = text => {
+    text = text.trim();
+    if (!text || ch.ctl) return;
+    ch.items.push({k:'user', text}); ch.turns.push({role:'user', content:text});
+    answer(d, p, text);
+  };
+  d.querySelector('#askForm').addEventListener('submit', e => { e.preventDefault(); const i = d.querySelector('#askInput'); send(i.value); i.value = ''; });
+  d.querySelector('#qchips').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b) send(b.dataset.q); });
+  d.querySelector('#stopBtn').addEventListener('click', () => { if (ch.ctl) ch.ctl.abort(); });
+  if (adj){
+    const range = d.querySelector('#adjRange'), out = d.querySelector('#adjOut');
+    range.addEventListener('input', () => { out.textContent = adj.fmtV(snap(adj, +range.value)); });
+    d.querySelector('#adjBtn').addEventListener('click', () => {
+      if (ch.ctl) return;
+      const v = snap(adj, +range.value), r = adj.calc(v), q = `如果${adj.label}改成 ${adj.fmtV(v)}，结果会怎样？`;
+      ch.items.push({k:'user', text:q}, {k:'calc', v});
+      // 数字由页面算好再交给 AI 解读，AI 只负责解释和建议
+      ch.turns.push({role:'user', content:`${q}\n（页面已用测算模型算出：${r.summary}${r.block ? ' ' + r.block + '。' : ''} ${routePreview(p, r)}）请解读这个结果，并和当前方案比较。`});
+      if (live()) askLive(d, p);
+      else { ch.items.push({k:'ai', text:`按 ${adj.fmtV(v)} 算好了，见上面的卡片。${r.block ? r.block + '，这个方案不能提交。' : '和当前方案比，主要看日毛利和审批路由的变化；觉得合适，点卡片上的按钮生成新版本。'}`}); renderMsgs(d, p); }
+    });
+  }
+  d.querySelector('#repBtn').addEventListener('click', () => {
+    const text = d.querySelector('#repInput').value.trim() || '重新取一次数据，复核测算';
+    d.close(); reprocess(p, text);
+  });
+}
+function answer(d, p, text){
+  if (live()) return askLive(d, p);
+  const ch = chatOf(p);
+  ch.ctl = {abort(){}};
+  renderMsgs(d, p);
+  setTimeout(() => {
+    ch.ctl = null;
+    const res = offlineReply(p, text);
+    ch.items.push(...res);
+    const t = res.find(x => x.k === 'ai'); if (t) ch.turns.push({role:'assistant', content:t.text});
+    if (d.open) renderMsgs(d, p);
+  }, 450);
+}
+function offlineReply(p, text){
+  const E = p.ev.evidence || {}, adj = adjOf(p.ev), t = text || '';
+  const n = (t.replace(/,/g, '').match(/\d+(\.\d+)?/) || [])[0];
+  if (adj && n != null && /改|换|降|调|如果|试|呢|到|报|折|补|投/.test(t)){
+    const v = snap(adj, +n), r = adj.calc(v);
+    return [{k:'ai', text:`按 ${adj.fmtV(v)} 算了一下：${r.summary}${r.block ? ' 不过' + r.block + '。' : ''}`}, {k:'calc', v}];
+  }
+  if (/为什么|原因|理由|依据|凭什么/.test(t)) return [{k:'ai', text:E.reasons ? E.reasons.map((x, i) => `${i + 1}. ${x}`).join('\n') : (E.summary || '')}];
+  if (/风险|回滚|兜底|万一|撤回|出问题/.test(t)) return [{k:'ai', text:`风险：${(E.risks || []).join('；') || '暂未发现'}\n兜底：${E.rollback || '无'}`}];
+  if (/数据|来源|什么时候|时间|准|可靠|怎么算|哪来/.test(t)) return [{k:'ai', text:`这些数字来自下面的查询和计算：\n${(E.sources || []).map(s => `· ${s[0]}（${s[1]}）`).join('\n')}\n数字都是程序从接口返回值算出来的，我只负责解释。觉得数据旧了，可以退回让我重新取数。`}];
+  if (/方案|备选|其他|还有|别的/.test(t)) return [{k:'ai', text:(E.options || []).map(o => `· ${o[0]}${o[1] ? '：' + o[1] : ''}`).join('\n') || '这次只评估了一个方案。'}];
+  if (/重新|再查|刷新|重做|再拉/.test(t)) return [{k:'ai', text:'可以按你的要求重新处理。确认后这张审批单会先撤回，处理完再提交新版本。'}, {k:'rep', instruction:t}];
+  return [{k:'ai', text:`离线演示模式下，我能回答这几类问题：为什么这样建议、风险和兜底、数据来源、其他方案${adj ? `；也可以说「改成 ${adj.fmtV(adj.example)}」让我重算` : ''}。在 claude.ai 打开这个页面，就能和我自由对话。`}];
+}
+function rulesFor(p){
+  const ev = p.ev, a = S.agents[ev.from], E = ev.evidence || {}, adj = SAMPLE_TOOLS ? adjOf(ev) : null;
+  const owner = a.owner && a.owner !== 'admin' ? pname(a.owner) : '总管理员';
+  const data = {
+    结论:E.summary, 关键数据:E.metrics,
+    图表:(E.charts || []).map(c => ({标题:c.title, 数据:c.type === 'bars' ? c.rows.map(r => [r[0], fv(c, r[1])]) : c.vals.map((v, i) => [xLabel(c, i, c.vals.length), fv(c, v)]), 参考线:c.refLabel})),
+    测算表:E.table, 理由:E.reasons, 备选方案:E.options, 风险:E.risks, 回滚:E.rollback, 数据来源:E.sources, 修改记录:E.change
+  };
+  const lines = [
+    `你在扮演一家虚构公司（${S.t.company}）里的 AI 员工「${a.name}」，岗位是「${a.title}」，为${owner}工作。你提交了一张审批单，审批人（${viewerName()}）正在看你的决策依据，和你讨论。`,
+    '要求：',
+    '- 用中文口语回答，简洁，一般不超过 150 字，可以分点。',
+    `- 所有数字只能来自下面的决策依据${adj ? '或 recalc_scenario 的计算结果' : '，或者审批人消息里写明「页面已算出」的结果'}，绝不编造。依据里没有的数据就直说没有，并建议退回重新取数。`,
+    `- 你的权限：${a.perm.join('；')}。这张单的审批规则：${p.why}`
+  ];
+  if (adj) lines.push(`- 审批人想换一个${adj.label}时，先调用 recalc_scenario 计算，再用结果回答；可调范围 ${adj.fmtV(adj.min)} 到 ${adj.fmtV(adj.max)}。审批人同意某个修改，或明确要求按某个值修订时，调用 draft_revision 生成修订草案，页面会让审批人确认。`);
+  if (SAMPLE_TOOLS) lines.push('- 审批人要求重新取数、重新分析，或者提出依据里没考虑的因素时，调用 request_reprocess，把要求写进 instruction，页面会让审批人确认。');
+  lines.push('- 可以给建议，但最终决定由审批人做。', '', `审批单：${ev.title}（${RISK[ev.risk].label}，第 ${ev.version || 1} 版）`, '决策依据：', JSON.stringify(data));
+  return soloize(lines.join('\n'));
+}
+function toolsFor(d, p, bubble){
+  const ch = chatOf(p), adj = adjOf(p.ev), tools = [];
+  const put = card => { const i = ch.items.indexOf(bubble); ch.items.splice(i < 0 ? ch.items.length : i, 0, card); if (d.open) renderMsgs(d, p); };
+  if (adj){
+    tools.push({
+      name:'recalc_scenario',
+      description:`按新的${adj.label}重新测算，返回关键指标、是否低于底线、修订后的审批路由。结果卡片会同时展示给审批人。`,
+      inputSchema:{type:'object', properties:{value:{type:'number', description:`${adj.label}，范围 ${adj.min} 到 ${adj.max}`}}, required:['value']},
+      execute:({value}) => {
+        const v = snap(adj, Number(value));
+        if (!isFinite(v)) throw new Error('value 必须是数字');
+        const r = adj.calc(v); put({k:'calc', v});
+        return {value:adj.fmtV(v), summary:r.summary, metrics:r.metrics, blocked:r.block, route:routePreview(p, r)};
+      }
+    });
+    tools.push({
+      name:'draft_revision',
+      description:'起草修订方案。页面会显示草案和确认按钮，审批人确认后才生成新版本。',
+      inputSchema:{type:'object', properties:{value:{type:'number'}, note:{type:'string', description:'一句话说明为什么这样修订'}}, required:['value', 'note']},
+      execute:({value, note}) => {
+        const v = snap(adj, Number(value)), r = adj.calc(v);
+        if (r.block) throw new Error('不能提交：' + r.block);
+        put({k:'draft', v, note:String(note || '')});
+        return '草案已展示给审批人，等待确认。';
+      }
+    });
+  }
+  tools.push({
+    name:'request_reprocess',
+    description:'建议把审批单退回给你重新处理（重新取数或重新分析）。页面会显示确认按钮，审批人确认后才执行。',
+    inputSchema:{type:'object', properties:{instruction:{type:'string', description:'重新处理的具体要求'}}, required:['instruction']},
+    execute:({instruction}) => { put({k:'rep', instruction:String(instruction || '重新取数并复核')}); return '已请审批人确认。'; }
+  });
+  return tools;
+}
+async function askLive(d, p){
+  const ch = chatOf(p), ctl = new AbortController();
+  ch.ctl = ctl;
+  const bubble = {k:'ai', text:'思考中…'};
+  ch.items.push(bubble); renderMsgs(d, p);
+  const turns = [{role:'user', content:rulesFor(p)}].concat(ch.turns.slice(-12));
+  const opts = {signal:ctl.signal, modelTier:'quick', onText:({text}) => { bubble.text = text; if (d.open) renderMsgs(d, p); }};
+  if (SAMPLE_TOOLS) opts.tools = toolsFor(d, p, bubble); else opts.cache = false;
+  try {
+    const {text} = await SAMPLE(turns, opts);
+    bubble.text = text;
+    ch.turns.push({role:'assistant', content:text});
+  } catch (e) {
+    if (e.code === 'cancelled') bubble.text = e.text || '（已停止）';
+    else if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)){
+      LIVE_OFF = true;
+      bubble.text = '这里用不了实时 AI，已切换到离线演示模式，可以继续用下面的快捷问题。';
+      const m = d.querySelector('#discMode'); if (m) setMode(m);
+    } else {
+      bubble.text = (e.text ? e.text + '\n\n' : '') + ({rate_limited:'请求太多或用量到了上限，稍后再试。', session_expired:'登录已过期，请重新登录 claude.ai。', refused:'这个问题我没法回答，换个问法试试。'}[e.code] || '连接中断了，可以再发一次。');
+    }
+  } finally {
+    ch.ctl = null;
+    if (d.open) renderMsgs(d, p);
+  }
+}
+function revisedEvidence(old, r, ver, note, sources){
+  const E0 = old.evidence || {};
+  return Object.assign({}, E0, {
+    summary:r.summary, metrics:r.metrics,
+    options:[[`第 ${ver} 版：${r.title}（当前）`, r.summary], [`第 ${ver - 1} 版：${old.title}`, E0.summary]],
+    change:{from:old.title, to:r.title, note, byName:viewerName(), at:hhmm(S.now)}, sources
+  });
+}
+function withdraw(p){
+  const i = S.pending.indexOf(p); if (i < 0) return false;
+  S.pending.splice(i, 1);
+  const card = $('#aps').querySelector(`.card[data-id="${p.id}"]`); if (card) card.remove();
+  return true;
+}
+// 采用讨论中的修订：生成新版本，重新走审批路由（可能自动执行、交给员工、或升级到总管理员）
+function applyRevision(p, v, note){
+  const old = p.ev, adj = adjOf(old), r = adj.calc(v);
+  if (r.block || !withdraw(p)) return;
+  const ver = (old.version || 1) + 1;
+  const ev2 = Object.assign({}, old, {
+    title:r.title, risk:r.risk, esc:!!r.esc, escWhy:r.escWhy || old.escWhy, version:ver, adjValue:v, trace:null,
+    evidence:revisedEvidence(old, r, ver, note, ((old.evidence || {}).sources || []).concat([[`recalc_scenario(${adj.fmtV(v)})`, hhmm(S.now) + ':00']])),
+    onApprove:deepSub(old.onApprove, r.subst), onReject:old.onReject
+  });
+  chatOf(p).items.push({k:'sys', text:`已按讨论生成第 ${ver} 版：${r.title}`});
+  addFeed({from:old.from, to:S.view, kind:'report', text:`按${viewerName()}的意见修订方案：「${old.title}」→「${r.title}」（第 ${ver} 版），重新走审批。`});
+  fireApproval(ev2);
+  renderApprovals(); renderStatus();
+}
+// 退回重新处理：撤回审批单，AI 重新取数、复核后提交新版本
+function reprocess(p, instruction){
+  const old = p.ev, adj = adjOf(old);
+  if (!withdraw(p)) return;
+  const ver = (old.version || 1) + 1, at = hhmm(S.now + 12);
+  const sources = ((old.evidence || {}).sources || []).map((s, i) => [s[0], `${at}:${String(10 + i * 7).padStart(2, '0')}`]);
+  chatOf(p).items.push({k:'sys', text:`已退回重新处理：${instruction}`});
+  addFeed({from:S.view, to:old.from, kind:'decision', text:`退回重新处理「${old.title}」：${instruction}`});
+  schedule({from:old.from, kind:'tool', text:`按意见重新处理「${old.title}」：重新取数，复核测算。要求：${instruction}`}, S.now + 4);
+  const n = (instruction.replace(/,/g, '').match(/\d+(\.\d+)?/) || [])[0];
+  let ev2;
+  if (adj && n != null && +n >= adj.min && +n <= adj.max && !adj.calc(snap(adj, +n)).block){
+    const v = snap(adj, +n), r = adj.calc(v);
+    ev2 = Object.assign({}, old, {
+      title:r.title, risk:r.risk, esc:!!r.esc, escWhy:r.escWhy || old.escWhy, version:ver, adjValue:v, trace:null,
+      evidence:revisedEvidence(old, r, ver, `退回重新处理：${instruction}`, sources),
+      onApprove:deepSub(old.onApprove, r.subst), onReject:old.onReject
+    });
+    ev2.evidence.summary = '（已按意见重新处理）' + r.summary;
+  } else {
+    const E0 = old.evidence || {};
+    ev2 = Object.assign({}, old, {
+      version:ver, trace:null,
+      evidence:Object.assign({}, E0, {
+        summary:'（已按意见重新处理）重新取数后关键数据没有明显变化，结论不变。' + (E0.summary || ''),
+        change:{from:old.title, to:old.title, note:`退回重新处理：${instruction}`, byName:viewerName(), at:hhmm(S.now)}, sources
+      })
+    });
+  }
+  schedule(ev2, S.now + 12);
+  renderApprovals(); renderStatus(); kick();
+}
+function renderApprovals(full){
+  const box = $('#aps');
+  if (full) box.innerHTML = '';
+  const list = visiblePending(), ids = new Set(list.map(p => p.id));
+  box.querySelectorAll('.card').forEach(c => { if (!ids.has(c.dataset.id) && !c.classList.contains('stamping')) c.remove(); });
+  box.querySelectorAll('.empty').forEach(n => n.remove());
+  const have = new Set([...box.querySelectorAll('.card')].map(c => c.dataset.id));
+  list.forEach(p => { if (!have.has(p.id)) box.append(buildCard(p)); });
+  if (!box.querySelector('.card')){
+    box.insertAdjacentHTML('beforeend', `<p class="empty">${S.view === 'admin'
+      ? '暂时没有待审批事项。红线事项、超出员工权限的事项，以及设为「管理员审批」的 AI 员工提交的事项，会出现在这里；员工手里的审批也会显示，你可以直接介入。'
+      : '暂时没有需要你审批的事项。你的 AI 员工提交的事项会出现在这里。'}</p>`);
+  }
+  $('#apTitle').textContent = S.view === 'admin' ? '审批中心' : '我的待审批';
+  updateApCount();
+}
+function updateApCount(){
+  const nA = S.pending.filter(p => p.approver === 'admin').length;
+  $('#apCount').textContent = S.view === 'admin'
+    ? `待我 ${nA} · 员工 ${S.pending.length - nA}`
+    : String(S.pending.filter(p => p.approver === S.view).length);
+}
+
+function renderKpi(changed){
+  let tiles;
+  if (S.view === 'admin'){
+    tiles = S.t.kpis.map(([k, label, f]) => [k, label, f(S.kpi[k])]).concat([
+      ['cost', 'AI 成本', '¥' + S.kpi.cost.toFixed(2)],
+      ['appr', '审批：管理员 / 员工 / 自动', `${S.kpi.byAdmin} / ${S.kpi.byStaff} / ${S.kpi.auto}`]
+    ]);
+    $('#kpiTitle').textContent = '今日数据 · 全公司';
+  } else {
+    const ks = agentsOf(S.view);
+    const done = ks.reduce((n, k) => n + S.agents[k].done, 0), cost = ks.reduce((n, k) => n + S.agents[k].cost, 0);
+    tiles = [
+      ['done', '我的 AI 完成事项', String(done)],
+      ['wait', '待我审批', String(S.pending.filter(p => p.approver === S.view).length)],
+      ['mine', '我已审批', String(S.decidedBy[S.view] || 0)],
+      ['mycost', '我的 AI 成本', '¥' + cost.toFixed(2)]
+    ];
+    $('#kpiTitle').textContent = '今日数据 · 我';
+  }
+  const el = $('#tiles');
+  el.dataset.n = tiles.length;
+  el.innerHTML = tiles.map(([k, label, val]) => `<div class="tile"><span>${label}</span><b class="${changed && changed[k] ? 'bump' : ''}">${val}</b></div>`).join('');
+}
+function renderStatus(){
+  const nA = S.pending.filter(p => p.approver === 'admin').length, nS = S.pending.length - nA;
+  let dot = '', text;
+  if (S.view === 'admin'){
+    if (nA){ dot = 'wait'; text = `${nA} 项等你（总管理员）审批`; }
+    else if (nS) text = `${nS} 项审批在员工手里`;
+    else if (!S.queue.length){ dot = 'off'; text = '今天的工作已全部完成'; }
+    else text = 'AI 员工工作中';
+  } else {
+    const n = S.pending.filter(p => p.approver === S.view).length;
+    if (n){ dot = 'wait'; text = `${n} 项等你审批`; }
+    else if (!S.queue.length){ dot = 'off'; text = '今天的工作已全部完成'; }
+    else text = '你的 AI 员工工作中';
+  }
+  if (!S.running){ text += '（已暂停）'; if (!dot) dot = 'off'; }
+  $('#status').innerHTML = `<span class="dot ${dot}"></span><span>${text}</span>`;
+  $('#play').textContent = S.running ? '暂停' : '继续';
+}
+function renderAll(){
+  renderTeam(); renderApprovals(true); renderKpi(); renderStatus(); refilterFeed();
+}
+
+/* ---------- AI 员工详情 / 分配 ---------- */
+const li = arr => arr.map(x => `<li>${esc(soloize(x))}</li>`).join('');
+const skillsHtml = a => (a.skills && a.skills.length)
+  ? `<div><h5 class="sk">技能 · 每项都按「触发 → 取数 → 分析 → 判断 → 执行 → 复核」运行</h5><div class="skills">${a.skills.map(([n, w, d]) => `<div class="skill"><b>${esc(n)}</b><span class="when">${esc(w)}</span><p>${esc(soloize(d))}</p></div>`).join('')}</div></div>`
+  : '';
+function closeOn(d){ d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); }); }
+
+function startAgent(k){
+  const a = S.agents[k];
+  if (a.owner && !a.started){
+    a.started = true;
+    (a.onAssign || []).forEach(e => schedule(e, S.now + e.dt));
+    touch(k, '熟悉岗位资料和公司知识库');
+  }
+}
+function openAgent(k){
+  const a = S.agents[k], d = $('#dlgAgent'), admin = S.view === 'admin';
+  const owner = a.owner ? (a.owner === 'admin' ? '总管理员' : pname(a.owner)) : '待分配';
+  let form;
+  if (admin){
+    const opts = ['<option value="">待分配（收回）</option>', `<option value="admin"${a.owner === 'admin' ? ' selected' : ''}>总管理员（你）</option>`]
+      .concat(staff().map(p => {
+        const taken = agentsOf(p.id).some(x => x !== k);
+        return `<option value="${p.id}"${a.owner === p.id ? ' selected' : ''}${taken ? ' disabled' : ''}>${p.name} · ${p.role}${taken ? '（已有 AI 员工）' : ''}</option>`;
+      })).join('');
+    form = `<div class="form">
+      <h5>分配与权限（仅总管理员可改）</h5>
+      <label class="field" for="fOwner"><span>分配给</span><select id="fOwner">${opts}</select></label>
+      <div class="field"><span>审批方式</span><div class="radios">
+        <label><input type="radio" name="fMode" id="fModeSelf" value="self"${a.mode === 'self' ? ' checked' : ''}>员工自行审批</label>
+        <label><input type="radio" name="fMode" id="fModeAdmin" value="admin"${a.mode === 'admin' ? ' checked' : ''}>总管理员审批</label>
+      </div></div>
+      <div class="field"><span>自治等级</span><div class="seg" role="group" aria-label="自治等级" id="fLevel">
+        ${[1,2,3,4].map(n => `<button type="button" data-v="${n}" aria-pressed="${n === a.level}">L${n}</button>`).join('')}
+      </div><small class="note" id="fLevelDesc">${LEVELS[a.level]}</small></div>
+      <p class="note">AI 员工的权限不会超过所属员工的权限。红线事项和超出员工权限的事项，无论怎么设置都由总管理员审批。</p>
+      <div class="form-acts"><button type="button" class="btn" data-close>取消</button><button type="button" class="btn primary" id="fSave">保存</button></div>
+    </div>`;
+  } else {
+    form = '<p class="note">这名 AI 员工的归属、审批方式和自治等级由总管理员设置。需要调整请联系总管理员。</p>';
+  }
+  d.innerHTML = `<div class="dlg-h"><span class="av" style="--c:${a.color}" aria-hidden="true">${a.ch}</span>
+      <div><h3>${a.name}</h3><p>${a.title}</p></div><button class="btn x" type="button" data-close>关闭</button></div>
+    <div class="dlg-b">
+      <div class="meta"><span>归属：${esc(owner)}</span><span>${MODES[a.mode]}</span><span>自治等级 L${a.level}</span><span>${TIERS[a.tier].label}</span><span>今日完成 ${a.done} 项 · ¥${a.cost.toFixed(2)}</span></div>
+      ${skillsHtml(a)}
+      <div class="spec">
+        <div><h5>职责</h5><ul>${li(a.duty)}</ul></div>
+        <div><h5>连接的系统 / 工具</h5><ul>${li(a.tools)}</ul></div>
+        <div><h5>权限（由规则引擎执行）</h5><ul>${li(a.perm)}</ul></div>
+        <div><h5>KPI</h5><ul>${li(a.kpi)}</ul></div>
+      </div>
+      ${form}
+    </div>`;
+  if (admin){
+    let lvl = a.level;
+    d.querySelector('#fLevel').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      lvl = +b.dataset.v;
+      d.querySelectorAll('#fLevel button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      d.querySelector('#fLevelDesc').textContent = LEVELS[lvl];
+    });
+    d.querySelector('#fSave').addEventListener('click', () => {
+      const owner = d.querySelector('#fOwner').value || null;
+      const mode = d.querySelector('input[name="fMode"]:checked').value;
+      const changes = [];
+      if (owner !== a.owner) changes.push(owner ? `分配给${owner === 'admin' ? '总管理员' : pname(owner)}` : '收回到待分配');
+      if (mode !== a.mode) changes.push('审批方式改为' + MODES[mode]);
+      if (lvl !== a.level) changes.push('自治等级改为 L' + lvl);
+      a.owner = owner; a.mode = mode; a.level = lvl;
+      startAgent(k);
+      if (changes.length) addFeed({from:'admin', to:k, kind:'admin', text:`「${a.name}」：${changes.join('；')}。`});
+      d.close(); renderAll(); flash(k); kick();
+    });
+  }
+  d.showModal();
+}
+function openAssign(pid){
+  const d = $('#dlgAssign');
+  const pool = Object.keys(S.agents).filter(k => !S.agents[k].owner);
+  d.innerHTML = `<div class="dlg-h"><div><h3>给${esc(pname(pid))}分配 AI 员工</h3><p>每位员工一名专属 AI 员工。分配后可以随时在 AI 员工详情里调整审批方式和自治等级。</p></div><button class="btn x" type="button" data-close>关闭</button></div>
+    <div class="dlg-b">
+      ${pool.length ? `<div class="market">${pool.map(k => { const a = S.agents[k]; return `<div class="m-card"><div class="top"><span class="av" style="--c:${a.color}" aria-hidden="true">${a.ch}</span><div><b>${a.name}</b><small>${a.title}</small></div></div><p>${esc(a.duty.join('；'))}。</p><div class="row"><span>${TIERS[a.tier].label}</span><button type="button" data-give="${k}">分配给${esc(pname(pid))}</button></div></div>`; }).join('')}</div>`
+        : '<p class="note">待分配池是空的。先去 AI 员工库雇佣一名，再回来分配。</p>'}
+      <div class="form-acts"><button type="button" class="btn" id="goMarket">去 AI 员工库雇佣</button></div>
+    </div>`;
+  d.querySelectorAll('[data-give]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.give, a = S.agents[k];
+    a.owner = pid;
+    startAgent(k);
+    addFeed({from:'admin', to:k, kind:'admin', text:`把「${a.name}」分配给${pname(pid)}，审批方式：${MODES[a.mode]}，自治等级 L${a.level}。`});
+    d.close(); renderAll(); flash(k); kick();
+  }));
+  d.querySelector('#goMarket').addEventListener('click', () => { d.close(); openMarket(); });
+  d.showModal();
+}
+function renderMarket(){
+  const admin = S.view === 'admin';
+  $('#market').innerHTML = Object.entries(S.t.market).map(([k, r]) => {
+    const hired = !!S.agents[k];
+    return `<div class="m-card"><div class="top"><span class="av" style="--c:${r.color}" aria-hidden="true">${r.ch}</span><div><b>${r.name}</b><small>${r.title}</small></div></div>
+      <p>${esc(r.duty.join('；'))}。</p>
+      <div class="row"><span>${TIERS[r.tier].label} · 月算力 ${r.budget}</span><button type="button" data-hire="${k}"${hired || !admin ? ' disabled' : ''}>${hired ? '已雇佣' : (admin ? '雇佣' : '仅管理员')}</button></div></div>`;
+  }).join('');
+}
+function openMarket(){ renderMarket(); $('#dlgMarket').showModal(); }
+function hire(k){
+  if (S.agents[k] || S.view !== 'admin') return;
+  const r = S.t.market[k];
+  S.agents[k] = Object.assign({}, r, {owner:null, done:0, cost:0, started:false});
+  addFeed({from:'admin', to:k, kind:'admin', text:`雇佣了「${r.name}」，已放入待分配。分配给员工后开始工作。`});
+  renderMarket(); renderTeam(); flash(k);
+}
+
+/* ---------- 启动 ---------- */
+function buildViewSelect(){
+  $('#view').innerHTML = `<option value="admin">总管理员（你）</option>` +
+    staff().map(p => `<option value="${p.id}">员工 · ${p.name}（${p.role}）</option>`).join('');
+  $('#view').value = S.view;
+}
+function start(key, solo){
+  clearTimeout(timer); timer = null; runId++;
+  S = fresh(key || (S && S.key) || 'ecom', solo === undefined ? !!(S && S.solo) : solo); seq = 0; apSeq = 0;
+  document.querySelectorAll('#orgMode button').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.v === 'solo') === S.solo)));
+  $('#events').innerHTML = ''; $('#aps').innerHTML = ''; EVREG.length = 0;
+  $('#coName').textContent = S.t.company;
+  $('#clock').textContent = hhmm(S.now);
+  document.querySelectorAll('#industry button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === S.key)));
+  buildViewSelect();
+  S.t.script.forEach(e => schedule(e, toMin(e.t)));
+  const pre = toMin(S.t.prerun);
+  while (S.queue.length && S.queue[0].at <= pre){ S.tick++; fire(S.queue.shift()); }
+  renderAll(); kick();
+}
+
+$('#play').addEventListener('click', () => {
+  S.running = !S.running;
+  if (S.running) kick(); else { clearTimeout(timer); timer = null; renderStatus(); }
+});
+$('#restart').addEventListener('click', () => start());
+$('#speed').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  S.speed = +b.dataset.v;
+  document.querySelectorAll('#speed button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+});
+$('#industry').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.dataset.v === S.key) return;
+  start(b.dataset.v);
+});
+$('#orgMode').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const solo = b.dataset.v === 'solo';
+  if (solo !== S.solo) start(S.key, solo);
+});
+$('#view').addEventListener('change', e => { S.view = e.target.value; renderAll(); kick(); });
+$('#team').addEventListener('click', e => {
+  const a = e.target.closest('[data-agent]'); if (a) return openAgent(a.dataset.agent);
+  const s = e.target.closest('[data-assign]'); if (s) openAssign(s.dataset.assign);
+});
+$('#events').addEventListener('click', e => {
+  const b = e.target.closest('[data-evid]'); if (b) openEvidence(EVREG[+b.dataset.evid]);
+});
+$('#openMarket').addEventListener('click', openMarket);
+$('#openMarket2').addEventListener('click', openMarket);
+$('#market').addEventListener('click', e => {
+  const b = e.target.closest('[data-hire]'); if (b && !b.disabled) hire(b.dataset.hire);
+});
+document.querySelectorAll('dialog').forEach(closeOn);
+
+start('ecom');
+})();
+</script>
+</body>
+</html>

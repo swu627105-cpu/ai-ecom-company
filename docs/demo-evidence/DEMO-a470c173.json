@@ -1,0 +1,2751 @@
+{
+  "schema": "ai-ecom-demo/v2",
+  "data_scope": "合成业务数据；本地沙箱执行；不代表真实经营收益",
+  "run": {
+    "id": "DEMO-a470c173",
+    "created_at": "2026-10-31T11:27:51.933+08:00",
+    "started_ts": 1793417271.9332218,
+    "mode": "live",
+    "model": "intern-s2",
+    "auto_approve": false,
+    "harness": "LangGraph",
+    "status": "completed",
+    "node": "verify",
+    "before": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 420,
+        "daily_sales": 70,
+        "lead_days": 7,
+        "backup_stock": 120,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 2100,
+        "retention_budget": 1900,
+        "acquisition_roi": 2,
+        "retention_roi": 5,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": [
+          {
+            "id": "CS-DEMO-bf599c85-01",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-02",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-03",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-04",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-05",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-06",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-07",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-08",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-09",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-10",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-11",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-12",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-13",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-14",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-15",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-16",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-17",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-18",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-19",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-20",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-21",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-22",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-23",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-24",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-25",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-26",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-27",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-28",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-29",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-30",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          }
+        ]
+      },
+      "finance": {
+        "available_cash": 520,
+        "spent": 480
+      }
+    },
+    "current": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 540,
+        "daily_sales": 70,
+        "lead_days": 7,
+        "backup_stock": 0,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 1200,
+        "retention_budget": 2800,
+        "acquisition_roi": 2,
+        "retention_roi": 5,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": [
+          {
+            "id": "CS-DEMO-bf599c85-01",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-02",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-03",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-04",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-05",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-06",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-07",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-08",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-09",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-10",
+            "reason": "物流破损待排查",
+            "status": "已解决"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-11",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-12",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-13",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-14",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-15",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-16",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-17",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-18",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-19",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-20",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-21",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-22",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-23",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-24",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-25",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-26",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-27",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-28",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-29",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-bf599c85-30",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          }
+        ]
+      },
+      "finance": {
+        "available_cash": 280,
+        "spent": 720
+      }
+    },
+    "version": 2,
+    "versions": [
+      {
+        "version": 1,
+        "at": "2026-10-31T11:28:42.649+08:00",
+        "data": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 420,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2.0,
+            "retention_roi": 5.0,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 520,
+            "spent": 480
+          }
+        },
+        "plan": null,
+        "review": null,
+        "error": "工单数量超过破损订单数，或重复创建工单",
+        "reason": "初始方案"
+      },
+      {
+        "version": 2,
+        "at": "2026-10-31T11:30:20.360+08:00",
+        "data": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 420,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2,
+            "retention_roi": 5,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 520,
+            "spent": 480
+          }
+        },
+        "plan": {
+          "headline": "库存缺口需调拨，预算应迁移，无需新建工单",
+          "findings": [
+            "库存420件仅覆盖6天，低于常规交期7天，存在供应缺口",
+            "拉新ROI 2低于保本线3.5，复购ROI 5更高，可迁移预算",
+            "30张工单已创建且未建单数为0，无需重复创建"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 120
+              },
+              "why": "库存覆盖6天低于常规交期7天，需调拨至目标库存560件，备用库存充足且1天可到货"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2低于保本线3.5，复购ROI 5更高，迁移900元至复购预算可提升整体ROI"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨120件覆盖交期、迁移900元预算至复购、工单已齐无需新建；全部工具检查通过。",
+          "concerns": [
+            "调拨费用240元及广告迁移为模拟测算，实际ROI与到账时效需人工确认",
+            "库存覆盖7.71天仅略高于7天交期，仍建议跟进采购到货",
+            "退款率5.0%为历史值，工单排查不自动降低该指标"
+          ],
+          "model_safe": true
+        },
+        "preflight": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "6.0 → 7.71 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "3.425 → 4.1，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 240 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖6.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "ad 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "reason": "本轮已经创建30张工单，其中10张已解决、20张待联系，未建单数为0，禁止重复建单。当前库存420件、日销70、常规交期7天，至少调拨70件且最多120件。广告拉新ROI2、复购ROI5，可在900元上限内调整。请只生成必要动作。"
+      }
+    ],
+    "shop_id": "sandbox",
+    "preset": "cash",
+    "parent_id": "DEMO-bf599c85",
+    "plan": {
+      "headline": "库存缺口需调拨，预算应迁移，无需新建工单",
+      "findings": [
+        "库存420件仅覆盖6天，低于常规交期7天，存在供应缺口",
+        "拉新ROI 2低于保本线3.5，复购ROI 5更高，可迁移预算",
+        "30张工单已创建且未建单数为0，无需重复创建"
+      ],
+      "actions": [
+        {
+          "tool": "inventory.transfer",
+          "arguments": {
+            "quantity": 120
+          },
+          "why": "库存覆盖6天低于常规交期7天，需调拨至目标库存560件，备用库存充足且1天可到货"
+        },
+        {
+          "tool": "ads.rebalance",
+          "arguments": {
+            "amount": 900
+          },
+          "why": "拉新ROI 2低于保本线3.5，复购ROI 5更高，迁移900元至复购预算可提升整体ROI"
+        }
+      ]
+    },
+    "review": {
+      "safe": true,
+      "summary": "调拨120件覆盖交期、迁移900元预算至复购、工单已齐无需新建；全部工具检查通过。",
+      "concerns": [
+        "调拨费用240元及广告迁移为模拟测算，实际ROI与到账时效需人工确认",
+        "库存覆盖7.71天仅略高于7天交期，仍建议跟进采购到货",
+        "退款率5.0%为历史值，工单排查不自动降低该指标"
+      ],
+      "model_safe": true
+    },
+    "trace": [
+      {
+        "seq": 1,
+        "at": "2026-10-31T11:27:51.956+08:00",
+        "node": "sense",
+        "actor": "经营监测",
+        "message": "已读取独立沙箱，按本次输入重新计算库存、投放、售后指标",
+        "detail": {
+          "data": {
+            "inventory": {
+              "sku": "SKU-101 收纳柜",
+              "stock": 420,
+              "daily_sales": 70,
+              "lead_days": 7,
+              "backup_stock": 120,
+              "transfer_days": 1,
+              "transfer_unit_cost": 2
+            },
+            "ads": {
+              "acquisition_budget": 2100,
+              "retention_budget": 1900,
+              "acquisition_roi": 2.0,
+              "retention_roi": 5.0,
+              "breakeven_roi": 3.5
+            },
+            "service": {
+              "orders": 1000,
+              "refund_orders": 50,
+              "previous_refund_rate": 2,
+              "damaged_orders": 30,
+              "tickets": [
+                {
+                  "id": "CS-DEMO-bf599c85-01",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-02",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-03",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-04",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-05",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-06",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-07",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-08",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-09",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-10",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-11",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-12",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-13",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-14",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-15",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-16",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-17",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-18",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-19",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-20",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-21",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-22",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-23",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-24",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-25",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-26",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-27",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-28",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-29",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-30",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                }
+              ]
+            },
+            "finance": {
+              "available_cash": 520,
+              "spent": 480
+            }
+          },
+          "calculated": {
+            "stock": 420,
+            "coverage_days": 6.0,
+            "lead_gap_days": 1.0,
+            "budget_total": 4000,
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "estimated_roi": 3.425,
+            "ticket_count": 30,
+            "damaged_orders": 30,
+            "refund_rate": 5.0,
+            "spent": 480
+          },
+          "input_hash": "636cb70e2f31ac53",
+          "calculator": {
+            "inventory": {
+              "needs_transfer": true,
+              "minimum_transfer": 70,
+              "preferred_transfer": 140,
+              "maximum_transfer": 120,
+              "resources_sufficient": true,
+              "arrival_in_time": true
+            },
+            "ads": {
+              "needs_rebalance": true,
+              "maximum_move": 900
+            },
+            "service": {
+              "uncovered_damaged_orders": 0
+            }
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 2,
+        "at": "2026-10-31T11:27:51.968+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 3,
+        "at": "2026-10-31T11:28:36.419+08:00",
+        "node": "plan",
+        "actor": "边界校验",
+        "message": "模型方案需修正：工单数量超过破损订单数，或重复创建工单，正请求书生重新规划",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 4,
+        "at": "2026-10-31T11:28:36.426+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 5,
+        "at": "2026-10-31T11:28:42.649+08:00",
+        "node": "plan",
+        "actor": "运行控制器",
+        "message": "工单数量超过破损订单数，或重复创建工单",
+        "detail": null,
+        "kind": "error"
+      },
+      {
+        "seq": 6,
+        "at": "2026-10-31T11:30:06.209+08:00",
+        "node": "sense",
+        "actor": "主理人",
+        "message": "退回修改 v2：本轮已经创建30张工单，其中10张已解决、20张待联系，未建单数为0，禁止重复建单。当前库存420件、日销70、常规交期7天，至少调拨70件且最多120件。广告拉新ROI2、复购ROI5，可在900元上限内调整。请只生成必要动作。",
+        "detail": null,
+        "kind": "done"
+      },
+      {
+        "seq": 7,
+        "at": "2026-10-31T11:30:06.230+08:00",
+        "node": "sense",
+        "actor": "经营监测",
+        "message": "已读取独立沙箱，按本次输入重新计算库存、投放、售后指标",
+        "detail": {
+          "data": {
+            "inventory": {
+              "sku": "SKU-101 收纳柜",
+              "stock": 420,
+              "daily_sales": 70,
+              "lead_days": 7,
+              "backup_stock": 120,
+              "transfer_days": 1,
+              "transfer_unit_cost": 2
+            },
+            "ads": {
+              "acquisition_budget": 2100,
+              "retention_budget": 1900,
+              "acquisition_roi": 2,
+              "retention_roi": 5,
+              "breakeven_roi": 3.5
+            },
+            "service": {
+              "orders": 1000,
+              "refund_orders": 50,
+              "previous_refund_rate": 2,
+              "damaged_orders": 30,
+              "tickets": [
+                {
+                  "id": "CS-DEMO-bf599c85-01",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-02",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-03",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-04",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-05",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-06",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-07",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-08",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-09",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-10",
+                  "reason": "物流破损待排查",
+                  "status": "已解决"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-11",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-12",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-13",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-14",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-15",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-16",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-17",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-18",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-19",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-20",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-21",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-22",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-23",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-24",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-25",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-26",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-27",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-28",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-29",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                },
+                {
+                  "id": "CS-DEMO-bf599c85-30",
+                  "reason": "物流破损待排查",
+                  "status": "待人工联系"
+                }
+              ]
+            },
+            "finance": {
+              "available_cash": 520,
+              "spent": 480
+            }
+          },
+          "calculated": {
+            "stock": 420,
+            "coverage_days": 6.0,
+            "lead_gap_days": 1.0,
+            "budget_total": 4000,
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "estimated_roi": 3.425,
+            "ticket_count": 30,
+            "damaged_orders": 30,
+            "refund_rate": 5.0,
+            "spent": 480
+          },
+          "input_hash": "bd0af6ae5243fc6d",
+          "calculator": {
+            "inventory": {
+              "needs_transfer": true,
+              "minimum_transfer": 70,
+              "preferred_transfer": 140,
+              "maximum_transfer": 120,
+              "resources_sufficient": true,
+              "arrival_in_time": true
+            },
+            "ads": {
+              "needs_rebalance": true,
+              "maximum_move": 900
+            },
+            "service": {
+              "uncovered_damaged_orders": 0
+            }
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 8,
+        "at": "2026-10-31T11:30:06.239+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 9,
+        "at": "2026-10-31T11:30:11.929+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "库存缺口需调拨，预算应迁移，无需新建工单",
+        "detail": {
+          "headline": "库存缺口需调拨，预算应迁移，无需新建工单",
+          "findings": [
+            "库存420件仅覆盖6天，低于常规交期7天，存在供应缺口",
+            "拉新ROI 2低于保本线3.5，复购ROI 5更高，可迁移预算",
+            "30张工单已创建且未建单数为0，无需重复创建"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 120
+              },
+              "why": "库存覆盖6天低于常规交期7天，需调拨至目标库存560件，备用库存充足且1天可到货"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2低于保本线3.5，复购ROI 5更高，迁移900元至复购预算可提升整体ROI"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 10,
+        "at": "2026-10-31T11:30:11.943+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 11,
+        "at": "2026-10-31T11:30:20.353+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "调拨120件覆盖交期、迁移900元预算至复购、工单已齐无需新建；全部工具检查通过。",
+        "detail": {
+          "review": {
+            "safe": true,
+            "summary": "调拨120件覆盖交期、迁移900元预算至复购、工单已齐无需新建；全部工具检查通过。",
+            "concerns": [
+              "调拨费用240元及广告迁移为模拟测算，实际ROI与到账时效需人工确认",
+              "库存覆盖7.71天仅略高于7天交期，仍建议跟进采购到货",
+              "退款率5.0%为历史值，工单排查不自动降低该指标"
+            ],
+            "model_safe": true
+          },
+          "checks": [
+            {
+              "name": "库存覆盖不低于采购交期",
+              "passed": true,
+              "detail": "6.0 → 7.71 天；要求 ≥ 7 天"
+            },
+            {
+              "name": "广告总预算保持不变",
+              "passed": true,
+              "detail": "4000 → 4000 元"
+            },
+            {
+              "name": "破损订单已建排查工单",
+              "passed": true,
+              "detail": "30 / 30 单；历史退款率仍为 5.0%"
+            },
+            {
+              "name": "预算加权ROI估算不下降",
+              "passed": true,
+              "detail": "3.425 → 4.1，不代表真实收益"
+            },
+            {
+              "name": "库存与资金守恒",
+              "passed": true,
+              "detail": "模拟调拨费用 240 元，无负库存、负现金"
+            },
+            {
+              "name": "备用仓在断货前到达",
+              "passed": true,
+              "detail": "现库存覆盖6.00天，调拨交期1天"
+            },
+            {
+              "name": "sc 已雇佣并具备执行权限",
+              "passed": true,
+              "detail": "负责人主理人 · L2（L1仅建议）"
+            },
+            {
+              "name": "ad 已雇佣并具备执行权限",
+              "passed": true,
+              "detail": "负责人主理人 · L2（L1仅建议）"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 12,
+        "at": "2026-10-31T11:30:20.360+08:00",
+        "node": "gate",
+        "actor": "审批网关",
+        "message": "联合方案已进入右侧审批中心，等待主理人拍板",
+        "detail": null,
+        "kind": "waiting"
+      },
+      {
+        "seq": 13,
+        "at": "2026-10-31T11:31:45.427+08:00",
+        "node": "gate",
+        "actor": "主理人",
+        "message": "已批准联合方案，任务列表开始记录实际工具执行",
+        "detail": null,
+        "kind": "done"
+      },
+      {
+        "seq": 14,
+        "at": "2026-10-31T11:31:45.470+08:00",
+        "node": "execute",
+        "actor": "供应链 AI",
+        "message": "已调用 inventory.transfer，沙箱状态已更新",
+        "detail": {
+          "arguments": {
+            "quantity": 120
+          },
+          "output": {
+            "transfer_id": "TR-DEMO-a470c173",
+            "quantity": 120,
+            "cost": 240,
+            "sandbox_received": true,
+            "real_world_lead_days": 1
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 15,
+        "at": "2026-10-31T11:31:45.483+08:00",
+        "node": "execute",
+        "actor": "投放 AI",
+        "message": "已调用 ads.rebalance，沙箱状态已更新",
+        "detail": {
+          "arguments": {
+            "amount": 900
+          },
+          "output": {
+            "moved": 900,
+            "total_budget": 4000
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 16,
+        "at": "2026-10-31T11:31:45.495+08:00",
+        "node": "verify",
+        "actor": "结果校验器",
+        "message": "沙箱执行完成，业务约束已校验",
+        "detail": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "6.0 → 7.71 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "3.425 → 4.1，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 240 元，无负库存、负现金"
+          }
+        ],
+        "kind": "done"
+      }
+    ],
+    "model_calls": [
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "version": 1,
+        "attempt": 1,
+        "elapsed_seconds": 44.43,
+        "input_hash": "656e384b34486982",
+        "output": {
+          "headline": "库存缺口1天需调拨，广告预算应迁移，20破损单待建工单",
+          "findings": [
+            "库存420件仅覆盖6天，小于正常lead_days 7天，存在1天共70件供应缺口",
+            "拉新ROI 2.0低于保本线3.5，复购ROI 5.0更高，可迁移预算上限900元",
+            "30个破损订单中10个已建工单，仍有20个未建工单需创建",
+            "备用库存120件、现金520元，可支撑调拨70-120件",
+            "transfer_days=1天，可在断货前到货"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 70
+              },
+              "why": "库存覆盖6天小于lead_days 7天，需补70件达(7+1)*70=560件目标，备用库存充足"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.0低于保本3.5，复购ROI 5.0更高，迁移上限900元可提升整体ROI"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 20
+              },
+              "why": "30个破损单中仅10个已建工单，剩余20个待人工联系需创建排查工单"
+            }
+          ]
+        },
+        "usage": {
+          "prompt_tokens": 2374,
+          "total_tokens": 2664,
+          "completion_tokens": 290,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": null,
+            "rejected_prediction_tokens": null,
+            "audio_tokens": null
+          }
+        },
+        "response_model": "intern-s2"
+      },
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "version": 1,
+        "attempt": 1,
+        "elapsed_seconds": 6.2,
+        "input_hash": "2e82bb5057b18c2f",
+        "output": {
+          "headline": "库存覆盖6天不足7天交期，需调拨并迁移预算",
+          "findings": [
+            "库存420件覆盖6天，小于正常lead_days 7天，存在1天共70件供应缺口",
+            "拉新ROI 2.0低于保本线3.5，复购ROI 5.0更高，可迁移预算上限900元",
+            "30个破损订单中10个已建工单，仍有20个未建工单需创建",
+            "备用库存120件、现金520元，可支撑调拨70-120件，transfer_days=1天可在断货前到货"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 70
+              },
+              "why": "库存覆盖6天小于lead_days 7天，需补70件达(7+1)*70=560件目标，备用库存充足"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.0低于保本3.5，复购ROI 5.0更高，迁移上限900元可提升整体ROI"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 20
+              },
+              "why": "30个破损单中仅10个已建工单，剩余20个待人工联系需创建排查工单"
+            }
+          ]
+        },
+        "usage": {
+          "prompt_tokens": 2717,
+          "total_tokens": 3000,
+          "completion_tokens": 283,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": null,
+            "rejected_prediction_tokens": null,
+            "audio_tokens": null
+          }
+        },
+        "response_model": "intern-s2"
+      },
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "version": 2,
+        "attempt": 1,
+        "elapsed_seconds": 5.66,
+        "input_hash": "9d5b30965b43cd2b",
+        "output": {
+          "headline": "库存缺口需调拨，预算应迁移，无需新建工单",
+          "findings": [
+            "库存420件仅覆盖6天，低于常规交期7天，存在供应缺口",
+            "拉新ROI 2低于保本线3.5，复购ROI 5更高，可迁移预算",
+            "30张工单已创建且未建单数为0，无需重复创建"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 120
+              },
+              "why": "库存覆盖6天低于常规交期7天，需调拨至目标库存560件，备用库存充足且1天可到货"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2低于保本线3.5，复购ROI 5更高，迁移900元至复购预算可提升整体ROI"
+            }
+          ]
+        },
+        "usage": {
+          "prompt_tokens": 1448,
+          "total_tokens": 1626,
+          "completion_tokens": 178,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": null,
+            "rejected_prediction_tokens": null,
+            "audio_tokens": null
+          }
+        },
+        "response_model": "intern-s2"
+      },
+      {
+        "actor": "风控复核 AI",
+        "model": "intern-s2",
+        "version": 2,
+        "attempt": 1,
+        "elapsed_seconds": 8.38,
+        "input_hash": "e6ccd9c03b0ce8c9",
+        "output": {
+          "safe": true,
+          "summary": "调拨120件覆盖交期、迁移900元预算至复购、工单已齐无需新建；全部工具检查通过。",
+          "concerns": [
+            "调拨费用240元及广告迁移为模拟测算，实际ROI与到账时效需人工确认",
+            "库存覆盖7.71天仅略高于7天交期，仍建议跟进采购到货",
+            "退款率5.0%为历史值，工单排查不自动降低该指标"
+          ]
+        },
+        "usage": {
+          "prompt_tokens": 1262,
+          "total_tokens": 1367,
+          "completion_tokens": 105,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": null,
+            "rejected_prediction_tokens": null,
+            "audio_tokens": null
+          }
+        },
+        "response_model": "intern-s2"
+      }
+    ],
+    "receipts": [
+      {
+        "tool": "inventory.transfer",
+        "arguments": {
+          "quantity": 120
+        },
+        "before": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 420,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2,
+            "retention_roi": 5,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 520,
+            "spent": 480
+          }
+        },
+        "output": {
+          "transfer_id": "TR-DEMO-a470c173",
+          "quantity": 120,
+          "cost": 240,
+          "sandbox_received": true,
+          "real_world_lead_days": 1
+        },
+        "after": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 540,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 0,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2,
+            "retention_roi": 5,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 280,
+            "spent": 720
+          }
+        },
+        "at": "2026-10-31T11:31:45.470+08:00"
+      },
+      {
+        "tool": "ads.rebalance",
+        "arguments": {
+          "amount": 900
+        },
+        "before": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 540,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 0,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2,
+            "retention_roi": 5,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 280,
+            "spent": 720
+          }
+        },
+        "output": {
+          "moved": 900,
+          "total_budget": 4000
+        },
+        "after": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 540,
+            "daily_sales": 70,
+            "lead_days": 7,
+            "backup_stock": 0,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 1200,
+            "retention_budget": 2800,
+            "acquisition_roi": 2,
+            "retention_roi": 5,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-bf599c85-01",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-02",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-03",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-04",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-05",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-06",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-07",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-08",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-09",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-10",
+                "reason": "物流破损待排查",
+                "status": "已解决"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-bf599c85-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 280,
+            "spent": 720
+          }
+        },
+        "at": "2026-10-31T11:31:45.483+08:00"
+      }
+    ],
+    "cursor": 2,
+    "checks": [
+      {
+        "name": "库存覆盖不低于采购交期",
+        "passed": true,
+        "detail": "6.0 → 7.71 天；要求 ≥ 7 天"
+      },
+      {
+        "name": "广告总预算保持不变",
+        "passed": true,
+        "detail": "4000 → 4000 元"
+      },
+      {
+        "name": "破损订单已建排查工单",
+        "passed": true,
+        "detail": "30 / 30 单；历史退款率仍为 5.0%"
+      },
+      {
+        "name": "预算加权ROI估算不下降",
+        "passed": true,
+        "detail": "3.425 → 4.1，不代表真实收益"
+      },
+      {
+        "name": "库存与资金守恒",
+        "passed": true,
+        "detail": "模拟调拨费用 240 元，无负库存、负现金"
+      }
+    ],
+    "error": "",
+    "memory": [
+      {
+        "run_id": "DEMO-45b50166",
+        "summary": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+        "execution_verified_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "current_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        }
+      },
+      {
+        "run_id": "DEMO-bf599c85",
+        "summary": "库存仅够4天需调拨，广告预算应迁移，30破损单需建工单",
+        "execution_verified_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "current_metrics": {
+          "stock": 420,
+          "coverage_days": 6.0,
+          "lead_gap_days": 1.0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.425,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        }
+      }
+    ],
+    "input_hash": "bd0af6ae5243fc6d",
+    "corrections": [
+      {
+        "version": 1,
+        "invalid_plan": {
+          "headline": "库存缺口1天需调拨，广告预算应迁移，20破损单待建工单",
+          "findings": [
+            "库存420件仅覆盖6天，小于正常lead_days 7天，存在1天共70件供应缺口",
+            "拉新ROI 2.0低于保本线3.5，复购ROI 5.0更高，可迁移预算上限900元",
+            "30个破损订单中10个已建工单，仍有20个未建工单需创建",
+            "备用库存120件、现金520元，可支撑调拨70-120件",
+            "transfer_days=1天，可在断货前到货"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 70
+              },
+              "why": "库存覆盖6天小于lead_days 7天，需补70件达(7+1)*70=560件目标，备用库存充足"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.0低于保本3.5，复购ROI 5.0更高，迁移上限900元可提升整体ROI"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 20
+              },
+              "why": "30个破损单中仅10个已建工单，剩余20个待人工联系需创建排查工单"
+            }
+          ]
+        },
+        "error": "工单数量超过破损订单数，或重复创建工单",
+        "at": "2026-10-31T11:28:36.419+08:00"
+      },
+      {
+        "version": 1,
+        "invalid_plan": {
+          "headline": "库存覆盖6天不足7天交期，需调拨并迁移预算",
+          "findings": [
+            "库存420件覆盖6天，小于正常lead_days 7天，存在1天共70件供应缺口",
+            "拉新ROI 2.0低于保本线3.5，复购ROI 5.0更高，可迁移预算上限900元",
+            "30个破损订单中10个已建工单，仍有20个未建工单需创建",
+            "备用库存120件、现金520元，可支撑调拨70-120件，transfer_days=1天可在断货前到货"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 70
+              },
+              "why": "库存覆盖6天小于lead_days 7天，需补70件达(7+1)*70=560件目标，备用库存充足"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.0低于保本3.5，复购ROI 5.0更高，迁移上限900元可提升整体ROI"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 20
+              },
+              "why": "30个破损单中仅10个已建工单，剩余20个待人工联系需创建排查工单"
+            }
+          ]
+        },
+        "error": "工单数量超过破损订单数，或重复创建工单",
+        "at": "2026-10-31T11:28:42.649+08:00"
+      }
+    ],
+    "previous_plan": null,
+    "revision_feedback": "本轮已经创建30张工单，其中10张已解决、20张待联系，未建单数为0，禁止重复建单。当前库存420件、日销70、常规交期7天，至少调拨70件且最多120件。广告拉新ROI2、复购ROI5，可在900元上限内调整。请只生成必要动作。",
+    "approval_id": "AP-9600df5f",
+    "preflight": [
+      {
+        "name": "库存覆盖不低于采购交期",
+        "passed": true,
+        "detail": "6.0 → 7.71 天；要求 ≥ 7 天"
+      },
+      {
+        "name": "广告总预算保持不变",
+        "passed": true,
+        "detail": "4000 → 4000 元"
+      },
+      {
+        "name": "破损订单已建排查工单",
+        "passed": true,
+        "detail": "30 / 30 单；历史退款率仍为 5.0%"
+      },
+      {
+        "name": "预算加权ROI估算不下降",
+        "passed": true,
+        "detail": "3.425 → 4.1，不代表真实收益"
+      },
+      {
+        "name": "库存与资金守恒",
+        "passed": true,
+        "detail": "模拟调拨费用 240 元，无负库存、负现金"
+      },
+      {
+        "name": "备用仓在断货前到达",
+        "passed": true,
+        "detail": "现库存覆盖6.00天，调拨交期1天"
+      },
+      {
+        "name": "sc 已雇佣并具备执行权限",
+        "passed": true,
+        "detail": "负责人主理人 · L2（L1仅建议）"
+      },
+      {
+        "name": "ad 已雇佣并具备执行权限",
+        "passed": true,
+        "detail": "负责人主理人 · L2（L1仅建议）"
+      }
+    ],
+    "preview": {
+      "stock": 540,
+      "coverage_days": 7.71,
+      "lead_gap_days": 0,
+      "budget_total": 4000,
+      "acquisition_budget": 1200,
+      "retention_budget": 2800,
+      "estimated_roi": 4.1,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 720
+    },
+    "approved_version": 2,
+    "task_id": "T-c0268093",
+    "finished_at": "2026-10-31T11:31:45.495+08:00",
+    "elapsed_seconds": 233.56,
+    "before_metrics": {
+      "stock": 420,
+      "coverage_days": 6.0,
+      "lead_gap_days": 1.0,
+      "budget_total": 4000,
+      "acquisition_budget": 2100,
+      "retention_budget": 1900,
+      "estimated_roi": 3.425,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 480
+    },
+    "current_metrics": {
+      "stock": 540,
+      "coverage_days": 7.71,
+      "lead_gap_days": 0,
+      "budget_total": 4000,
+      "acquisition_budget": 1200,
+      "retention_budget": 2800,
+      "estimated_roi": 4.1,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 720
+    }
+  }
+}

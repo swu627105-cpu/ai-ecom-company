@@ -1,0 +1,1154 @@
+{
+  "schema": "ai-ecom-demo/v2",
+  "data_scope": "合成业务数据；本地沙箱执行；不代表真实经营收益",
+  "run": {
+    "id": "DEMO-45b50166",
+    "created_at": "2026-10-30T17:50:43.908+08:00",
+    "started_ts": 1793353843.9086459,
+    "mode": "live",
+    "model": "intern-s2",
+    "auto_approve": true,
+    "harness": "LangGraph",
+    "status": "completed",
+    "node": "verify",
+    "before": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 240,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 360,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 3000,
+        "retention_budget": 1000,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": []
+      },
+      "finance": {
+        "available_cash": 20000,
+        "spent": 0
+      }
+    },
+    "current": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 480,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 120,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 2100,
+        "retention_budget": 1900,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": [
+          {
+            "id": "CS-DEMO-45b50166-01",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-02",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-03",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-04",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-05",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-06",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-07",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-08",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-09",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-10",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-11",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-12",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-13",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-14",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-15",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-16",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-17",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-18",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-19",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-20",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-21",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-22",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-23",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-24",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-25",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-26",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-27",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-28",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-29",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          },
+          {
+            "id": "CS-DEMO-45b50166-30",
+            "reason": "物流破损待排查",
+            "status": "待人工联系"
+          }
+        ]
+      },
+      "finance": {
+        "available_cash": 19520,
+        "spent": 480
+      }
+    },
+    "plan": {
+      "headline": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+      "findings": [
+        "当前库存240件、日销60件，仅可覆盖4天；正常交期7天，缺口为(7-4)*60=180件，建议从备用仓调拨240件使覆盖天数提升至8天",
+        "广告拉新ROI为2.5低于盈亏平衡点3.5，而复购ROI为4.2，应将预算向复购倾斜；客服侧30个破损订单需全部创建工单覆盖",
+        "财务可用现金20000元，调拨240件成本为240*2=480元，在可承受范围内；广告预算迁移上限900元，可执行迁移"
+      ],
+      "actions": [
+        {
+          "tool": "inventory.transfer",
+          "arguments": {
+            "quantity": 240
+          },
+          "why": "当前库存覆盖4天，正常交期7天，存在180件缺口；调拨240件后可达8天覆盖，且备用仓360件充足，调拨成本480元在财务承受范围内"
+        },
+        {
+          "tool": "ads.rebalance",
+          "arguments": {
+            "amount": 900
+          },
+          "why": "拉新ROI 2.5低于盈亏平衡ROI 3.5，而复购ROI 4.2更高；将900元从拉新迁移至复购可提升整体ROI，且符合不超过900元的预算迁移限制"
+        },
+        {
+          "tool": "service.create_tickets",
+          "arguments": {
+            "count": 30
+          },
+          "why": "破损订单共30个，需全部创建排查工单以覆盖；工单创建不自动退款或承诺根因，且退款率不会因建工单立即下降"
+        }
+      ]
+    },
+    "review": {
+      "safe": true,
+      "summary": "方案数据自洽、参数在权限与约束范围内：调拨240件后库存覆盖达8天（>7天），调拨成本480元远低于可用现金且未超现金；广告预算迁移900元未超上限、总预算不变；30个破损订单全部创建工单已覆盖。沙箱执行安全可控。",
+      "concerns": [
+        "需人工核实备用仓360件是否为实时可用库存，避免与其他调拨冲突；调拨现实交期1天，需确认物流在途跟踪与到货确认流程",
+        "广告ROI（2.5/4.2）为历史/预估值，不得作为真实收益承诺；迁移后仍需监控拉新量级是否因预算缩减而异常下滑",
+        "工单仅用于排查，不得自动退款或向客户承诺根因；当前退款率5%（50/1000）不得宣称因建工单已降低",
+        "财务可用现金20000元与已花费0元需与财务系统实时对账，防止重复扣款或超额占用"
+      ]
+    },
+    "trace": [
+      {
+        "seq": 1,
+        "at": "2026-10-30T17:50:43.917+08:00",
+        "node": "sense",
+        "actor": "经营监测",
+        "message": "已读取独立沙箱，发现库存、投放、售后三类异常",
+        "detail": {
+          "data": {
+            "inventory": {
+              "sku": "SKU-101 收纳柜",
+              "stock": 240,
+              "daily_sales": 60,
+              "lead_days": 7,
+              "backup_stock": 360,
+              "transfer_days": 1,
+              "transfer_unit_cost": 2
+            },
+            "ads": {
+              "acquisition_budget": 3000,
+              "retention_budget": 1000,
+              "acquisition_roi": 2.5,
+              "retention_roi": 4.2,
+              "breakeven_roi": 3.5
+            },
+            "service": {
+              "orders": 1000,
+              "refund_orders": 50,
+              "previous_refund_rate": 2,
+              "damaged_orders": 30,
+              "tickets": []
+            },
+            "finance": {
+              "available_cash": 20000,
+              "spent": 0
+            }
+          },
+          "calculated": {
+            "stock": 240,
+            "coverage_days": 4.0,
+            "lead_gap_days": 3.0,
+            "budget_total": 4000,
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "estimated_roi": 2.925,
+            "ticket_count": 0,
+            "damaged_orders": 30,
+            "refund_rate": 5.0,
+            "spent": 0
+          },
+          "input_hash": "303362907bd53d6e"
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 2,
+        "at": "2026-10-30T17:50:43.918+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 3,
+        "at": "2026-10-30T17:51:40.248+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "返回格式未通过校验，正在请求模型修正 JSON",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 4,
+        "at": "2026-10-30T17:52:18.720+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+        "detail": {
+          "headline": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+          "findings": [
+            "当前库存240件、日销60件，仅可覆盖4天；正常交期7天，缺口为(7-4)*60=180件，建议从备用仓调拨240件使覆盖天数提升至8天",
+            "广告拉新ROI为2.5低于盈亏平衡点3.5，而复购ROI为4.2，应将预算向复购倾斜；客服侧30个破损订单需全部创建工单覆盖",
+            "财务可用现金20000元，调拨240件成本为240*2=480元，在可承受范围内；广告预算迁移上限900元，可执行迁移"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "当前库存覆盖4天，正常交期7天，存在180件缺口；调拨240件后可达8天覆盖，且备用仓360件充足，调拨成本480元在财务承受范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.5低于盈亏平衡ROI 3.5，而复购ROI 4.2更高；将900元从拉新迁移至复购可提升整体ROI，且符合不超过900元的预算迁移限制"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "破损订单共30个，需全部创建排查工单以覆盖；工单创建不自动退款或承诺根因，且退款率不会因建工单立即下降"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 5,
+        "at": "2026-10-30T17:52:18.727+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 6,
+        "at": "2026-10-30T17:52:52.927+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "方案数据自洽、参数在权限与约束范围内：调拨240件后库存覆盖达8天（>7天），调拨成本480元远低于可用现金且未超现金；广告预算迁移900元未超上限、总预算不变；30个破损订单全部创建工单已覆盖。沙箱执行安全可控。",
+        "detail": {
+          "review": {
+            "safe": true,
+            "summary": "方案数据自洽、参数在权限与约束范围内：调拨240件后库存覆盖达8天（>7天），调拨成本480元远低于可用现金且未超现金；广告预算迁移900元未超上限、总预算不变；30个破损订单全部创建工单已覆盖。沙箱执行安全可控。",
+            "concerns": [
+              "需人工核实备用仓360件是否为实时可用库存，避免与其他调拨冲突；调拨现实交期1天，需确认物流在途跟踪与到货确认流程",
+              "广告ROI（2.5/4.2）为历史/预估值，不得作为真实收益承诺；迁移后仍需监控拉新量级是否因预算缩减而异常下滑",
+              "工单仅用于排查，不得自动退款或向客户承诺根因；当前退款率5%（50/1000）不得宣称因建工单已降低",
+              "财务可用现金20000元与已花费0元需与财务系统实时对账，防止重复扣款或超额占用"
+            ]
+          },
+          "checks": [
+            {
+              "name": "库存覆盖不低于采购交期",
+              "passed": true,
+              "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+            },
+            {
+              "name": "广告总预算保持不变",
+              "passed": true,
+              "detail": "4000 → 4000 元"
+            },
+            {
+              "name": "破损订单已建排查工单",
+              "passed": true,
+              "detail": "30 / 30 单；历史退款率仍为 5.0%"
+            },
+            {
+              "name": "库存与资金守恒",
+              "passed": true,
+              "detail": "模拟调拨费用 480 元，无负库存、负现金"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 7,
+        "at": "2026-10-30T17:52:52.931+08:00",
+        "node": "gate",
+        "actor": "审批网关",
+        "message": "方案已通过模型复核及程序校验，等待主理人审批",
+        "detail": null,
+        "kind": "waiting"
+      },
+      {
+        "seq": 8,
+        "at": "2026-10-30T17:52:52.932+08:00",
+        "node": "gate",
+        "actor": "主理人预授权",
+        "message": "按启动时的沙箱自动审批设置执行，仅影响本次演练",
+        "detail": null,
+        "kind": "done"
+      },
+      {
+        "seq": 9,
+        "at": "2026-10-30T17:52:52.936+08:00",
+        "node": "execute",
+        "actor": "供应链 AI",
+        "message": "已调用 inventory.transfer，沙箱状态已更新",
+        "detail": {
+          "arguments": {
+            "quantity": 240
+          },
+          "output": {
+            "transfer_id": "TR-DEMO-45b50166",
+            "quantity": 240,
+            "cost": 480,
+            "sandbox_received": true,
+            "real_world_lead_days": 1
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 10,
+        "at": "2026-10-30T17:52:52.938+08:00",
+        "node": "execute",
+        "actor": "投放 AI",
+        "message": "已调用 ads.rebalance，沙箱状态已更新",
+        "detail": {
+          "arguments": {
+            "amount": 900
+          },
+          "output": {
+            "moved": 900,
+            "total_budget": 4000
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 11,
+        "at": "2026-10-30T17:52:52.940+08:00",
+        "node": "execute",
+        "actor": "客服 AI",
+        "message": "已调用 service.create_tickets，沙箱状态已更新",
+        "detail": {
+          "arguments": {
+            "count": 30
+          },
+          "output": {
+            "created": 30,
+            "status": "待人工联系",
+            "refunds_executed": 0
+          }
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 12,
+        "at": "2026-10-30T17:52:52.941+08:00",
+        "node": "verify",
+        "actor": "结果校验器",
+        "message": "沙箱执行完成，4 项业务约束已校验",
+        "detail": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "kind": "done"
+      }
+    ],
+    "model_calls": [
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "attempt": 1,
+        "elapsed_seconds": 56.32,
+        "input_hash": "1274f85f2bd66cac",
+        "output": {
+          "parse_error": "Expecting property name enclosed in double quotes: line 1 column 276 (char 275)",
+          "raw_response": "{\"headline\":\"库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单\",\"findings\":[\"当前库存240件、日销60件，仅可覆盖4天；正常交期7天，缺口为(7-4)*60=180件，建议从备用仓调拨240件使覆盖天数提升至8天\",\"广告拉新ROI为2.5低于盈亏平衡点3.5，而复购ROI为4.2，应将预算向复购倾斜；客服侧30个破损订单需全部创建工单覆盖\",\"财务可用现金20000元，调拨240件成本为240*2=480元，在可承受范围内；广告预算迁移上限900元，可执行迁移\"],actions\":[{\"tool\":\"inventory.transfer\",\"arguments\":{\"quantity\":240},\"why\":\"当前库存覆盖4天，正常交期7天，存在180件缺口；调拨240件后可达8天覆盖，且备用仓360件充足，调拨成本480元在财务承受范围内\"},{\"tool\":\"ads.rebalance\",\"arguments\":{\"amount\":900},\"why\":\"拉新ROI 2.5低于盈亏平衡ROI 3.5，而复购ROI 4.2更高；将900元从拉新迁移至复购可提升整体ROI，且符合不超过900元的预算迁移限制\"},{\"tool\":\"service.create_tickets\",\"arguments\":{\"count\":30},\"why\":\"破损订单共30个，需全部创建排查工单以覆盖；工单创建不自动退款或承诺根因，且退款率不会因建工单立即下降\"}]}"
+        }
+      },
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "attempt": 2,
+        "elapsed_seconds": 94.8,
+        "input_hash": "1274f85f2bd66cac",
+        "output": {
+          "headline": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+          "findings": [
+            "当前库存240件、日销60件，仅可覆盖4天；正常交期7天，缺口为(7-4)*60=180件，建议从备用仓调拨240件使覆盖天数提升至8天",
+            "广告拉新ROI为2.5低于盈亏平衡点3.5，而复购ROI为4.2，应将预算向复购倾斜；客服侧30个破损订单需全部创建工单覆盖",
+            "财务可用现金20000元，调拨240件成本为240*2=480元，在可承受范围内；广告预算迁移上限900元，可执行迁移"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "当前库存覆盖4天，正常交期7天，存在180件缺口；调拨240件后可达8天覆盖，且备用仓360件充足，调拨成本480元在财务承受范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.5低于盈亏平衡ROI 3.5，而复购ROI 4.2更高；将900元从拉新迁移至复购可提升整体ROI，且符合不超过900元的预算迁移限制"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "破损订单共30个，需全部创建排查工单以覆盖；工单创建不自动退款或承诺根因，且退款率不会因建工单立即下降"
+            }
+          ]
+        }
+      },
+      {
+        "actor": "风控复核 AI",
+        "model": "intern-s2",
+        "attempt": 1,
+        "elapsed_seconds": 34.19,
+        "input_hash": "0bc97f7aac04ecc4",
+        "output": {
+          "safe": true,
+          "summary": "方案数据自洽、参数在权限与约束范围内：调拨240件后库存覆盖达8天（>7天），调拨成本480元远低于可用现金且未超现金；广告预算迁移900元未超上限、总预算不变；30个破损订单全部创建工单已覆盖。沙箱执行安全可控。",
+          "concerns": [
+            "需人工核实备用仓360件是否为实时可用库存，避免与其他调拨冲突；调拨现实交期1天，需确认物流在途跟踪与到货确认流程",
+            "广告ROI（2.5/4.2）为历史/预估值，不得作为真实收益承诺；迁移后仍需监控拉新量级是否因预算缩减而异常下滑",
+            "工单仅用于排查，不得自动退款或向客户承诺根因；当前退款率5%（50/1000）不得宣称因建工单已降低",
+            "财务可用现金20000元与已花费0元需与财务系统实时对账，防止重复扣款或超额占用"
+          ]
+        }
+      }
+    ],
+    "receipts": [
+      {
+        "tool": "inventory.transfer",
+        "arguments": {
+          "quantity": 240
+        },
+        "before": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 240,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 360,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 20000,
+            "spent": 0
+          }
+        },
+        "output": {
+          "transfer_id": "TR-DEMO-45b50166",
+          "quantity": 240,
+          "cost": 480,
+          "sandbox_received": true,
+          "real_world_lead_days": 1
+        },
+        "after": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 480,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 19520,
+            "spent": 480
+          }
+        },
+        "at": "2026-10-30T17:52:52.936+08:00"
+      },
+      {
+        "tool": "ads.rebalance",
+        "arguments": {
+          "amount": 900
+        },
+        "before": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 480,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 19520,
+            "spent": 480
+          }
+        },
+        "output": {
+          "moved": 900,
+          "total_budget": 4000
+        },
+        "after": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 480,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 19520,
+            "spent": 480
+          }
+        },
+        "at": "2026-10-30T17:52:52.938+08:00"
+      },
+      {
+        "tool": "service.create_tickets",
+        "arguments": {
+          "count": 30
+        },
+        "before": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 480,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 19520,
+            "spent": 480
+          }
+        },
+        "output": {
+          "created": 30,
+          "status": "待人工联系",
+          "refunds_executed": 0
+        },
+        "after": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 480,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 120,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 2100,
+            "retention_budget": 1900,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": [
+              {
+                "id": "CS-DEMO-45b50166-01",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-02",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-03",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-04",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-05",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-06",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-07",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-08",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-09",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-10",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-11",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-12",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-13",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-14",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-15",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-16",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-17",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-18",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-19",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-20",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-21",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-22",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-23",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-24",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-25",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-26",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-27",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-28",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-29",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              },
+              {
+                "id": "CS-DEMO-45b50166-30",
+                "reason": "物流破损待排查",
+                "status": "待人工联系"
+              }
+            ]
+          },
+          "finance": {
+            "available_cash": 19520,
+            "spent": 480
+          }
+        },
+        "at": "2026-10-30T17:52:52.940+08:00"
+      }
+    ],
+    "cursor": 3,
+    "checks": [
+      {
+        "name": "库存覆盖不低于采购交期",
+        "passed": true,
+        "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+      },
+      {
+        "name": "广告总预算保持不变",
+        "passed": true,
+        "detail": "4000 → 4000 元"
+      },
+      {
+        "name": "破损订单已建排查工单",
+        "passed": true,
+        "detail": "30 / 30 单；历史退款率仍为 5.0%"
+      },
+      {
+        "name": "库存与资金守恒",
+        "passed": true,
+        "detail": "模拟调拨费用 480 元，无负库存、负现金"
+      }
+    ],
+    "error": "",
+    "memory": [],
+    "input_hash": "303362907bd53d6e",
+    "preview": {
+      "stock": 480,
+      "coverage_days": 8.0,
+      "lead_gap_days": 0,
+      "budget_total": 4000,
+      "acquisition_budget": 2100,
+      "retention_budget": 1900,
+      "estimated_roi": 3.308,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 480
+    },
+    "preflight": [
+      {
+        "name": "库存覆盖不低于采购交期",
+        "passed": true,
+        "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+      },
+      {
+        "name": "广告总预算保持不变",
+        "passed": true,
+        "detail": "4000 → 4000 元"
+      },
+      {
+        "name": "破损订单已建排查工单",
+        "passed": true,
+        "detail": "30 / 30 单；历史退款率仍为 5.0%"
+      },
+      {
+        "name": "库存与资金守恒",
+        "passed": true,
+        "detail": "模拟调拨费用 480 元，无负库存、负现金"
+      }
+    ],
+    "finished_at": "2026-10-30T17:52:52.941+08:00",
+    "elapsed_seconds": 129.03,
+    "shop_id": "sandbox",
+    "preset": "rescue",
+    "version": 1,
+    "versions": [
+      {
+        "version": 1,
+        "at": "2026-10-30T17:50:43.908+08:00",
+        "data": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 240,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 360,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 20000,
+            "spent": 0
+          }
+        },
+        "plan": {
+          "headline": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+          "findings": [
+            "当前库存240件、日销60件，仅可覆盖4天；正常交期7天，缺口为(7-4)*60=180件，建议从备用仓调拨240件使覆盖天数提升至8天",
+            "广告拉新ROI为2.5低于盈亏平衡点3.5，而复购ROI为4.2，应将预算向复购倾斜；客服侧30个破损订单需全部创建工单覆盖",
+            "财务可用现金20000元，调拨240件成本为240*2=480元，在可承受范围内；广告预算迁移上限900元，可执行迁移"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "当前库存覆盖4天，正常交期7天，存在180件缺口；调拨240件后可达8天覆盖，且备用仓360件充足，调拨成本480元在财务承受范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 2.5低于盈亏平衡ROI 3.5，而复购ROI 4.2更高；将900元从拉新迁移至复购可提升整体ROI，且符合不超过900元的预算迁移限制"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "破损订单共30个，需全部创建排查工单以覆盖；工单创建不自动退款或承诺根因，且退款率不会因建工单立即下降"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "方案数据自洽、参数在权限与约束范围内：调拨240件后库存覆盖达8天（>7天），调拨成本480元远低于可用现金且未超现金；广告预算迁移900元未超上限、总预算不变；30个破损订单全部创建工单已覆盖。沙箱执行安全可控。",
+          "concerns": [
+            "需人工核实备用仓360件是否为实时可用库存，避免与其他调拨冲突；调拨现实交期1天，需确认物流在途跟踪与到货确认流程",
+            "广告ROI（2.5/4.2）为历史/预估值，不得作为真实收益承诺；迁移后仍需监控拉新量级是否因预算缩减而异常下滑",
+            "工单仅用于排查，不得自动退款或向客户承诺根因；当前退款率5%（50/1000）不得宣称因建工单已降低",
+            "财务可用现金20000元与已花费0元需与财务系统实时对账，防止重复扣款或超额占用"
+          ]
+        },
+        "preflight": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "reason": "历史方案"
+      }
+    ],
+    "before_metrics": {
+      "stock": 240,
+      "coverage_days": 4.0,
+      "lead_gap_days": 3.0,
+      "budget_total": 4000,
+      "acquisition_budget": 3000,
+      "retention_budget": 1000,
+      "estimated_roi": 2.925,
+      "ticket_count": 0,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 0
+    },
+    "current_metrics": {
+      "stock": 480,
+      "coverage_days": 8.0,
+      "lead_gap_days": 0,
+      "budget_total": 4000,
+      "acquisition_budget": 2100,
+      "retention_budget": 1900,
+      "estimated_roi": 3.308,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 480
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@aiecom/desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI 电商公司 · 自带本地后端的桌面客户端",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "node dev.cjs"
+  },
+  "devDependencies": {
+    "electron": "45.2.1"
+  }
+}

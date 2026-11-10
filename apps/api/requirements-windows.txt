@@ -1,0 +1,5 @@
+-r requirements.txt
+# Windows 没有系统 IANA 时区库，ZoneInfo 由该运行依赖提供。
+tzdata==2025.2
+# pip 跨平台解析时不会自动选择所有 win32 条件依赖。
+colorama==0.4.6

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-electron/
+release/
+*.log
+.DS_Store
+.env
+.env.local
+
+# 运行时数据：包含会话状态与模型密钥（settings.json），不要提交
+apps/api/data/
+__pycache__/
+.venv/
+
+build/
+logs/

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "DEMO-a470c173",
+    "mode": "live",
+    "status": "completed",
+    "created_at": "2026-10-31T11:27:51.933+08:00",
+    "shop_id": "sandbox",
+    "version": 2,
+    "title": "库存缺口需调拨，预算应迁移，无需新建工单"
+  },
+  {
+    "id": "DEMO-bf599c85",
+    "mode": "live",
+    "status": "rolled_back",
+    "created_at": "2026-10-31T02:13:27.225+08:00",
+    "shop_id": "sandbox",
+    "version": 4,
+    "title": "库存仅够4天需调拨，广告预算应迁移，30破损单需建工单"
+  },
+  {
+    "id": "DEMO-f9a0eab8",
+    "mode": "live",
+    "status": "awaiting_approval",
+    "created_at": "2026-10-31T00:54:55.624+08:00",
+    "shop_id": "sandbox",
+    "version": 1,
+    "title": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单"
+  },
+  {
+    "id": "DEMO-00046a3f",
+    "mode": "live",
+    "status": "rolled_back",
+    "created_at": "2026-10-30T17:55:36.847+08:00",
+    "shop_id": "sandbox",
+    "version": 1,
+    "title": "库存仅够4天存3天缺口，调拨240件、迁移900元预算、建30工单"
+  },
+  {
+    "id": "DEMO-45b50166",
+    "mode": "live",
+    "status": "completed",
+    "created_at": "2026-10-30T17:50:43.908+08:00",
+    "shop_id": "sandbox",
+    "version": 1,
+    "title": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单"
+  },
+  {
+    "id": "DEMO-b0c2bdb5",
+    "mode": "live",
+    "status": "failed",
+    "created_at": "2026-10-30T17:49:13.185+08:00",
+    "shop_id": "sandbox",
+    "version": 1,
+    "title": "分析中"
+  }
+]

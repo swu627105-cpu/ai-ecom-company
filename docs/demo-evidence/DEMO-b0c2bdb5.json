@@ -1,0 +1,185 @@
+{
+  "schema": "ai-ecom-demo/v2",
+  "data_scope": "合成业务数据；本地沙箱执行；不代表真实经营收益",
+  "run": {
+    "id": "DEMO-b0c2bdb5",
+    "created_at": "2026-10-30T17:49:13.185+08:00",
+    "started_ts": 1793353753.185212,
+    "mode": "live",
+    "model": "intern-s2",
+    "auto_approve": true,
+    "harness": "LangGraph",
+    "status": "failed",
+    "node": "plan",
+    "before": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 240,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 360,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 3000,
+        "retention_budget": 1000,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": []
+      },
+      "finance": {
+        "available_cash": 20000,
+        "spent": 0
+      }
+    },
+    "current": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 240,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 360,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 3000,
+        "retention_budget": 1000,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": []
+      },
+      "finance": {
+        "available_cash": 20000,
+        "spent": 0
+      }
+    },
+    "plan": null,
+    "review": null,
+    "trace": [
+      {
+        "seq": 1,
+        "at": "2026-10-30T17:49:13.196+08:00",
+        "node": "sense",
+        "actor": "经营监测",
+        "message": "已读取独立沙箱，发现库存、投放、售后三类异常",
+        "detail": {
+          "data": {
+            "inventory": {
+              "sku": "SKU-101 收纳柜",
+              "stock": 240,
+              "daily_sales": 60,
+              "lead_days": 7,
+              "backup_stock": 360,
+              "transfer_days": 1,
+              "transfer_unit_cost": 2
+            },
+            "ads": {
+              "acquisition_budget": 3000,
+              "retention_budget": 1000,
+              "acquisition_roi": 2.5,
+              "retention_roi": 4.2,
+              "breakeven_roi": 3.5
+            },
+            "service": {
+              "orders": 1000,
+              "refund_orders": 50,
+              "previous_refund_rate": 2,
+              "damaged_orders": 30,
+              "tickets": []
+            },
+            "finance": {
+              "available_cash": 20000,
+              "spent": 0
+            }
+          },
+          "calculated": {
+            "stock": 240,
+            "coverage_days": 4.0,
+            "lead_gap_days": 3.0,
+            "budget_total": 4000,
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "estimated_roi": 2.925,
+            "ticket_count": 0,
+            "damaged_orders": 30,
+            "refund_rate": 5.0,
+            "spent": 0
+          },
+          "input_hash": "303362907bd53d6e"
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 2,
+        "at": "2026-10-30T17:49:13.198+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 3,
+        "at": "2026-10-30T17:49:39.005+08:00",
+        "node": "plan",
+        "actor": "运行控制器",
+        "message": "Expecting ',' delimiter: line 1 column 455 (char 454)",
+        "detail": null,
+        "kind": "error"
+      }
+    ],
+    "model_calls": [],
+    "receipts": [],
+    "cursor": 0,
+    "checks": [],
+    "error": "Expecting ',' delimiter: line 1 column 455 (char 454)",
+    "memory": [],
+    "input_hash": "303362907bd53d6e",
+    "shop_id": "sandbox",
+    "preset": "rescue",
+    "version": 1,
+    "versions": [],
+    "before_metrics": {
+      "stock": 240,
+      "coverage_days": 4.0,
+      "lead_gap_days": 3.0,
+      "budget_total": 4000,
+      "acquisition_budget": 3000,
+      "retention_budget": 1000,
+      "estimated_roi": 2.925,
+      "ticket_count": 0,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 0
+    },
+    "current_metrics": {
+      "stock": 240,
+      "coverage_days": 4.0,
+      "lead_gap_days": 3.0,
+      "budget_total": 4000,
+      "acquisition_budget": 3000,
+      "retention_budget": 1000,
+      "estimated_roi": 2.925,
+      "ticket_count": 0,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 0
+    }
+  }
+}

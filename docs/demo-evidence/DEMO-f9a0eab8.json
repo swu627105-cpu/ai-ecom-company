@@ -1,0 +1,518 @@
+{
+  "schema": "ai-ecom-demo/v2",
+  "data_scope": "合成业务数据；本地沙箱执行；不代表真实经营收益",
+  "run": {
+    "id": "DEMO-f9a0eab8",
+    "created_at": "2026-10-31T00:54:55.624+08:00",
+    "started_ts": 1793379295.624558,
+    "mode": "live",
+    "model": "intern-s2",
+    "auto_approve": false,
+    "harness": "LangGraph",
+    "status": "awaiting_approval",
+    "node": "gate",
+    "before": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 240,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 360,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 3000,
+        "retention_budget": 1000,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": []
+      },
+      "finance": {
+        "available_cash": 20000,
+        "spent": 0
+      }
+    },
+    "current": {
+      "inventory": {
+        "sku": "SKU-101 收纳柜",
+        "stock": 240,
+        "daily_sales": 60,
+        "lead_days": 7,
+        "backup_stock": 360,
+        "transfer_days": 1,
+        "transfer_unit_cost": 2
+      },
+      "ads": {
+        "acquisition_budget": 3000,
+        "retention_budget": 1000,
+        "acquisition_roi": 2.5,
+        "retention_roi": 4.2,
+        "breakeven_roi": 3.5
+      },
+      "service": {
+        "orders": 1000,
+        "refund_orders": 50,
+        "previous_refund_rate": 2,
+        "damaged_orders": 30,
+        "tickets": []
+      },
+      "finance": {
+        "available_cash": 20000,
+        "spent": 0
+      }
+    },
+    "plan": {
+      "headline": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单",
+      "findings": [
+        "库存240件仅覆盖4天，正常交期7天，存在3天共180件供应缺口",
+        "拉新ROI 2.5低于复购ROI 4.2且低于盈亏线3.5，预算需向复购倾斜",
+        "破损订单30件需全部创建工单排查，当前退款率5%不会因工单立即下降"
+      ],
+      "actions": [
+        {
+          "tool": "inventory.transfer",
+          "arguments": {
+            "quantity": 240
+          },
+          "why": "调拨后库存达480件覆盖8天，消除7天交期内的180件缺口"
+        },
+        {
+          "tool": "ads.rebalance",
+          "arguments": {
+            "amount": 900
+          },
+          "why": "将低效拉新预算迁移至高ROI复购，提升整体ROI至3.308附近"
+        },
+        {
+          "tool": "service.create_tickets",
+          "arguments": {
+            "count": 30
+          },
+          "why": "30个破损订单需全部建单排查，但不会立即降低当前退款率"
+        }
+      ]
+    },
+    "review": {
+      "safe": true,
+      "summary": "调拨240件覆盖8天、迁移900元预算、建30工单，方案合规；退款率不会因工单立即下降。",
+      "concerns": [
+        "调拨费用480元需确认不超现金且备用仓现实交期1天可落地",
+        "迁移额900元已达上限，总预算须保持4000元不变",
+        "预计ROI属测算值，不得宣称退款率已降低或保证收益"
+      ]
+    },
+    "trace": [
+      {
+        "seq": 1,
+        "at": "2026-10-31T00:54:55.641+08:00",
+        "node": "sense",
+        "actor": "经营监测",
+        "message": "已读取独立沙箱，发现库存、投放、售后三类异常",
+        "detail": {
+          "data": {
+            "inventory": {
+              "sku": "SKU-101 收纳柜",
+              "stock": 240,
+              "daily_sales": 60,
+              "lead_days": 7,
+              "backup_stock": 360,
+              "transfer_days": 1,
+              "transfer_unit_cost": 2
+            },
+            "ads": {
+              "acquisition_budget": 3000,
+              "retention_budget": 1000,
+              "acquisition_roi": 2.5,
+              "retention_roi": 4.2,
+              "breakeven_roi": 3.5
+            },
+            "service": {
+              "orders": 1000,
+              "refund_orders": 50,
+              "previous_refund_rate": 2,
+              "damaged_orders": 30,
+              "tickets": []
+            },
+            "finance": {
+              "available_cash": 20000,
+              "spent": 0
+            }
+          },
+          "calculated": {
+            "stock": 240,
+            "coverage_days": 4.0,
+            "lead_gap_days": 3.0,
+            "budget_total": 4000,
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "estimated_roi": 2.925,
+            "ticket_count": 0,
+            "damaged_orders": 30,
+            "refund_rate": 5.0,
+            "spent": 0
+          },
+          "input_hash": "303362907bd53d6e"
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 2,
+        "at": "2026-10-31T00:54:55.643+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 3,
+        "at": "2026-10-31T00:55:15.812+08:00",
+        "node": "plan",
+        "actor": "经营规划 AI",
+        "message": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单",
+        "detail": {
+          "headline": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单",
+          "findings": [
+            "库存240件仅覆盖4天，正常交期7天，存在3天共180件供应缺口",
+            "拉新ROI 2.5低于复购ROI 4.2且低于盈亏线3.5，预算需向复购倾斜",
+            "破损订单30件需全部创建工单排查，当前退款率5%不会因工单立即下降"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "调拨后库存达480件覆盖8天，消除7天交期内的180件缺口"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "将低效拉新预算迁移至高ROI复购，提升整体ROI至3.308附近"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30个破损订单需全部建单排查，但不会立即降低当前退款率"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 4,
+        "at": "2026-10-31T00:55:15.816+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "正在调用书生模型…",
+        "detail": null,
+        "kind": "running"
+      },
+      {
+        "seq": 5,
+        "at": "2026-10-31T00:55:25.047+08:00",
+        "node": "review",
+        "actor": "风控复核 AI",
+        "message": "调拨240件覆盖8天、迁移900元预算、建30工单，方案合规；退款率不会因工单立即下降。",
+        "detail": {
+          "review": {
+            "safe": true,
+            "summary": "调拨240件覆盖8天、迁移900元预算、建30工单，方案合规；退款率不会因工单立即下降。",
+            "concerns": [
+              "调拨费用480元需确认不超现金且备用仓现实交期1天可落地",
+              "迁移额900元已达上限，总预算须保持4000元不变",
+              "预计ROI属测算值，不得宣称退款率已降低或保证收益"
+            ]
+          },
+          "checks": [
+            {
+              "name": "库存覆盖不低于采购交期",
+              "passed": true,
+              "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+            },
+            {
+              "name": "广告总预算保持不变",
+              "passed": true,
+              "detail": "4000 → 4000 元"
+            },
+            {
+              "name": "破损订单已建排查工单",
+              "passed": true,
+              "detail": "30 / 30 单；历史退款率仍为 5.0%"
+            },
+            {
+              "name": "库存与资金守恒",
+              "passed": true,
+              "detail": "模拟调拨费用 480 元，无负库存、负现金"
+            }
+          ]
+        },
+        "kind": "done"
+      },
+      {
+        "seq": 6,
+        "at": "2026-10-31T00:55:25.051+08:00",
+        "node": "gate",
+        "actor": "审批网关",
+        "message": "联合方案已进入右侧审批中心，等待主理人拍板",
+        "detail": null,
+        "kind": "waiting"
+      }
+    ],
+    "model_calls": [
+      {
+        "actor": "经营规划 AI",
+        "model": "intern-s2",
+        "attempt": 1,
+        "elapsed_seconds": 20.16,
+        "input_hash": "494715aba5a992bf",
+        "output": {
+          "headline": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单",
+          "findings": [
+            "库存240件仅覆盖4天，正常交期7天，存在3天共180件供应缺口",
+            "拉新ROI 2.5低于复购ROI 4.2且低于盈亏线3.5，预算需向复购倾斜",
+            "破损订单30件需全部创建工单排查，当前退款率5%不会因工单立即下降"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "调拨后库存达480件覆盖8天，消除7天交期内的180件缺口"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "将低效拉新预算迁移至高ROI复购，提升整体ROI至3.308附近"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30个破损订单需全部建单排查，但不会立即降低当前退款率"
+            }
+          ]
+        }
+      },
+      {
+        "actor": "风控复核 AI",
+        "model": "intern-s2",
+        "attempt": 1,
+        "elapsed_seconds": 9.23,
+        "input_hash": "73dbe5641cfc41b7",
+        "output": {
+          "safe": true,
+          "summary": "调拨240件覆盖8天、迁移900元预算、建30工单，方案合规；退款率不会因工单立即下降。",
+          "concerns": [
+            "调拨费用480元需确认不超现金且备用仓现实交期1天可落地",
+            "迁移额900元已达上限，总预算须保持4000元不变",
+            "预计ROI属测算值，不得宣称退款率已降低或保证收益"
+          ]
+        }
+      }
+    ],
+    "receipts": [],
+    "cursor": 0,
+    "checks": [],
+    "error": "",
+    "memory": [
+      {
+        "run_id": "DEMO-45b50166",
+        "summary": "库存仅够4天而正常交期需7天，存在3天共180件的供应缺口，需立即调拨、精准投放并处理全部破损订单",
+        "verified_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        }
+      }
+    ],
+    "input_hash": "303362907bd53d6e",
+    "preview": {
+      "stock": 480,
+      "coverage_days": 8.0,
+      "lead_gap_days": 0,
+      "budget_total": 4000,
+      "acquisition_budget": 2100,
+      "retention_budget": 1900,
+      "estimated_roi": 3.308,
+      "ticket_count": 30,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 480
+    },
+    "preflight": [
+      {
+        "name": "库存覆盖不低于采购交期",
+        "passed": true,
+        "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+      },
+      {
+        "name": "广告总预算保持不变",
+        "passed": true,
+        "detail": "4000 → 4000 元"
+      },
+      {
+        "name": "破损订单已建排查工单",
+        "passed": true,
+        "detail": "30 / 30 单；历史退款率仍为 5.0%"
+      },
+      {
+        "name": "库存与资金守恒",
+        "passed": true,
+        "detail": "模拟调拨费用 480 元，无负库存、负现金"
+      }
+    ],
+    "approval_id": "AP-f42db5a4",
+    "shop_id": "sandbox",
+    "preset": "rescue",
+    "version": 1,
+    "versions": [
+      {
+        "version": 1,
+        "at": "2026-10-31T00:54:55.624+08:00",
+        "data": {
+          "inventory": {
+            "sku": "SKU-101 收纳柜",
+            "stock": 240,
+            "daily_sales": 60,
+            "lead_days": 7,
+            "backup_stock": 360,
+            "transfer_days": 1,
+            "transfer_unit_cost": 2
+          },
+          "ads": {
+            "acquisition_budget": 3000,
+            "retention_budget": 1000,
+            "acquisition_roi": 2.5,
+            "retention_roi": 4.2,
+            "breakeven_roi": 3.5
+          },
+          "service": {
+            "orders": 1000,
+            "refund_orders": 50,
+            "previous_refund_rate": 2,
+            "damaged_orders": 30,
+            "tickets": []
+          },
+          "finance": {
+            "available_cash": 20000,
+            "spent": 0
+          }
+        },
+        "plan": {
+          "headline": "库存仅够4天存缺口，调拨240件并迁移预算、建30工单",
+          "findings": [
+            "库存240件仅覆盖4天，正常交期7天，存在3天共180件供应缺口",
+            "拉新ROI 2.5低于复购ROI 4.2且低于盈亏线3.5，预算需向复购倾斜",
+            "破损订单30件需全部创建工单排查，当前退款率5%不会因工单立即下降"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "调拨后库存达480件覆盖8天，消除7天交期内的180件缺口"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "将低效拉新预算迁移至高ROI复购，提升整体ROI至3.308附近"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30个破损订单需全部建单排查，但不会立即降低当前退款率"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨240件覆盖8天、迁移900元预算、建30工单，方案合规；退款率不会因工单立即下降。",
+          "concerns": [
+            "调拨费用480元需确认不超现金且备用仓现实交期1天可落地",
+            "迁移额900元已达上限，总预算须保持4000元不变",
+            "预计ROI属测算值，不得宣称退款率已降低或保证收益"
+          ]
+        },
+        "preflight": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "reason": "历史方案"
+      }
+    ],
+    "before_metrics": {
+      "stock": 240,
+      "coverage_days": 4.0,
+      "lead_gap_days": 3.0,
+      "budget_total": 4000,
+      "acquisition_budget": 3000,
+      "retention_budget": 1000,
+      "estimated_roi": 2.925,
+      "ticket_count": 0,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 0
+    },
+    "current_metrics": {
+      "stock": 240,
+      "coverage_days": 4.0,
+      "lead_gap_days": 3.0,
+      "budget_total": 4000,
+      "acquisition_budget": 3000,
+      "retention_budget": 1000,
+      "estimated_roi": 2.925,
+      "ticket_count": 0,
+      "damaged_orders": 30,
+      "refund_rate": 5.0,
+      "spent": 0
+    }
+  }
+}

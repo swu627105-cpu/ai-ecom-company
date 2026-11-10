@@ -1,0 +1,16 @@
+{
+  "name": "ai-ecom-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/web",
+    "apps/desktop"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @aiecom/web",
+    "build": "npm run build -w @aiecom/web",
+    "desktop": "npm run start -w @aiecom/desktop",
+    "build:windows": "node scripts/build-windows.cjs",
+    "test:desktop": "npm run build && node --test apps/desktop/tests/*.test.cjs"
+  }
+}

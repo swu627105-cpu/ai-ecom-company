@@ -1,0 +1,3327 @@
+[
+  {
+    "id": "EVAL-45dec317",
+    "created_at": "2026-10-31T02:08:04.109+08:00",
+    "status": "completed",
+    "mode": "live",
+    "model": "intern-s2",
+    "dataset": "synthetic-ecommerce-v2",
+    "planner_version": "v3-calculated-context-bounded-repair",
+    "scope": "5个合成案例；正确结果率不是实际经营收益；所有组均有工具边界校验",
+    "results": [
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理3类经营动作",
+          "findings": [
+            "库存4.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 2.5，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单30笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "按当前销量补到交期加1天；资源允许240件"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "为尚未建单的30笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 0.011,
+        "correct_outcome": true
+      },
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 26.71,
+            "input_hash": "e6a270a83c6e7d07",
+            "output": {
+              "headline": "库存需调拨240件；预算应迁移900元；30破损单需建工单",
+              "findings": [
+                "库存240件，日销60件，仅够4天；目标库存480件，需调拨240件",
+                "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移上限900元",
+                "30笔破损单未建工单，需创建排查工单",
+                "可用现金20000元，调拨成本480元，资源充足"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 240
+                  },
+                  "why": "计算器显示需调拨，目标480件，现有240件，增量240件"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI低于保本是复购ROI更高，迁移上限900元"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30笔破损单未建工单，需创建排查工单"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 723,
+              "total_tokens": 957,
+              "completion_tokens": 234,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存需调拨240件；预算应迁移900元；30破损单需建工单",
+          "findings": [
+            "库存240件，日销60件，仅够4天；目标库存480件，需调拨240件",
+            "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移上限900元",
+            "30笔破损单未建工单，需创建排查工单",
+            "可用现金20000元，调拨成本480元，资源充足"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "计算器显示需调拨，目标480件，现有240件，增量240件"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI低于保本是复购ROI更高，迁移上限900元"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30笔破损单未建工单，需创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 26.72,
+        "correct_outcome": true
+      },
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 8.63,
+            "input_hash": "e6a270a83c6e7d07",
+            "output": {
+              "headline": "库存需补240件；预算应迁900元；30破损单需建工单",
+              "findings": [
+                "库存240件低于目标420件，需调拨240件，成本480元，现金充足",
+                "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移900元",
+                "30个破损单未建工单，需创建排查工单",
+                "当前库存可支撑4天，调拨1天内到货可避免断货"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 240
+                  },
+                  "why": "计算器显示需调拨，目标420件，现有240件，调拨240件补足且成本在现金范围内"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI低于保本线且复购ROI更高，迁移上限900元可提升整体收益"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30个破损单未建工单，需创建排查工单处理售后问题"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 723,
+              "total_tokens": 964,
+              "completion_tokens": 241,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 14.49,
+            "input_hash": "5ec72529167c9bd3",
+            "output": {
+              "safe": true,
+              "summary": "调拨240件覆盖1天交期不断货；迁移900元预算现金充足；30破损建工单。",
+              "concerns": [
+                "调拨后原库存仅支撑4天，需确保备用仓1天内到货",
+                "预算迁移900元后拉新ROI仍低于保本，需监控获客量",
+                "工单仅用于排查，不得承诺退款或根因"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 783,
+              "total_tokens": 874,
+              "completion_tokens": 91,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖4.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "ad 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "cs 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存需补240件；预算应迁900元；30破损单需建工单",
+          "findings": [
+            "库存240件低于目标420件，需调拨240件，成本480元，现金充足",
+            "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移900元",
+            "30个破损单未建工单，需创建排查工单",
+            "当前库存可支撑4天，调拨1天内到货可避免断货"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "计算器显示需调拨，目标420件，现有240件，调拨240件补足且成本在现金范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI低于保本线且复购ROI更高，迁移上限900元可提升整体收益"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30个破损单未建工单，需创建排查工单处理售后问题"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨240件覆盖1天交期不断货；迁移900元预算现金充足；30破损建工单。",
+          "concerns": [
+            "调拨后原库存仅支撑4天，需确保备用仓1天内到货",
+            "预算迁移900元后拉新ROI仍低于保本，需监控获客量",
+            "工单仅用于排查，不得承诺退款或根因"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 23.128,
+        "correct_outcome": true
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "3.0 → 7.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 320 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存3.0天，常规交期6天，备用仓交期1天",
+            "拉新ROI 4.0，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单0笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 160
+              },
+              "why": "按当前销量补到交期加1天；资源允许160件"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 280,
+          "coverage_days": 7.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 320
+        },
+        "elapsed_seconds": 0.012,
+        "correct_outcome": true
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 16.84,
+            "input_hash": "431252b11e6f7d83",
+            "output": {
+              "headline": "库存需补货120件，广告预算无需调整",
+              "findings": [
+                "当前库存120件，目标库存280件，需调拨120件",
+                "拉新ROI 4.0高于保本线3.5，无需迁移预算",
+                "退款率5%高于历史2%，但无破损单需处理"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 120
+                  },
+                  "why": "库存低于目标水平，需补货至280件"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 721,
+              "total_tokens": 828,
+              "completion_tokens": 107,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "3.0 → 6.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 240 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存需补货120件，广告预算无需调整",
+          "findings": [
+            "当前库存120件，目标库存280件，需调拨120件",
+            "拉新ROI 4.0高于保本线3.5，无需迁移预算",
+            "退款率5%高于历史2%，但无破损单需处理"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 120
+              },
+              "why": "库存低于目标水平，需补货至280件"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 240,
+          "coverage_days": 6.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 240
+        },
+        "elapsed_seconds": 16.848,
+        "correct_outcome": true
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 19.07,
+            "input_hash": "431252b11e6f7d83",
+            "output": {
+              "headline": "库存需调拨120件，广告预算无需迁移",
+              "findings": [
+                "SKU-101现有库存120件，低于目标280件（(6+1)*40），需调拨120件",
+                "拉新ROI 4.0高于保本线3.5，不满足预算迁移条件",
+                "可用现金20000元充足，可覆盖调拨成本240元",
+                "当前无破损订单，无需创建客服工单"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 120
+                  },
+                  "why": "库存120件低于目标280件，需调拨120件满足lead_days+1天销售"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 721,
+              "total_tokens": 872,
+              "completion_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 16.81,
+            "input_hash": "f41eb4f19892859b",
+            "output": {
+              "safe": true,
+              "summary": "调拨120件覆盖7天交期，现金充足；广告ROI未达迁移条件，无需操作；无破损单无需工单。",
+              "concerns": [
+                "备用仓调出120后剩余240，需监控后续补货节奏",
+                "拉新ROI 4.0虽高于保本线，但计划称不满足迁移条件，需确认迁移策略定义"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 678,
+              "total_tokens": 767,
+              "completion_tokens": 89,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "3.0 → 6.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 240 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖3.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存需调拨120件，广告预算无需迁移",
+          "findings": [
+            "SKU-101现有库存120件，低于目标280件（(6+1)*40），需调拨120件",
+            "拉新ROI 4.0高于保本线3.5，不满足预算迁移条件",
+            "可用现金20000元充足，可覆盖调拨成本240元",
+            "当前无破损订单，无需创建客服工单"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 120
+              },
+              "why": "库存120件低于目标280件，需调拨120件满足lead_days+1天销售"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨120件覆盖7天交期，现金充足；广告ROI未达迁移条件，无需操作；无破损单无需工单。",
+          "concerns": [
+            "备用仓调出120后剩余240，需监控后续补货节奏",
+            "拉新ROI 4.0虽高于保本线，但计划称不满足迁移条件，需确认迁移策略定义"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 240,
+          "coverage_days": 6.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 240
+        },
+        "elapsed_seconds": 35.895,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.55 → 3.225，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存10.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 1.8，复购ROI 4.8，迁移限额900元",
+            "退款率5.0%，待补工单0笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.225,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 0.011,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 8.49,
+            "input_hash": "a39ce0f36fd50a4e",
+            "output": {
+              "headline": "库存充足无需调拨；拉新ROI低应迁移预算至复购",
+              "findings": [
+                "库存600件可支撑10天销售，超过目标库存480件，无需调拨",
+                "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+                "当前无破损订单需补工单，退款率5%高于历史2%需关注"
+              ],
+              "actions": [
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI 1.8低于保本3.5，复购ROI 4.8更优，迁移上限900元提升整体收益"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 717,
+              "total_tokens": 868,
+              "completion_tokens": 151,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.55 → 3.225，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存充足无需调拨；拉新ROI低应迁移预算至复购",
+          "findings": [
+            "库存600件可支撑10天销售，超过目标库存480件，无需调拨",
+            "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+            "当前无破损订单需补工单，退款率5%高于历史2%需关注"
+          ],
+          "actions": [
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 1.8低于保本3.5，复购ROI 4.8更优，迁移上限900元提升整体收益"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.225,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 8.498,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 19.27,
+            "input_hash": "a39ce0f36fd50a4e",
+            "output": {
+              "headline": "库存充足无需调拨；拉新ROI低于复购，建议迁移预算",
+              "findings": [
+                "SKU-101现有库存600，目标库存480（(7+1)*60），无需调拨，备用库存维持360",
+                "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+                "当前可用现金20000元，资金充裕，无紧急采购压力",
+                "退款率5%（50/1000）高于历史2%，但无破损单需建工单"
+              ],
+              "actions": [
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI 1.8低于保本3.5，复购ROI 4.8更高，迁移上限900元提升整体收益"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 717,
+              "total_tokens": 902,
+              "completion_tokens": 185,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 2.18,
+            "input_hash": "6a3c823201b14bc2",
+            "output": {
+              "safe": true,
+              "summary": "库存覆盖交期无需调拨；拉新ROI低于复购，迁移900元预算至复购；现金充足。",
+              "concerns": [
+                "迁移后仍需监控拉新ROI是否持续低于保本线",
+                "退款率5%高于历史2%，虽无破损单但需关注异常趋势"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 712,
+              "total_tokens": 782,
+              "completion_tokens": 70,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.55 → 3.225，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          },
+          {
+            "name": "ad 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存充足无需调拨；拉新ROI低于复购，建议迁移预算",
+          "findings": [
+            "SKU-101现有库存600，目标库存480（(7+1)*60），无需调拨，备用库存维持360",
+            "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+            "当前可用现金20000元，资金充裕，无紧急采购压力",
+            "退款率5%（50/1000）高于历史2%，但无破损单需建工单"
+          ],
+          "actions": [
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 1.8低于保本3.5，复购ROI 4.8更高，迁移上限900元提升整体收益"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "库存覆盖交期无需调拨；拉新ROI低于复购，迁移900元预算至复购；现金充足。",
+          "concerns": [
+            "迁移后仍需监控拉新ROI是否持续低于保本线",
+            "退款率5%高于历史2%，虽无破损单但需关注异常趋势"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.225,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 21.467,
+        "correct_outcome": true
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "48 / 48 单；历史退款率仍为 8.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存10.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 4.0，复购ROI 4.2，迁移限额900元",
+            "退款率8.0%，待补工单48笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 48
+              },
+              "why": "为尚未建单的48笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 48,
+          "damaged_orders": 48,
+          "refund_rate": 8.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 0.008,
+        "correct_outcome": true
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 11.98,
+            "input_hash": "40544565143db8b3",
+            "output": {
+              "headline": "库存充足无需调拨；48破损单需建工单",
+              "findings": [
+                "SKU-101现有库存600，目标库存480，无需调拨，资源充足",
+                "拉新ROI 4.0高于保本线3.5，复购ROI 4.2更高，无需迁移预算",
+                "破损订单48单均未建工单，需创建排查工单",
+                "当前可用现金20000元，支出0元，资金充裕"
+              ],
+              "actions": [
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 48
+                  },
+                  "why": "48个破损订单未建工单，需创建排查工单跟进"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 719,
+              "total_tokens": 856,
+              "completion_tokens": 137,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "48 / 48 单；历史退款率仍为 8.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存充足无需调拨；48破损单需建工单",
+          "findings": [
+            "SKU-101现有库存600，目标库存480，无需调拨，资源充足",
+            "拉新ROI 4.0高于保本线3.5，复购ROI 4.2更高，无需迁移预算",
+            "破损订单48单均未建工单，需创建排查工单",
+            "当前可用现金20000元，支出0元，资金充裕"
+          ],
+          "actions": [
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 48
+              },
+              "why": "48个破损订单未建工单，需创建排查工单跟进"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 48,
+          "damaged_orders": 48,
+          "refund_rate": 8.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 11.99,
+        "correct_outcome": true
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 20.38,
+            "input_hash": "40544565143db8b3",
+            "output": {
+              "headline": "库存充足无需调拨；48破损单需建工单",
+              "findings": [
+                "库存600件，日销60件，可支撑10天，超过交期7天，无需调拨",
+                "拉新ROI 4.0高于保本线3.5，无需迁移预算",
+                "破损订单48单均未建工单，需创建排查工单",
+                "复购ROI 4.2略高于拉新ROI 4.0，但当前不满足迁移条件"
+              ],
+              "actions": [
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 48
+                  },
+                  "why": "48笔破损订单均未建工单，需创建排查工单跟进"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 719,
+              "total_tokens": 857,
+              "completion_tokens": 138,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 25.33,
+            "input_hash": "d83ffe20e19c5f24",
+            "output": {
+              "safe": true,
+              "summary": "库存覆盖交期无需调拨；48笔破损单需创建排查工单；预算ROI健康无需迁移。",
+              "concerns": [
+                "工单须覆盖全部48笔破损单，不可重复建单",
+                "调拨仅在备用仓到货前原库存可能断货时触发",
+                "ROI为预估值，不可作为实际收益依据"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 666,
+              "total_tokens": 744,
+              "completion_tokens": 78,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "48 / 48 单；历史退款率仍为 8.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          },
+          {
+            "name": "cs 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存充足无需调拨；48破损单需建工单",
+          "findings": [
+            "库存600件，日销60件，可支撑10天，超过交期7天，无需调拨",
+            "拉新ROI 4.0高于保本线3.5，无需迁移预算",
+            "破损订单48单均未建工单，需创建排查工单",
+            "复购ROI 4.2略高于拉新ROI 4.0，但当前不满足迁移条件"
+          ],
+          "actions": [
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 48
+              },
+              "why": "48笔破损订单均未建工单，需创建排查工单跟进"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "库存覆盖交期无需调拨；48笔破损单需创建排查工单；预算ROI健康无需迁移。",
+          "concerns": [
+            "工单须覆盖全部48笔破损单，不可重复建单",
+            "调拨仅在备用仓到货前原库存可能断货时触发",
+            "ROI为预估值，不可作为实际收益依据"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 48,
+          "damaged_orders": 48,
+          "refund_rate": 8.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 45.718,
+        "correct_outcome": true
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "rules",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "4.0 → 4.83 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 100 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理3类经营动作",
+          "findings": [
+            "库存4.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 2.5，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单30笔；现金100元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 50
+              },
+              "why": "按当前销量补到交期加1天；资源允许50件"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "为尚未建单的30笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 290,
+          "coverage_days": 4.83,
+          "lead_gap_days": 2.17,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 100
+        },
+        "elapsed_seconds": 0.007,
+        "correct_outcome": true
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "single_model",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 18.51,
+            "input_hash": "ccb91f173c3c0a8d",
+            "output": {
+              "headline": "库存现金不足限调拨；预算应迁移；破损需建工单",
+              "findings": [
+                "库存目标480件需补240件，但现金仅够调50件，缺口190件",
+                "拉新ROI 2.5低于保本3.5，复购ROI 4.2，可迁移上限900元",
+                "30个破损订单未建工单，需创建排查工单"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 50
+                  },
+                  "why": "现金仅100元，按unit_cost2最多支持50件，优先缓解断货风险"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "acquisition_roi2.5低于breakeven3.5，retention_roi4.2更高，迁移上限900元"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "calculator显示30个破损单未覆盖且tickets为空，需创建排查工单"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 720,
+              "total_tokens": 932,
+              "completion_tokens": 212,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "4.0 → 4.83 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 100 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存现金不足限调拨；预算应迁移；破损需建工单",
+          "findings": [
+            "库存目标480件需补240件，但现金仅够调50件，缺口190件",
+            "拉新ROI 2.5低于保本3.5，复购ROI 4.2，可迁移上限900元",
+            "30个破损订单未建工单，需创建排查工单"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 50
+              },
+              "why": "现金仅100元，按unit_cost2最多支持50件，优先缓解断货风险"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "acquisition_roi2.5低于breakeven3.5，retention_roi4.2更高，迁移上限900元"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "calculator显示30个破损单未覆盖且tickets为空，需创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 290,
+          "coverage_days": 4.83,
+          "lead_gap_days": 2.17,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 100
+        },
+        "elapsed_seconds": 18.514,
+        "correct_outcome": true
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "planner_reviewer",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 32.76,
+            "input_hash": "ccb91f173c3c0a8d",
+            "output": {
+              "headline": "库存缺口大但资金不足，预算可迁移，破损需建工单",
+              "findings": [
+                "库存现有240，目标480，需补240；计算器建议调拨180-240，但可用现金仅100，最多支持50件（100/2）",
+                "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移预算上限900元",
+                "30个破损订单未建工单，需创建排查工单",
+                "资源不足：现金仅100元，无法覆盖全部调拨需求，需补充资金或分批调拨"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 50
+                  },
+                  "why": "现金100元最多支持50件调拨，缓解库存缺口，避免断货"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI低于保本线，复购ROI更高，迁移上限900元提升整体收益"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30个破损订单未建工单，需创建排查工单跟进"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 720,
+              "total_tokens": 970,
+              "completion_tokens": 250,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 7.52,
+            "input_hash": "f2a22796d141abf3",
+            "output": {
+              "safe": false,
+              "summary": "方案存在未解决风险，已拦截；请查看检查项并退回修改",
+              "concerns": [
+                "调拨50件仅覆盖约1天销量，原库存240件4天后断货，无法覆盖7天正常交期",
+                "可用现金仅100元，最多支持50件调拨，无法覆盖240件缺口，资源不足",
+                "需确认是否追加资金或分批调拨，确保备用仓到货前不断货",
+                "30个破损工单应创建，但不得声称建单可降低退款率",
+                "4.0 → 4.83 天；要求 ≥ 7 天"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 790,
+              "total_tokens": 930,
+              "completion_tokens": 140,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "4.0 → 4.83 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 100 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖4.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "ad 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "cs 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存缺口大但资金不足，预算可迁移，破损需建工单",
+          "findings": [
+            "库存现有240，目标480，需补240；计算器建议调拨180-240，但可用现金仅100，最多支持50件（100/2）",
+            "拉新ROI 2.5低于保本3.5，复购ROI 4.2更高，可迁移预算上限900元",
+            "30个破损订单未建工单，需创建排查工单",
+            "资源不足：现金仅100元，无法覆盖全部调拨需求，需补充资金或分批调拨"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 50
+              },
+              "why": "现金100元最多支持50件调拨，缓解库存缺口，避免断货"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI低于保本线，复购ROI更高，迁移上限900元提升整体收益"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30个破损订单未建工单，需创建排查工单跟进"
+            }
+          ]
+        },
+        "review": {
+          "safe": false,
+          "summary": "方案存在未解决风险，已拦截；请查看检查项并退回修改",
+          "concerns": [
+            "调拨50件仅覆盖约1天销量，原库存240件4天后断货，无法覆盖7天正常交期",
+            "可用现金仅100元，最多支持50件调拨，无法覆盖240件缺口，资源不足",
+            "需确认是否追加资金或分批调拨，确保备用仓到货前不断货",
+            "30个破损工单应创建，但不得声称建单可降低退款率",
+            "4.0 → 4.83 天；要求 ≥ 7 天"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 290,
+          "coverage_days": 4.83,
+          "lead_gap_days": 2.17,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 100
+        },
+        "elapsed_seconds": 40.286,
+        "correct_outcome": true
+      }
+    ],
+    "summary": [
+      {
+        "arm": "rules",
+        "cases": 5,
+        "correct_outcomes": 5,
+        "invalid_proposals": 0,
+        "errors": 0,
+        "mean_seconds": 0.01,
+        "model_responses": 0,
+        "model_requests": 0,
+        "reported_tokens": 0
+      },
+      {
+        "arm": "single_model",
+        "cases": 5,
+        "correct_outcomes": 5,
+        "invalid_proposals": 0,
+        "errors": 0,
+        "mean_seconds": 16.514,
+        "model_responses": 5,
+        "model_requests": 5,
+        "reported_tokens": 4441
+      },
+      {
+        "arm": "planner_reviewer",
+        "cases": 5,
+        "correct_outcomes": 5,
+        "invalid_proposals": 0,
+        "errors": 0,
+        "mean_seconds": 33.299,
+        "model_responses": 10,
+        "model_requests": 10,
+        "reported_tokens": 8662
+      }
+    ],
+    "progress": "15/15",
+    "finished_at": "2026-10-31T02:12:13.368+08:00"
+  },
+  {
+    "id": "EVAL-dcae6302",
+    "created_at": "2026-10-31T01:07:39.042+08:00",
+    "status": "completed",
+    "mode": "live",
+    "model": "intern-s2",
+    "dataset": "synthetic-ecommerce-v2",
+    "scope": "5个合成案例；正确结果率不是实际经营收益；所有组均有工具边界校验",
+    "results": [
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理3类经营动作",
+          "findings": [
+            "库存4.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 2.5，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单30笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "按当前销量补到交期加1天；资源允许240件"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "为尚未建单的30笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 0.009,
+        "correct_outcome": true
+      },
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 16.5,
+            "input_hash": "86cd410ba6185cf4",
+            "output": {
+              "headline": "库存告急需调拨，广告预算应迁移",
+              "findings": [
+                "SKU-101库存240件仅够4天销售，低于补货目标480件",
+                "拉新ROI 2.5低于保本线3.5，复购ROI 4.2高出68%",
+                "破损订单30单尚未创建工单，退款率5%高于历史2%"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 240
+                  },
+                  "why": "库存仅够4天销售，需补至8天目标480件，备用库存充足且现金可覆盖"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI低于保本线而复购ROI更高，可迁移上限900元"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30单破损订单均未建工单，需创建排查工单"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 595,
+              "total_tokens": 793,
+              "completion_tokens": 198,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 8.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存告急需调拨，广告预算应迁移",
+          "findings": [
+            "SKU-101库存240件仅够4天销售，低于补货目标480件",
+            "拉新ROI 2.5低于保本线3.5，复购ROI 4.2高出68%",
+            "破损订单30单尚未创建工单，退款率5%高于历史2%"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "库存仅够4天销售，需补至8天目标480件，备用库存充足且现金可覆盖"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI低于保本线而复购ROI更高，可迁移上限900元"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30单破损订单均未建工单，需创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 480,
+          "coverage_days": 8.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 16.504,
+        "correct_outcome": true
+      },
+      {
+        "case": "rescue",
+        "case_title": "大促联合救援",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "303362907bd53d6e",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 29.18,
+            "input_hash": "86cd410ba6185cf4",
+            "output": {
+              "headline": "库存仅够4天需紧急调拨；复购ROI高于拉新应迁移预算",
+              "findings": [
+                "库存240件，日销60件，仅够4天，低于7天交期，需补至(7+1)*60=480件，但备用库存上限360件",
+                "复购ROI 4.2高于拉新ROI 2.5及保本线3.5，可迁移预算上限min(900,3000)=900元",
+                "破损单30单且无工单，需创建排查工单",
+                "当前可用现金20000元，调拨360件成本720元，在可支付范围内"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 360
+                  },
+                  "why": "库存仅4天销量，需补至480件但受备用库存360限制，调拨成本720元在现金范围内"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "复购ROI 4.2显著高于拉新ROI 2.5及保本线3.5，迁移上限900元可提升整体ROI"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30单破损均未建工单，需创建排查工单但不自动退款"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 595,
+              "total_tokens": 886,
+              "completion_tokens": 291,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 13.88,
+            "input_hash": "6e68c34257e968db",
+            "output": {
+              "safe": true,
+              "summary": "调拨360件覆盖7天交期；迁移900元至复购；建30单破损工单。",
+              "concerns": [
+                "调拨后库存600件，日销60件，可维持10天，需关注后续补货计划",
+                "迁移预算后拉新预算剩余2100元，需评估拉新规模是否受影响",
+                "破损工单仅用于排查，不自动退款，需跟进处理结果",
+                "调拨成本720元，需确保财务流程及时审批"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 833,
+              "total_tokens": 952,
+              "completion_tokens": 119,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "4.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 720 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖4.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "ad 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          },
+          {
+            "name": "cs 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存仅够4天需紧急调拨；复购ROI高于拉新应迁移预算",
+          "findings": [
+            "库存240件，日销60件，仅够4天，低于7天交期，需补至(7+1)*60=480件，但备用库存上限360件",
+            "复购ROI 4.2高于拉新ROI 2.5及保本线3.5，可迁移预算上限min(900,3000)=900元",
+            "破损单30单且无工单，需创建排查工单",
+            "当前可用现金20000元，调拨360件成本720元，在可支付范围内"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 360
+              },
+              "why": "库存仅4天销量，需补至480件但受备用库存360限制，调拨成本720元在现金范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "复购ROI 4.2显著高于拉新ROI 2.5及保本线3.5，迁移上限900元可提升整体ROI"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30单破损均未建工单，需创建排查工单但不自动退款"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨360件覆盖7天交期；迁移900元至复购；建30单破损工单。",
+          "concerns": [
+            "调拨后库存600件，日销60件，可维持10天，需关注后续补货计划",
+            "迁移预算后拉新预算剩余2100元，需评估拉新规模是否受影响",
+            "破损工单仅用于排查，不自动退款，需跟进处理结果",
+            "调拨成本720元，需确保财务流程及时审批"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 720
+        },
+        "elapsed_seconds": 43.068,
+        "correct_outcome": true
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "3.0 → 7.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 320 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存3.0天，常规交期6天，备用仓交期1天",
+            "拉新ROI 4.0，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单0笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 160
+              },
+              "why": "按当前销量补到交期加1天；资源允许160件"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 280,
+          "coverage_days": 7.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 320
+        },
+        "elapsed_seconds": 0.012,
+        "correct_outcome": true
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 21.67,
+            "input_hash": "4cb189a0990f84fc",
+            "output": {
+              "headline": "库存可维持3天，无需紧急调拨；复购ROI优于拉新",
+              "findings": [
+                "库存120件，日销40件，仅可支撑3天，低于目标280件（(6+1)*40）",
+                "复购ROI 4.2高于拉新ROI 4.0，且均高于保本ROI 3.5",
+                "当前无破损订单，无需创建工单",
+                "可用现金20000元充足，但调拨需考虑交期1天与成本"
+              ],
+              "actions": [
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "复购ROI 4.2高于拉新ROI 4.0，迁移上限900元可提升整体收益"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 594,
+              "total_tokens": 755,
+              "completion_tokens": 161,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "3.0 → 3.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.095，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存可维持3天，无需紧急调拨；复购ROI优于拉新",
+          "findings": [
+            "库存120件，日销40件，仅可支撑3天，低于目标280件（(6+1)*40）",
+            "复购ROI 4.2高于拉新ROI 4.0，且均高于保本ROI 3.5",
+            "当前无破损订单，无需创建工单",
+            "可用现金20000元充足，但调拨需考虑交期1天与成本"
+          ],
+          "actions": [
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "复购ROI 4.2高于拉新ROI 4.0，迁移上限900元可提升整体收益"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 120,
+          "coverage_days": 3.0,
+          "lead_gap_days": 3.0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 4.095,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 21.677,
+        "correct_outcome": false
+      },
+      {
+        "case": "stock",
+        "case_title": "库存告急",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "7f50c4044e12ce69",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 26.88,
+            "input_hash": "4cb189a0990f84fc",
+            "output": {
+              "headline": "库存可支撑2天销售，建议调拨；广告预算无需迁移",
+              "findings": [
+                "SKU-101库存120件，日销40件，仅可支撑3天；目标补货量(6+1)*40=280件，备用库存360件充足",
+                "调拨280件成本560元，现金20000元充足",
+                "拉新ROI 4.0高于保本线3.5，且低于复购ROI 4.2，不满足迁移条件",
+                "当前无破损订单，无需创建工单"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 280
+                  },
+                  "why": "库存仅够3天销售，需补至280件覆盖7天交期，备用库存与现金均充足"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 594,
+              "total_tokens": 768,
+              "completion_tokens": 174,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          },
+          {
+            "actor": "风控复核 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 5.62,
+            "input_hash": "fe5a4933de42aa69",
+            "output": {
+              "safe": true,
+              "summary": "调拨280件覆盖7天交期，预算无需迁移，无破损无需工单。",
+              "concerns": [
+                "库存仅够3天，需确保调拨1天内到货不断货",
+                "调拨成本560元在现金预算内"
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 701,
+              "total_tokens": 762,
+              "completion_tokens": 61,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "3.0 → 10.0 天；要求 ≥ 6 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 560 元，无负库存、负现金"
+          },
+          {
+            "name": "备用仓在断货前到达",
+            "passed": true,
+            "detail": "现库存覆盖3.00天，调拨交期1天"
+          },
+          {
+            "name": "sc 已雇佣并具备执行权限",
+            "passed": true,
+            "detail": "负责人主理人 · L2（L1仅建议）"
+          }
+        ],
+        "plan": {
+          "headline": "库存可支撑2天销售，建议调拨；广告预算无需迁移",
+          "findings": [
+            "SKU-101库存120件，日销40件，仅可支撑3天；目标补货量(6+1)*40=280件，备用库存360件充足",
+            "调拨280件成本560元，现金20000元充足",
+            "拉新ROI 4.0高于保本线3.5，且低于复购ROI 4.2，不满足迁移条件",
+            "当前无破损订单，无需创建工单"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 280
+              },
+              "why": "库存仅够3天销售，需补至280件覆盖7天交期，备用库存与现金均充足"
+            }
+          ]
+        },
+        "review": {
+          "safe": true,
+          "summary": "调拨280件覆盖7天交期，预算无需迁移，无破损无需工单。",
+          "concerns": [
+            "库存仅够3天，需确保调拨1天内到货不断货",
+            "调拨成本560元在现金预算内"
+          ]
+        },
+        "projected_metrics": {
+          "stock": 400,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 560
+        },
+        "elapsed_seconds": 32.509,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.55 → 3.225，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存10.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 1.8，复购ROI 4.8，迁移限额900元",
+            "退款率5.0%，待补工单0笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.225,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 0.012,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 27.82,
+            "input_hash": "e45375db84fdf295",
+            "output": {
+              "headline": "库存告急需调拨，拉新预算应迁移至复购",
+              "findings": [
+                "SKU-101库存600件仅够10天销售，低于补货目标480件（(7+1)*60），需从备用仓调拨",
+                "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+                "当前可用现金20000元充足，可覆盖调拨成本",
+                "破损订单0件，无需创建客服工单"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 240
+                  },
+                  "why": "库存10天消耗低于目标8天库存，需补240件至840件，成本480元在现金范围内"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI 1.8远低于保本3.5，复购ROI 4.8更优，迁移上限900元提升整体ROI"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 594,
+              "total_tokens": 816,
+              "completion_tokens": 222,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 14.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "0 / 0 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.55 → 3.225，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 480 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存告急需调拨，拉新预算应迁移至复购",
+          "findings": [
+            "SKU-101库存600件仅够10天销售，低于补货目标480件（(7+1)*60），需从备用仓调拨",
+            "拉新ROI 1.8低于保本线3.5，复购ROI 4.8更高，可迁移预算上限900元",
+            "当前可用现金20000元充足，可覆盖调拨成本",
+            "破损订单0件，无需创建客服工单"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 240
+              },
+              "why": "库存10天消耗低于目标8天库存，需补240件至840件，成本480元在现金范围内"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI 1.8远低于保本3.5，复购ROI 4.8更优，迁移上限900元提升整体ROI"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 840,
+          "coverage_days": 14.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.225,
+          "ticket_count": 0,
+          "damaged_orders": 0,
+          "refund_rate": 5.0,
+          "spent": 480
+        },
+        "elapsed_seconds": 27.826,
+        "correct_outcome": true
+      },
+      {
+        "case": "ads",
+        "case_title": "广告亏损",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "fc74b8f126c3cc27",
+        "model_calls": [],
+        "error": "网络异常：",
+        "proposal_valid": false,
+        "executable": false,
+        "checks": [],
+        "elapsed_seconds": 60.188,
+        "correct_outcome": false
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "rules",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": true,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": true,
+            "detail": "10.0 → 10.0 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "48 / 48 单；历史退款率仍为 8.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "4.05 → 4.05，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 0 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理1类经营动作",
+          "findings": [
+            "库存10.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 4.0，复购ROI 4.2，迁移限额900元",
+            "退款率8.0%，待补工单48笔；现金20000元"
+          ],
+          "actions": [
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 48
+              },
+              "why": "为尚未建单的48笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 600,
+          "coverage_days": 10.0,
+          "lead_gap_days": 0,
+          "budget_total": 4000,
+          "acquisition_budget": 3000,
+          "retention_budget": 1000,
+          "estimated_roi": 4.05,
+          "ticket_count": 48,
+          "damaged_orders": 48,
+          "refund_rate": 8.0,
+          "spent": 0
+        },
+        "elapsed_seconds": 0.01,
+        "correct_outcome": true
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "single_model",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [],
+        "error": "网络异常：",
+        "proposal_valid": false,
+        "executable": false,
+        "checks": [],
+        "elapsed_seconds": 60.168,
+        "correct_outcome": false
+      },
+      {
+        "case": "refund",
+        "case_title": "退款异常",
+        "arm": "planner_reviewer",
+        "expected_executable": true,
+        "input_hash": "df95380f7fe13adb",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 23.11,
+            "input_hash": "d493b349acff17b9",
+            "output": {
+              "headline": "库存需补货，拉新预算可微调复购",
+              "findings": [
+                "SKU-101库存600件，日销60件，仅够10天，低于目标补货水位480件（(7+1)*60）",
+                "复购ROI 4.2高于拉新ROI 4.0，且均高于保本ROI 3.5，可迁移部分预算",
+                "破损订单48单且无工单，需创建排查工单",
+                "当前可用现金20000元，调拨成本可控，资金充足"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 480
+                  },
+                  "why": "库存仅够10天，需补至480件满足lead_days+1天销售，备用仓360件足够且现金可覆盖"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "复购ROI 4.2高于拉新ROI 4.0，迁移上限900元可提升整体投放效率"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 48
+                  },
+                  "why": "48单破损均未建工单，需创建排查工单跟进"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 595,
+              "total_tokens": 847,
+              "completion_tokens": 252,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "调拨超过备用库存或可用现金",
+        "proposal_valid": false,
+        "executable": false,
+        "checks": [],
+        "elapsed_seconds": 23.118,
+        "correct_outcome": false
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "rules",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "4.0 → 4.83 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 100 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "按本轮数据处理3类经营动作",
+          "findings": [
+            "库存4.0天，常规交期7天，备用仓交期1天",
+            "拉新ROI 2.5，复购ROI 4.2，迁移限额900元",
+            "退款率5.0%，待补工单30笔；现金100元"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 50
+              },
+              "why": "按当前销量补到交期加1天；资源允许50件"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "向当前ROI较高计划迁移预算，总额不变"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "为尚未建单的30笔破损单创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 290,
+          "coverage_days": 4.83,
+          "lead_gap_days": 2.17,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 100
+        },
+        "elapsed_seconds": 0.011,
+        "correct_outcome": true
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "single_model",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [
+          {
+            "actor": "经营规划 AI",
+            "model": "intern-s2",
+            "attempt": 1,
+            "elapsed_seconds": 11.88,
+            "input_hash": "99271aa9a4e91eed",
+            "output": {
+              "headline": "库存告急需调拨，广告预算应迁移",
+              "findings": [
+                "SKU-101库存240件仅够4天销售，低于补货目标480件，存在断货风险",
+                "拉新ROI 2.5低于保本线3.5，复购ROI 4.2更高，可迁移预算上限900元",
+                "破损订单30单均未建工单，需创建排查工单",
+                "可用现金100元，可支持50件调拨（单价2元）"
+              ],
+              "actions": [
+                {
+                  "tool": "inventory.transfer",
+                  "arguments": {
+                    "quantity": 50
+                  },
+                  "why": "库存仅够4天销售，现金可支持50件调拨，缓解断货风险"
+                },
+                {
+                  "tool": "ads.rebalance",
+                  "arguments": {
+                    "amount": 900
+                  },
+                  "why": "拉新ROI低于保本线，复购ROI更高，迁移上限900元提升整体收益"
+                },
+                {
+                  "tool": "service.create_tickets",
+                  "arguments": {
+                    "count": 30
+                  },
+                  "why": "30单破损订单均未建工单，需创建排查工单"
+                }
+              ]
+            },
+            "usage": {
+              "prompt_tokens": 593,
+              "total_tokens": 814,
+              "completion_tokens": 221,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": null,
+                "rejected_prediction_tokens": null,
+                "audio_tokens": null
+              }
+            },
+            "response_model": "intern-s2"
+          }
+        ],
+        "error": "",
+        "proposal_valid": true,
+        "executable": false,
+        "checks": [
+          {
+            "name": "库存覆盖不低于采购交期",
+            "passed": false,
+            "detail": "4.0 → 4.83 天；要求 ≥ 7 天"
+          },
+          {
+            "name": "广告总预算保持不变",
+            "passed": true,
+            "detail": "4000 → 4000 元"
+          },
+          {
+            "name": "破损订单已建排查工单",
+            "passed": true,
+            "detail": "30 / 30 单；历史退款率仍为 5.0%"
+          },
+          {
+            "name": "预算加权ROI估算不下降",
+            "passed": true,
+            "detail": "2.925 → 3.308，不代表真实收益"
+          },
+          {
+            "name": "库存与资金守恒",
+            "passed": true,
+            "detail": "模拟调拨费用 100 元，无负库存、负现金"
+          }
+        ],
+        "plan": {
+          "headline": "库存告急需调拨，广告预算应迁移",
+          "findings": [
+            "SKU-101库存240件仅够4天销售，低于补货目标480件，存在断货风险",
+            "拉新ROI 2.5低于保本线3.5，复购ROI 4.2更高，可迁移预算上限900元",
+            "破损订单30单均未建工单，需创建排查工单",
+            "可用现金100元，可支持50件调拨（单价2元）"
+          ],
+          "actions": [
+            {
+              "tool": "inventory.transfer",
+              "arguments": {
+                "quantity": 50
+              },
+              "why": "库存仅够4天销售，现金可支持50件调拨，缓解断货风险"
+            },
+            {
+              "tool": "ads.rebalance",
+              "arguments": {
+                "amount": 900
+              },
+              "why": "拉新ROI低于保本线，复购ROI更高，迁移上限900元提升整体收益"
+            },
+            {
+              "tool": "service.create_tickets",
+              "arguments": {
+                "count": 30
+              },
+              "why": "30单破损订单均未建工单，需创建排查工单"
+            }
+          ]
+        },
+        "projected_metrics": {
+          "stock": 290,
+          "coverage_days": 4.83,
+          "lead_gap_days": 2.17,
+          "budget_total": 4000,
+          "acquisition_budget": 2100,
+          "retention_budget": 1900,
+          "estimated_roi": 3.308,
+          "ticket_count": 30,
+          "damaged_orders": 30,
+          "refund_rate": 5.0,
+          "spent": 100
+        },
+        "elapsed_seconds": 11.895,
+        "correct_outcome": true
+      },
+      {
+        "case": "cash",
+        "case_title": "资金不足 · 风控拦截",
+        "arm": "planner_reviewer",
+        "expected_executable": false,
+        "input_hash": "45b737686dfce050",
+        "model_calls": [],
+        "error": "网络异常：",
+        "proposal_valid": false,
+        "executable": false,
+        "checks": [],
+        "elapsed_seconds": 60.201,
+        "correct_outcome": false
+      }
+    ],
+    "summary": [
+      {
+        "arm": "rules",
+        "cases": 5,
+        "correct_outcomes": 5,
+        "invalid_proposals": 0,
+        "errors": 0,
+        "mean_seconds": 0.011,
+        "model_responses": 0,
+        "reported_tokens": 0
+      },
+      {
+        "arm": "single_model",
+        "cases": 5,
+        "correct_outcomes": 3,
+        "invalid_proposals": 1,
+        "errors": 1,
+        "mean_seconds": 27.614,
+        "model_responses": 4,
+        "reported_tokens": 3178
+      },
+      {
+        "arm": "planner_reviewer",
+        "cases": 5,
+        "correct_outcomes": 2,
+        "invalid_proposals": 3,
+        "errors": 3,
+        "mean_seconds": 43.817,
+        "model_responses": 5,
+        "reported_tokens": 4215
+      }
+    ],
+    "progress": "15/15",
+    "finished_at": "2026-10-31T02:00:29.964+08:00"
+  }
+]
